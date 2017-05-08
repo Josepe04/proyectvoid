@@ -1,0 +1,42 @@
+
+
+-El player tiene dos tipos de disparo, uno principal que no cambia y otro secundario que es el que puede cambiar.
+
+-El player tiene una barra de poder especial que se va cargando cada vez que pasas a menos de 2 pixeles de un enemigo o bala,
+ cuando esta cargada puedes lanzar una habilidad especial (barra de graze).
+
+-Hay dos modos de disparo uno mas amplio en el que la velocidad de movimiento es mas rapida, otro en el que la velocidad de
+ movimiento es mayor, pero tambien el disparo es mas concentrado por lo que el jugador tendra que tener mas punteria con las magias.
+
+-Los bosses dispararan balas dirijidas al player a menor velocidad que este mismo, para que puedan ser esquivadas, pero dandole mas dificultad al juego.
+
+-Habilidades especiales:
+	-La habilidad que se puede disparar al cargar la barra de graze destruye las balas en un perimetro de 4 veces el tamaño del jugador.
+	-La habilidad principal 1 es una estrella que destruye las balas a su paso, por cada bala que destruye consigue mas poder y le quita mas
+	 vida a los enemigos.
+	-La habilidad principal 2 es un hechizo que hace que las balas del enemigo sean atraidas hacia este mismo durante unos segundos.
+	-Cuando estas en el borde de la pantalla si pulsas el boton a pasas al otro lado de la pantalla, ejemplo:
+							------------      ------------
+							player         -> 
+								       ->  
+							               ->   player
+							------------      ------------
+
+-Disparos secundarios:
+	-El boss de hielo te suelta un tipo de disparo secundario que son fragmentos de hielo que con una cierta probabilidad pueden conjelar
+	las balas de los enemigos y destruirlas.
+	-Un disparo secundario son 3 laser muy poderosos, que en modo lento son uno solo. 
+
+
+-Según el nivel en el que te encuentres puedes escoges si quedarte con el disparo secundario que tienes o cojer el disparo secundario que
+ te suelta el boss del nivel anterior(Incluso podrias ir almacenando los diferentes poderes e ir cambiando de uno a otro con una tecla).
+
+-Mecanicas para bosses:
+	-El boss se duplica en 2, a uno de ellos aunque le dispares no le haces daño por que es una copia o sombra del boss,
+	 el otro es el boss original, cada cierto tiempo se intercambian la posicion la sombra y el boss original.
+	-El boss es capaz de crear nieblas en los que la velocidad de movimiento disminuye o aumenta según el color de la niebla.
+	-El boss lanza un agujero negro, si te quedas atrapado no podras salir en unos segundos sin poder moverte.
+	-El boss cambia el scroll del juego y pasa de estar horizontalmente a verticalmente, posteriormente tienes que disparar 
+	 un objeto que deja en la pantalla el boss para que vuelva a ser horizontal.
+
+
