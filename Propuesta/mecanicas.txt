@@ -1,43 +1,28 @@
 MECANICAS DE DISPARO
 
--El player tiene dos tipos de disparo, uno principal que no cambia y otro secundario que es el que puede cambiar.
+-El player tiene dos tipos de disparo, uno básico (que puede ser potenciado con power ups), y otro secundario que es el que cambia segun el escenario (solo se puede usar con la barra especial cargada).
 
--El player tiene una barra de poder especial que se va cargando con el tiempo/derrotando enemigos,
- cuando esta cargada puedes lanzar una habilidad especial (barra de magia).
-
--Hay dos modos de disparo uno mas amplio en el que la velocidad de movimiento es más rápida, otro en el que la velocidad de
- movimiento es menor, pero tambien el disparo es mas concentrado por lo que el jugador tendra que tener mas punteria con las magias.
-
--Los bosses dispararan balas en dirección al player a menor velocidad que este mismo, para que puedan ser esquivadas, pero dandole mas dificultad al juego.
-
--Habilidades especiales:
-	-La habilidad que se puede disparar al cargar la barra de magia destruye las balas en un perimetro de 4 veces el tamaño del jugador.
-	Power ups:
-	-La habilidad especial 1 es una estrella que destruye las balas a su paso, por cada bala que destruye consigue mas poder y le quita mas
-	 vida a los enemigos.
-	-La habilidad especial 2 es un hechizo que hace que las balas del enemigo sean atraidas hacia este mismo durante unos segundos.
-	-La habilidad especial 3 es un haz de luz que inflinge daño por segundo en una linea recta frente al player.
-	-La habilidad especial 4 es un orbe de energia muy potente que daña a todos los enemigos que se encuentra, al final de su recorrido
-	 estalla aumentando su tamaño por 2 y hace un daño muy severo a los enemigos alcanzados por la explosión.
-
--Cuando estas en el borde de la pantalla si pulsas el boton a pasas al otro lado de la pantalla, ejemplo:
-							------------      ------------
-							player         -> 
-								       ->  
-							               ->   player
-							------------      ------------
+-Según el nivel en el que te encuentres el disparo secundario cambia, proporcionando al player un habilidad especifica para enfrentarse a las condiciones propias del escenario y del boss.
 
 
+Power ups(modificacion disparo basico):
+-1: Hace que el proyectil aumente su potencia segun avanza.
+-2: Convierte el proyectil en un haz del luz en linea recta que hace daño continuo (mientras esta en contacto con el enemigo le va quitando vida) lo que encuentra a su paso
+-3: Hace que el proyectil explote al impactar contra un enemigo (o al llegar al final del recorrido) causando daño de area a los del alrededor.
+-4: 
+
+Bufos (son power ups que dan una ventaja al personaje -NO modifican el disparo-):
+-1: Invulnerabilidad temporal
+-2: Una vida mas
+-3: Carga instantanea de la barra especial
 
 
--Según el nivel en el que te encuentres puedes escoges si quedarte con el disparo secundario que tienes o cojer el disparo secundario que
- te suelta el boss del nivel anterior(Incluso podrias ir almacenando los diferentes poderes e ir cambiando de uno a otro con una tecla).
+-El player tiene una barra de poder especial que se va cargando con el tiempo/derrotando enemigos. Cuando se carga completamente, puedes lanzar el disparo secundario.
 
--Disparos secundarios(ejemplos):
-	-El boss de hielo ofrece un tipo de disparo secundario que consiste en fragmentos de hielo con una cierta probabilidad de conjelar
-	las balas de los enemigos y destruirlas.
-	-Otro tipo de disparo secundario podrían ser 3 laser muy poderosos, que en modo lento son uno solo. 
 
+______________________________________________________________PENSAR JUNTO__________________________________________________________________________________________________
+-Tipos de disparo secundario (barra de poder especial):
+	---DEPENDEN DEL ESCENARIO/MECANICAS DEL BOSS-> HACER DESPUES-------------
 
 MECANICAS DE BOSS
 
@@ -49,9 +34,21 @@ MECANICAS DE BOSS
 	 un objeto que deja en la pantalla el boss para que vuelva a ser horizontal.
 	-El boss no es capaz de  disparar pero crea unidades enemigas que atacan al player.
 	-El boss es invulnerable y se debe destruir atancando a puntos débiles que lo exponen y anulan su invulnerabilidad.
+______________________________________________________________PENSAR JUNTO__________________________________________________________________________________________________
+
+
+
+-Cuando estas en el borde (inferior o superior) de la pantalla si pulsas el boton a pasas al otro lado de la pantalla, ejemplo:
+							------------      ------------
+							player         -> 
+								       ->  
+							               ->   player
+							------------      ------------
+
+
 
 MECANICAS PARA EL PLAYER
-	-El player contará con 5 vidas.
+	-El player contará con vidas.
 	-Cada bala enemiga que impacte contra el player le restará una vida.
 	-Si las vidas del player llegan a 0 es GAME OVER.
 	-Cada vez que el player derrote a un boss recibe una vida extra, hasta un máximo (aún por definir).
