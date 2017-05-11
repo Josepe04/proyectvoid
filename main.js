@@ -107,25 +107,11 @@ var balaDirijida = function(posPlayer,posBoss){
   var velocidades = {vx:0,vy:0};
   var difx = posPlayer.x-posBoss.x;
   var dify = posPlayer.y-posBoss.y;
-  /*hay cuatro casos:
-    1) difx e y son positivos.
-    2) difx positivo e y negativo.
-    3) difx negativo e y positivo.
-    4) difx e y son negativos.
-    Creo que se puede hacer mas corto,
-    pero prefiero probarlo asi y luego reducirlo.
-  */ 
-  if(difx >= 0 && dify >= 0){
-    if(difx > dify){
-      velocidades.vy = 1;
-      velocidades.vx = 1 * (difx/dify);
-    }else{
-      velocidades.vx = 1;
-      velocidades.vy = 1 * (dify/difx);  
-    }
-  } else if(difx >= 0 && dify < 0){
-    
-  }
+
+ 
+  velocidades.vx = 1;
+  velocidades.vy = 1 * (dify/difx);
+
   return velocidades;
 }
 
