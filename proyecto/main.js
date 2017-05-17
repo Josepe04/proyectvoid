@@ -79,6 +79,38 @@ Q.component("controles", {
 
 });
 
+/**
+ * A la bala le pasas el tipoBala que tiene las posiciones, el sprite, la animacion y la funcion de movimiento
+ * todo esto lo definiremos nosotros segun el nivel, ademas tambien sirve para las balas del player solo que hay pasarle
+ * una funcion de colision concreta(esto ultimo ya lo veremos el proximo dia en skype).
+ */
+Q.sprite.extend("Bala",{
+  init: function(tipoBala){
+    //como crear una bala concreta
+    //this.stage.insert(new Q.Bala(args));
+    this._super({
+      sheet:tipoBala.sh,
+      sprite:tipoBala.spr,
+      x:tipoBala.pos.x,
+      y:tipoBala.pos.y,
+      gravity:0,
+      radio:tipoBala.rad,
+      func:tipoBala.func,
+      sensor:true
+    });
+    this.add('2d');
+    this.on("sensor");
+  },
+  step: function(dt){
+    var newPos = this.p.func(dt,this.p);//la funcion te devuelve la nueva posicion de la bala
+    this.p.x = newPos.x;
+    this.p.y = newPos.y;
+  },
+  sensor: function(colObj){
+    if(colisionCircular(this.p,colObj.p,this.p.radio+colObj.p.radio))
+      this.destroy();
+  }
+});
 
 Q.Sprite.extend("Marisa",{
   init: function(p) {
@@ -117,8 +149,8 @@ Q.Sprite.extend("Enemigo",{
   init: function(p) {
     this._super({
       asset:"pruebaMarisa.png",
-      x:2400,
-      y:2000,
+      x:p.x,
+      y:p.y,
       radio:60,
       gravity:0,
       sensor:true
@@ -142,7 +174,7 @@ Q.Sprite.extend("Enemigo",{
 
 Q.scene("levelChema",function(stage) {
   Q.stageTMX("level.tmx",stage);
-  var enemy = stage.insert(new Q.Enemigo());
+  var enemy = stage.insert(new Q.Enemigo({x:2400,y:2000}));
   var player = stage.insert(new Q.Marisa());
   stage.add("viewport").centerOn(2000,2000);
 });
