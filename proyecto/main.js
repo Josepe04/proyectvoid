@@ -13,6 +13,8 @@ Q.animations('ejemplo', {
 });
 */
 
+var LIMITEX1 = 0,LIMITEX2 = 4000,LIMITEY1 = 500,LIMITEY2 = 3000;
+
 
 Q.animations('coin_anim', {
   shine: { frames: [0,1,2], rate: 1/2},
@@ -84,31 +86,47 @@ Q.component("controles", {
  * todo esto lo definiremos nosotros segun el nivel, ademas tambien sirve para las balas del player solo que hay pasarle
  * una funcion de colision concreta(esto ultimo ya lo veremos el proximo dia en skype).
  */
-Q.sprite.extend("Bala",{
+Q.Sprite.extend("Bala",{
   init: function(tipoBala){
     //como crear una bala concreta
     //this.stage.insert(new Q.Bala(args));
     this._super({
-      sheet:tipoBala.sh,
-      sprite:tipoBala.spr,
-      x:tipoBala.pos.x,
-      y:tipoBala.pos.y,
-      gravity:0,
+      //sheet:tipoBala.sh,
+      //sprite:tipoBala.spr,
+      asset:tipoBala.asset,
+      x:tipoBala.x,
+      y:tipoBala.y,
+      vx:tipoBala.vx,
+      vy:tipoBala.vy,
       radio:tipoBala.rad,
-      func:tipoBala.func,
+      gravity:0,
       sensor:true
     });
     this.add('2d');
-    this.on("sensor");
+    this.on("sensor",tipoBala.funcionColision);
   },
   step: function(dt){
-    var newPos = this.p.func(dt,this.p);//la funcion te devuelve la nueva posicion de la bala
-    this.p.x = newPos.x;
-    this.p.y = newPos.y;
-  },
-  sensor: function(colObj){
-    if(colisionCircular(this.p,colObj.p,this.p.radio+colObj.p.radio))
+    this.p.x += dt*this.p.vx;
+    this.p.y += dt*this.p.vy;
+    if(p.x > LIMITEX2 || p.x < LIMITEX1 || p.y < LIMITEY1 || p.y > LIMITEY2)
       this.destroy();
+  }
+});
+
+Q.component("disparoPrincipal",{
+  added: function() {
+      this.tAcomulada = 0;
+      this.reloadTime = 0.2;
+      this.entity.on("step",this,"step");
+  },
+  step: function(dt){
+    this.tAcomulada += dt;
+    if(this.tAcomulada >= this.reloadTime){
+      this.tAcomulada = 0;
+      Q.stage().insert(new Q.Bala({asset:"pruebaMarisa.png",x:this.entity.p.x + 1.5*this.entity.p.radio,y:this.entity.p.y,
+                              vx:250,vy:0,rad: 2,
+                              funcionColision:function(colObj){}}));
+    }
   }
 });
 
@@ -123,7 +141,7 @@ Q.Sprite.extend("Marisa",{
       sensor:true
     });
     this.ultimo = 0;
-    this.add('2d, controles');
+    this.add('2d, controles , disparoPrincipal');
     this.on("sensor");
   },
 
@@ -170,16 +188,20 @@ Q.Sprite.extend("Enemigo",{
   
 });
 
-
+var colisionBalaEnemiga = function(colObj){
+  if(colisionCircular(this.p,colObj.p,this.p.radio+colObj.p.radio) 
+       && colObj.isA("Marisa") )
+    this.destroy();
+};
 
 Q.scene("levelChema",function(stage) {
   Q.stageTMX("level.tmx",stage);
-  var enemy = stage.insert(new Q.Enemigo({x:2400,y:2000}));
+  var pruebaBala = stage.insert(new Q.Bala({asset:"pruebaMarisa.png",x:2400,y:2000,vx:-100,vy:0,rad:10,funcionColision:colisionBalaEnemiga}));
   var player = stage.insert(new Q.Marisa());
   stage.add("viewport").centerOn(2000,2000);
 });
 
-Q.loadTMX("level.tmx , balas1.png, balas1.json , pruebaMarisa.png", function() {
+Q.loadTMX("level.tmx, pruebaMarisa.png", function() {
   Q.compileSheets("coin.png","coin.json");
   Q.stageScene("levelChema");
 });
