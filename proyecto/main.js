@@ -154,7 +154,11 @@ Q.component("disparoPrincipal",{
       if(p.diffX > 0){
         velocidadX = p.diffX * dt/ p.stepDelay;
       }
+<<<<<<< HEAD
       Q.stage().insert(new Q.BalaPlayer({asset:"pruebabala.png",x:p.x + 1.5*p.radio,y:p.y,
+=======
+      Q.stage().insert(new Q.Bala({asset:"pruebabala.png",x:p.x + 1.5*p.radio,y:p.y,
+>>>>>>> origin/master
                               vx:400 + velocidadX,vy:0,rad: 2,
                               funcionColision:function(colObj){
                                 if(colObj.p.tipo == "enemy"){
@@ -184,21 +188,33 @@ Q.component("powerupDemo",{
         if(p.diffX > 0){
           velocidadX = p.diffX * dt/ p.stepDelay;
         }
+<<<<<<< HEAD
         Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+=======
+        Q.stage().insert(new Q.Bala({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+>>>>>>> origin/master
                                 vx:400 + velocidadX,vy:0,rad: 2,
                                 funcionColision:function(colObj){
                                   if(colObj.p.tipo == "enemy"){
                                     colObj.destroy();
                                   }
                                 }}));
+<<<<<<< HEAD
        Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+=======
+       Q.stage().insert(new Q.Bala({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+>>>>>>> origin/master
                                 vx:400 + velocidadX,vy:100,rad: 2,
                                 funcionColision:function(colObj){
                                   if(colObj.p.tipo == "enemy"){
                                     colObj.destroy();
                                   }
                                 }}));
+<<<<<<< HEAD
         Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+=======
+        Q.stage().insert(new Q.Bala({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+>>>>>>> origin/master
                                 vx:400 + velocidadX,vy:-100,rad: 2,
                                 funcionColision:function(colObj){
                                   if(colObj.p.tipo == "enemy"){
@@ -215,6 +231,7 @@ Q.component("powerupDemo",{
     }
 });
 
+<<<<<<< HEAD
 
 Q.component("speellCard1Reimu",{
   added: function() {
@@ -259,6 +276,8 @@ Q.component("speellCard1Reimu",{
     }
 });
 
+=======
+>>>>>>> origin/master
 //BOSS PRUEBA
 Q.Sprite.extend("Reimu",{
   init: function(p) {
@@ -266,6 +285,7 @@ Q.Sprite.extend("Reimu",{
         asset:"reimu.png",
         x:2700,
         y:2000,
+<<<<<<< HEAD
         vy:100,
         time:0,
         gravity:0,
@@ -275,10 +295,19 @@ Q.Sprite.extend("Reimu",{
       });
       this.ultimo = 0;
       this.add('2d, speellCard1Reimu');
+=======
+        gravity:0,
+        radio:30,
+        sensor:true
+      });
+      this.ultimo = 0;
+      this.add('2d');
+>>>>>>> origin/master
       this.on("sensor");
     },
 
     step: function(dt) {
+<<<<<<< HEAD
       if(this.p.y <= 1664) this.p.vy = 100;
       else if(this.p.y >= 2329) this.p.vy = -100;
     },
@@ -290,6 +319,11 @@ Q.Sprite.extend("Reimu",{
         }
 
         if(this.p.vida<=0) this.destroy();
+=======
+    },
+
+    sensor: function(colObj){
+>>>>>>> origin/master
     }
 });
 
@@ -318,6 +352,7 @@ Q.Sprite.extend("Marisa",{
 
 });
 
+<<<<<<< HEAD
 //POWER UP DISPLAY
 Q.Sprite.extend("PowerDisplay",{
   init: function(p) {
@@ -341,6 +376,8 @@ Q.Sprite.extend("PowerDisplay",{
 
 });
 
+=======
+>>>>>>> origin/master
 //PLAYER COLISION CENTER DEMO
 
 var colisionCircular = function(posObj1,posObj2,dist){
@@ -364,8 +401,13 @@ Q.Sprite.extend("EnemigoDemo",{
       tipo: "enemy",
       sensor:true
     });
+<<<<<<< HEAD
     if(this.p.y == 2329) this.p.vy = -150;
     else if(this.p.y == 1664) this.p.vy = 150;
+=======
+    if(this.p.y == 2329) this.p.vy = -100;
+    else if(this.p.y == 1664) this.p.vy = 100;
+>>>>>>> origin/master
     this.ultimo = 0;
     this.add('2d, arrowPatron');
     this.on("sensor");
@@ -441,13 +483,20 @@ Q.scene("levelChema",function(stage) {
   Q.stageTMX("level.tmx",stage);
   var pruebaBala = stage.insert(new Q.Bala({asset:"pruebabala.jpg",x:2400,y:2000,vx:-100,vy:0,rad:10,funcionColision:colisionBalaEnemiga}));
   var boss = stage.insert(new Q.Reimu());
+<<<<<<< HEAD
   var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
+=======
+>>>>>>> origin/master
   var player = stage.insert(new Q.Marisa());
   var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
   stage.add("viewport").centerOn(2200,2000);
 });
 
+<<<<<<< HEAD
 Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png", function() {
+=======
+Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png", function() {
+>>>>>>> origin/master
   Q.compileSheets("coin.png","coin.json");
   Q.stageScene("levelChema");
 });
