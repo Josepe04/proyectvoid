@@ -3,7 +3,7 @@ window.addEventListener("load",function(){
 
 var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
     .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
-    .setup({width: 1000, height: 600})
+    .setup({width: 1280, height: 700})
     .controls().touch()
     .enableSound();
 
@@ -56,15 +56,15 @@ Q.component("controles", {
       p.diffX = 0;
       p.diffY = 0;
 
-      if(Q.inputs['left']) {
+      if(Q.inputs['left'] && p.x > 1559) {
         p.diffX = -p.stepDistance;
-      } else if(Q.inputs['right']) {
+      } else if(Q.inputs['right'] && p.x < 2805) {
         p.diffX = p.stepDistance;
       }
 
-      if(Q.inputs['up']) {
+      if(Q.inputs['up'] && p.y > 1664) {
         p.diffY = -p.stepDistance;
-      } else if(Q.inputs['down']) {
+      } else if(Q.inputs['down'] && p.y < 2329) {
         p.diffY = p.stepDistance;
       }
 
@@ -76,7 +76,6 @@ Q.component("controles", {
         p.destY = p.y + p.diffY;
         p.stepWait = p.stepDelay;
       }
-
     }
 
 });
