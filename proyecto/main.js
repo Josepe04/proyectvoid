@@ -108,7 +108,7 @@ Q.Sprite.extend("Bala",{
   step: function(dt){
     this.p.x += dt*this.p.vx;
     this.p.y += dt*this.p.vy;
-    if(p.x > LIMITEX2 || p.x < LIMITEX1 || p.y < LIMITEY1 || p.y > LIMITEY2)
+    if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 || this.p.y < LIMITEY1 || this.p.y > LIMITEY2)
       this.destroy();
   }
 });
@@ -116,15 +116,20 @@ Q.Sprite.extend("Bala",{
 Q.component("disparoPrincipal",{
   added: function() {
       this.tAcomulada = 0;
-      this.reloadTime = 0.2;
+      this.reloadTime = 0.1;
       this.entity.on("step",this,"step");
   },
   step: function(dt){
     this.tAcomulada += dt;
-    if(this.tAcomulada >= this.reloadTime){
+    var p = this.entity.p;
+    if(this.tAcomulada >= this.reloadTime && Q.inputs['fire']){
       this.tAcomulada = 0;
-      Q.stage().insert(new Q.Bala({asset:"pruebaMarisa.png",x:this.entity.p.x + 1.5*this.entity.p.radio,y:this.entity.p.y,
-                              vx:250,vy:0,rad: 2,
+      var velocidadX = 0;
+      if(p.diffX > 0){
+        velocidadX = p.diffX * dt/ p.stepDelay;
+      }  
+      Q.stage().insert(new Q.Bala({asset:"pruebabala.png",x:p.x + 1.5*p.radio,y:p.y,
+                              vx:400 + velocidadX,vy:0,rad: 2,
                               funcionColision:function(colObj){}}));
     }
   }
@@ -196,12 +201,12 @@ var colisionBalaEnemiga = function(colObj){
 
 Q.scene("levelChema",function(stage) {
   Q.stageTMX("level.tmx",stage);
-  var pruebaBala = stage.insert(new Q.Bala({asset:"pruebaMarisa.png",x:2400,y:2000,vx:-100,vy:0,rad:10,funcionColision:colisionBalaEnemiga}));
+  var pruebaBala = stage.insert(new Q.Bala({asset:"pruebabala.jpg",x:2400,y:2000,vx:-100,vy:0,rad:10,funcionColision:colisionBalaEnemiga}));
   var player = stage.insert(new Q.Marisa());
-  stage.add("viewport").centerOn(2000,2000);
+  stage.add("viewport").centerOn(2200,2000);
 });
 
-Q.loadTMX("level.tmx, pruebaMarisa.png", function() {
+Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png", function() {
   Q.compileSheets("coin.png","coin.json");
   Q.stageScene("levelChema");
 });
