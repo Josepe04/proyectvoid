@@ -12,7 +12,19 @@ Q.animations('ejemplo', {
 });
 */
 
-var LIMITEX1 = 0,LIMITEX2 = 4000,LIMITEY1 = 500,LIMITEY2 = 3000;
+if(Q.inputs['left'] && p.x > 1559) {
+  p.diffX = -p.stepDistance;
+} else if(Q.inputs['right'] && p.x < 2805) {
+  p.diffX = p.stepDistance;
+}
+
+if(Q.inputs['up'] && p.y > 1664) {
+  p.diffY = -p.stepDistance;
+} else if(Q.inputs['down'] && p.y < 2329) {
+  p.diffY = p.stepDistance;
+}
+
+var LIMITEX1 = 1550,LIMITEX2 = 2820,LIMITEY1 = 1000,LIMITEY2 = 2400;
 
 
 Q.animations('coin_anim', {
@@ -128,13 +140,22 @@ Q.Sprite.extend("BalaPlayer",{
       sensor:true
     });
     this.add('2d');
-    this.on("sensor",tipoBala.funcionColision);
+    this.on("sensor");
   },
   step: function(dt){
     this.p.x += dt*this.p.vx;
     this.p.y += dt*this.p.vy;
     if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 || this.p.y < LIMITEY1 || this.p.y > LIMITEY2)
       this.destroy();
+  },
+  sensor: function(colObj){
+    if(colObj.p.tipo == "enemy"){
+      if(colObj.p.vida <= 0)
+        colObj.destroy();
+      else
+        colObj.p.vida--;
+        this.destroy();
+    }
   }
 });
 
@@ -154,12 +175,8 @@ Q.component("disparoPrincipal",{
         velocidadX = p.diffX * dt/ p.stepDelay;
       }
       Q.stage().insert(new Q.BalaPlayer({asset:"pruebabala.png",x:p.x + 1.5*p.radio,y:p.y,
-                              vx:400 + velocidadX,vy:0,rad: 2,
-                              funcionColision:function(colObj){
-                                if(colObj.p.tipo == "enemy"){
-                                  colObj.destroy();
-                                }
-                              }}));
+                              vx:400 + velocidadX,vy:0,rad: 2
+                              }));
     }
   }
 });
@@ -185,25 +202,13 @@ Q.component("powerupDemo",{
         }
         Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
                                 vx:400 + velocidadX,vy:0,rad: 2,
-                                funcionColision:function(colObj){
-                                  if(colObj.p.tipo == "enemy"){
-                                    colObj.destroy();
-                                  }
-                                }}));
+                                }));
        Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
                                 vx:400 + velocidadX,vy:100,rad: 2,
-                                funcionColision:function(colObj){
-                                  if(colObj.p.tipo == "enemy"){
-                                    colObj.destroy();
-                                  }
-                                }}));
+                                }));
         Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
                                 vx:400 + velocidadX,vy:-100,rad: 2,
-                                funcionColision:function(colObj){
-                                  if(colObj.p.tipo == "enemy"){
-                                    colObj.destroy();
-                                  }
-                                }}));
+                                }));
       }
     }
   },
@@ -219,7 +224,7 @@ Q.component("speellCard1Reimu",{
   added: function() {
     var p = this.entity.p;
     this.entity.on("step",this,"step");
-    this.reloadTime = 0.75;
+    this.reloadTime = 0.7;
     this.active = true;
   },
 
@@ -230,19 +235,19 @@ Q.component("speellCard1Reimu",{
       if(p.time >=this.reloadTime){
           this.entity.p.time = 0;
         Q.stage().insert(new Q.Bala({asset: "sanguinaria.png", x:p.x - 1.5*p.radio,y:p.y,
-                                vx:-100,vy:150,rad: 2,
+                                vx:-100,vy:150,rad: 15,
                                 funcionColision:function(colObj){}}));
         Q.stage().insert(new Q.Bala({asset: "sanguinaria.png", x:p.x - 1.5*p.radio,y:p.y,
-                                vx:-100,vy:70,rad: 2,
+                                vx:-100,vy:70,rad: 15,
                                 funcionColision:function(colObj){}}));
         Q.stage().insert(new Q.Bala({asset: "sanguinaria.png", x:p.x - 1.5*p.radio,y:p.y,
-                                vx:-100,vy:0,rad: 2,
+                                vx:-100,vy:0,rad: 15,
                                 funcionColision:function(colObj){}}));
         Q.stage().insert(new Q.Bala({asset: "sanguinaria.png", x:p.x - 1.5*p.radio,y:p.y,
-                                vx:-100,vy:-70,rad: 2,
+                                vx:-100,vy:-70,rad: 15,
                                 funcionColision:function(colObj){}}));
         Q.stage().insert(new Q.Bala({asset: "sanguinaria.png", x:p.x - 1.5*p.radio,y:p.y,
-                                vx:-100,vy:-150,rad: 2,
+                                vx:-100,vy:-150,rad: 15,
                                 funcionColision:function(colObj){}}));
 
 
@@ -285,10 +290,14 @@ Q.Sprite.extend("Reimu",{
     sensor: function(colObj){
         if(colObj.isA("BalaPlayer")){
           this.p.vida --;
+          Q.stageScene('hudboss', 4, Q('Reimu').first().p);
           colObj.destroy();
         }
 
-        if(this.p.vida<=0) this.destroy();
+        if(this.p.vida<=0){
+          this.destroy();
+          Q.stageScene("endGame",1, { label: "You Win" });
+        }
     }
 });
 
@@ -301,7 +310,9 @@ Q.Sprite.extend("Marisa",{
       x:2000,
       y:2000,
       gravity:0,
-      radio:30,
+      radio:10,
+	    invencibleTime: 0,
+      vidas:4,
       sensor:true
     });
     this.ultimo = 0;
@@ -310,9 +321,28 @@ Q.Sprite.extend("Marisa",{
   },
 
   step: function(dt) {
+    if(this.p.invencibleTime > 0){
+      this.p.invencibleTime = this.p.invencibleTime-dt;
+    }
   },
 
   sensor: function(colObj){
+    if(this.p.invencibleTime <= 0 && colObj.isA("Bala")//){
+          && colisionCuadrada(this.p,colObj.p)){
+         if(this.p.vidas > 0)
+    	       this.p.vidas--;
+         Q.stageScene('hud', 3, this.p);
+         console.log("muerto");
+         if(this.p.vidas <= 0){
+           Q.stageScene("endGame",1, { label: "You Died" });
+           this.p.stepDelay = 1;
+           this.del('controles');
+           this.del('disparoPrincipal');
+         }else{
+           this.p.invencibleTime = 2;
+           colObj.destroy();
+         }
+    }
   }
 
 });
@@ -340,18 +370,6 @@ Q.Sprite.extend("PowerDisplay",{
 
 });
 
-//PLAYER COLISION CENTER DEMO
-
-var colisionCircular = function(posObj1,posObj2,dist){
-  var cat1 = Math.abs(posObj1.x - posObj2.x);
-  var cat2 = Math.abs(posObj1.y - posObj2.y);
-  var value = Math.sqrt(Math.pow(cat1,2)+Math.pow(cat2,2));
-  if(value <= dist)
-    return true;
-  else
-    return false;
-};
-
 //ENEMIGO PRUEBA
 Q.Sprite.extend("EnemigoDemo",{
   init: function(p) {
@@ -360,6 +378,7 @@ Q.Sprite.extend("EnemigoDemo",{
       radio:60,
       time: 0,
       gravity:0,
+      vida:10,
       tipo: "enemy",
       sensor:true
     });
@@ -374,8 +393,6 @@ Q.Sprite.extend("EnemigoDemo",{
   },
 
   sensor: function(colObj){
-    if(colisionCircular(this.p,colObj.p,this.p.radio+colObj.p.radio))
-      console.log("funciona2");
   }
 
 });
@@ -394,8 +411,12 @@ Q.component("arrowPatron", {
       this.entity.p.time+=dt;
       if(p.time >=this.reloadTime){
           this.entity.p.time = 0;
+        var mar = Q('Marisa').first().p;
+        var modV = balaDirijida(mar,p);
+        modV.vx = -modV.vx *200;
+        modV.vy = -modV.vy *200;
         Q.stage().insert(new Q.Bala({asset: "arrow.png", x:p.x - 1.5*p.radio,y:p.y,
-                                vx:-200,vy:0,rad: 2,
+                                vx:modV.vx,vy:modV.vy,rad: 15,
                                 funcionColision:function(colObj){}}));
 
       }
@@ -424,31 +445,66 @@ Q.Sprite.extend("SpawnerDemo",{
        this.p.i++;
        this.p.time = 0;
      }
-
-
   }
 
 });
 
-var colisionBalaEnemiga = function(colObj){
-  if(colisionCircular(this.p,colObj.p,this.p.radio+colObj.p.radio) &&
-   colObj.isA("Marisa") )
-    this.destroy();
-};
-
 Q.scene("levelChema",function(stage) {
   Q.stageTMX("level.tmx",stage);
-  var pruebaBala = stage.insert(new Q.Bala({asset:"pruebabala.jpg",x:2400,y:2000,vx:-100,vy:0,rad:10,funcionColision:colisionBalaEnemiga}));
   var boss = stage.insert(new Q.Reimu());
   var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
   var player = stage.insert(new Q.Marisa());
   var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
+  var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
   stage.add("viewport").centerOn(2200,2000);
 });
 
 Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png", function() {
   Q.compileSheets("coin.png","coin.json");
   Q.stageScene("levelChema");
+  Q.stageScene('hud', 3, Q('Marisa').first().p);
+  Q.stageScene('hudboss', 4, Q('Reimu').first().p);
+});
+
+
+Q.scene('endGame',function(stage) {
+  var container = stage.insert(new Q.UI.Container({
+    x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+  }));
+
+  var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
+                                                  label: "Play Again", keyActionName: "confirm" }))
+  var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
+                                                   label: stage.options.label }));
+  button.on("click",function() {
+    Q.clearStages();
+    Q.stageScene('levelChema');
+    Q.stageScene('hud', 3, Q('Marisa').first().p);
+    Q.stageScene('hudboss', 4, Q('Reimu').first().p);
+  });
+
+  container.fit(20);
+});
+
+
+Q.scene('hud',function(stage) {
+  var container = stage.insert(new Q.UI.Container({
+    x: -80, y: -20
+  }));
+
+  var label = container.insert(new Q.UI.Text({x:200, y: 20,
+    label: "vidas: " + stage.options.vidas, color: "white" }));
+  container.fit(16);
+});
+
+Q.scene('hudboss',function(stage) {
+  var container = stage.insert(new Q.UI.Container({
+    x: -80, y: -20
+  }));
+
+  var label = container.insert(new Q.UI.Text({x:1200, y: 20,
+    label: "boss: " + stage.options.vida, color: "white" }));
+  container.fit(16);
 });
 
 
@@ -477,12 +533,48 @@ var balaDirijida = function(posPlayer,posBoss){
   var velocidades = {vx:0,vy:0};
   var difx = posPlayer.x-posBoss.x;
   var dify = posPlayer.y-posBoss.y;
+  if(difx < 0){
+    velocidades.vx = 1;
+    velocidades.vy =  (dify/difx);
+  }
+  else{
+    velocidades.vx = -1;
+    velocidades.vy =  -(dify/difx);
+  }
 
-
-  velocidades.vx = 1;
-  velocidades.vy = 1 * (dify/difx);
+  if(velocidades.vy > 2 || velocidades.vy < -2){
+    velocidades.vx = velocidades.vx/2;
+    velocidades.vy = velocidades.vy/2;
+  }
 
   return velocidades;
+};
+
+var colisionCuadrada = function(posObj1,posObj2){
+  var cat1 = Math.abs(posObj1.x+20 - posObj2.x);
+  var cat2 = Math.abs(posObj1.y - posObj2.y);
+  if(cat2 >= cat1){
+    if(cat2 < (posObj2.h/2+posObj1.radio)){
+      return true;
+    }
+  }else{
+    if(cat1 < (posObj2.w/2+posObj1.radio)){
+      return true;
+    }
+  }
+  return false;
+};
+
+//PLAYER COLISION CENTER DEMO
+
+var colisionCircular = function(posObj1,posObj2,dist){
+  var cat1 = Math.abs(posObj1.x - posObj2.x);
+  var cat2 = Math.abs(posObj1.y - posObj2.y);
+  var value = Math.sqrt(Math.pow(cat1,2)+Math.pow(cat2,2));
+  if(value <= dist)
+    return true;
+  else
+    return false;
 };
 
 });
