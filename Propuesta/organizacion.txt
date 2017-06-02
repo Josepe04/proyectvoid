@@ -1,0 +1,15 @@
+Organizacion en archivos:
+
+  - Player.js
+    Contiene el personaje, sus animaciones, los proyectiles del personaje y los power-ups.
+    También contine las constantes del programa a que es el primer archivo que cargamos.
+
+  -Enemigos.js
+   Contine a los enemigo, sus patrones de comportamiento, animaciones y proyectiles, así como los bosses
+
+  -Escenarios.js
+   Contine todos los niveles, tanto los spawners de enemigos como las características del nivel y las habilidad secundaria(?)
+   También incluye el HUD
+
+  -Util.js
+   Aqui colocamos las funciones generales que utilizan varios tipos de objetos diferentes.
