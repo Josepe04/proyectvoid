@@ -12,8 +12,8 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         added: function() {
           var p = this.entity.p;
 
-          if(!p.stepDistance) { p.stepDistance = 7; }
-          if(!p.stepDelay) { p.stepDelay = 0.001; }
+          if(!p.stepDistance) { p.stepDistance = 9; }
+          if(!p.stepDelay) { p.stepDelay = 0.01; }
 
           p.stepWait = 0;
           this.entity.on("step",this,"step");
@@ -42,6 +42,12 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
 
           p.diffX = 0;
           p.diffY = 0;
+
+          if(Q.inputs["shift"]){
+            p.stepDistance = 4;
+          }else{
+            p.stepDistance = 9;
+          }
 
           if(Q.inputs['left'] && p.x > 1559) {
             p.diffX = -p.stepDistance;
@@ -204,7 +210,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           x:2000,
           y:2000,
           gravity:0,
-          radio:10,
+          radio:5,
     	    invencibleTime: 0,
           vidas:4,
           sensor:true
