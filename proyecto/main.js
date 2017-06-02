@@ -186,7 +186,7 @@ Q.component("powerupDemo",{
       this.tAcomulada = 0;
       this.reloadTime = 0.1;
       this.entity.on("step",this,"step");
-      this.active = false;
+      this.active = true;
   },
   step: function(dt){
 
@@ -316,7 +316,10 @@ Q.Sprite.extend("Marisa",{
       sensor:true
     });
     this.ultimo = 0;
-    this.add('2d, controles , disparoPrincipal, powerupDemo');
+    this.delPowerups = function(){
+      if(this.powerupDemo != null)  this.del("powerupDemo");
+    };
+    this.add('2d, controles , disparoPrincipal');
     this.on("sensor");
   },
 
@@ -338,6 +341,7 @@ Q.Sprite.extend("Marisa",{
            this.p.stepDelay = 1;
            this.del('controles');
            this.del('disparoPrincipal');
+           this.delPowerups();
          }else{
            this.p.invencibleTime = 2;
            colObj.destroy();
@@ -362,7 +366,7 @@ Q.Sprite.extend("PowerDisplay",{
 
   sensor: function(colObj){
     if(colObj.isA("Marisa")){
-      colObj.powerupDemo.habilitar();
+      colObj.add('powerupDemo');
       this.destroy();
     }
   }
@@ -460,7 +464,6 @@ Q.scene("levelChema",function(stage) {
 });
 
 Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png", function() {
-  Q.compileSheets("coin.png","coin.json");
   Q.stageScene("levelChema");
   Q.stageScene('hud', 3, Q('Marisa').first().p);
   Q.stageScene('hudboss', 4, Q('Reimu').first().p);
@@ -541,12 +544,6 @@ var balaDirijida = function(posPlayer,posBoss){
     velocidades.vx = -1;
     velocidades.vy =  -(dify/difx);
   }
-
-  if(velocidades.vy > 2 || velocidades.vy < -2){
-    velocidades.vx = velocidades.vx/2;
-    velocidades.vy = velocidades.vy/2;
-  }
-
   return velocidades;
 };
 
