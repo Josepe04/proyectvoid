@@ -20,6 +20,7 @@ window.addEventListener("load",function(){
         vy:tipoBala.vy,
         radio:tipoBala.rad,
         gravity:0,
+        tipo: "enemy",
         sensor:true
       });
       this.add('2d');
@@ -91,6 +92,7 @@ window.addEventListener("load",function(){
           gravity:0,
           radio:30,
           sensor:true,
+          tipo: "boss",
           vida:2000
         });
         this.ultimo = 0;

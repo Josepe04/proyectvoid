@@ -230,7 +230,8 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       },
 
       sensor: function(colObj){
-        if(this.p.invencibleTime <= 0 && colObj.isA("Bala")//){
+        if(this.p.invencibleTime <= 0 &&
+              (colObj.p.tipo == "enemy" || colObj.p.tipo == "boss")
               && colisionCuadrada(this.p,colObj.p)){
              if(this.p.vidas > 0)
         	       this.p.vidas--;
@@ -244,7 +245,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
                this.delPowerups();
              }else{
                this.p.invencibleTime = 2;
-               colObj.destroy();
+               if(colObj.p.tipo == "enemy") colObj.destroy();
              }
         }
       }
