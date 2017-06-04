@@ -29,8 +29,8 @@ window.addEventListener("load",function(){
     var boss = stage.insert(new Q.Reimu());
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
     var player = stage.insert(new Q.Marisa());
-    var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
-    var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
+    //var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
+    //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
     stage.add("viewport").centerOn(2200,2000);
   });
 

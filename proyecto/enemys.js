@@ -20,7 +20,7 @@ window.addEventListener("load",function(){
         vy:tipoBala.vy,
         radio:tipoBala.rad,
         gravity:0,
-        tipo: "enemy",
+        tipo: "bala",
         sensor:true
       });
       this.add('2d');
@@ -89,6 +89,7 @@ window.addEventListener("load",function(){
           y:2000,
           vy:100,
           time:0,
+          time2:0,
           gravity:0,
           radio:30,
           sensor:true,
@@ -96,7 +97,7 @@ window.addEventListener("load",function(){
           vida:2000
         });
         this.ultimo = 0;
-        this.add('2d, speellCard1Reimu');
+        this.add('2d, speellCard1Reimu2');
         this.on("sensor");
       },
 
@@ -127,6 +128,7 @@ window.addEventListener("load",function(){
         asset:"mobDemo.png",
         radio:60,
         time: 0,
+        time2:0,
         gravity:0,
         vida:10,
         tipo: "enemy",
@@ -181,6 +183,77 @@ window.addEventListener("load",function(){
   //ADRI
 
   //CHEMA
+  
+  Q.Sprite.extend("BalaRebota",{
+    init: function(tipoBala){
+      //como crear una bala concreta
+      //this.stage.insert(new Q.Bala(args));
+      this._super({
+        //sheet:tipoBala.sh,
+        //sprite:tipoBala.spr,
+        asset:tipoBala.asset,
+        x:tipoBala.x,
+        y:tipoBala.y,
+        vx:tipoBala.vx,
+        vy:tipoBala.vy,
+        radio:tipoBala.rad,
+        gravity:0,
+        tipo: "bala",
+        sensor:true
+      });
+      this.add('2d');
+      this.on("sensor",tipoBala.funcionColision);
+    },
+    step: function(dt){
+      this.p.x += dt*this.p.vx;
+      this.p.y += dt*this.p.vy;
+      if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 )
+        this.destroy();
+      else if( this.p.y < 1664 || this.p.y > 2329){
+        this.p.vy = -this.p.vy;
+      }
+    }
+  });
+
+  Q.component("speellCard1Reimu2",{
+    added: function() {
+      var p = this.entity.p;
+      this.entity.on("step",this,"step");
+      this.reloadTime1 = 0.1;
+      this.reloadTime2 = 0.02;
+      this.active = true;
+    },
+
+    step: function(dt) {
+      if(this.active){
+        var p = this.entity.p;
+        this.entity.p.time+=dt;
+        this.entity.p.time2+=dt;
+        var salida = Math.floor(Math.random() * LIMITER-1) + LIMITEL+1;
+        if(p.time >=this.reloadTime1){
+            this.entity.p.time = 0;
+          Q.stage().insert(new Q.BalaRebota({asset: "sanguinaria.png", x:p.x - 1.5*p.radio,y:p.y,
+                                  vx:-100,vy:150,rad: 15,
+                                  funcionColision:function(colObj){}}));
+        }
+        if(p.time2 >=this.reloadTime2){
+            this.entity.p.time2 = 0;
+          Q.stage().insert(new Q.Bala({asset: "arrow.png", x:salida,y:1664,
+                                  vx:-50,vy:150,rad: 15,
+                                  funcionColision:function(colObj){}}));
+        }
+      }
+
+
+    },
+
+      habilitar: function(){
+        if(this.active) this.active =false;
+        else this.active = true;
+      }
+  });
+  
+
 
   //SERGIO
 
