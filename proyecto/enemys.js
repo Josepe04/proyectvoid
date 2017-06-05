@@ -27,8 +27,8 @@ window.addEventListener("load",function(){
       this.on("sensor",tipoBala.funcionColision);
     },
     step: function(dt){
-      this.p.x += dt*this.p.vx;
-      this.p.y += dt*this.p.vy;
+      //this.p.x += dt*this.p.vx;
+      //this.p.y += dt*this.p.vy;
       if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 || this.p.y < LIMITEY1 || this.p.y > LIMITEY2)
         this.destroy();
     }
@@ -184,6 +184,73 @@ window.addEventListener("load",function(){
 
   //CHEMA
   
+  Q.Sprite.extend("OrbeReimu",{
+      init: function(p){
+      //como crear una bala concreta
+      //this.stage.insert(new Q.Bala(args));
+      this._super(p,{
+        asset:"arrow.png",
+        gravity:0,
+        tipo: "boss",
+        time:0,
+        time2:0,
+        sensor:true
+      });
+      this.add('2d');
+      this.on("sensor",function(){});
+    },
+    step: function(dt){
+      var mar = Q('Marisa').first().p;
+      var p = this.p;
+      p.time+=dt;
+      p.time2+=dt;
+      var velx=0,vely=0;
+      if(mar!=null){
+       //x
+        if(p.x < mar.x)
+          p.vx = p.vel;
+        else
+          p.vx = -p.vel;
+        //y
+        if(p.y < mar.y)
+          p.vy = p.vel;
+        else
+          p.vy = -p.vel;
+      }
+      if(p.reloadTime <= p.time){
+        p.time = 0;
+        Q.stage().insert(new Q.BalaTemporal({asset: "sanguinaria.png", x:p.x ,y:p.y,radio: 15,destroyTime:20}));
+      }
+      if(p.destroyTime <= p.time2){
+        this.destroy();
+      }
+    }
+  });
+  
+   Q.Sprite.extend("BalaTemporal",{
+    init: function(p){
+      //como crear una bala concreta
+      //this.stage.insert(new Q.Bala(args));
+      this._super(p,{
+        //sheet:tipoBala.sh,
+        //sprite:tipoBala.spr,
+        gravity:0,
+        tipo: "bala",
+        time:0,
+        sensor:true
+      });
+      this.add('2d');
+      this.on("sensor",function(){});
+    },
+    step: function(dt){
+      this.p.time+=dt;
+      if(this.p.time >= this.p.destroyTime){
+        this.destroy();
+      }
+    }
+  });
+
+
   Q.Sprite.extend("BalaRebota",{
     init: function(tipoBala){
       //como crear una bala concreta
