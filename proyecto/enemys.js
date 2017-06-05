@@ -238,7 +238,7 @@ window.addEventListener("load",function(){
         }
         if(p.time2 >=this.reloadTime2){
             this.entity.p.time2 = 0;
-          Q.stage().insert(new Q.Bala({asset: "arrow.png", x:salida,y:1664,
+          Q.stage().insert(new Q.Bala({asset: "arrow.png", x:salida,y:LIMITEY1,
                                   vx:-50,vy:150,rad: 15,
                                   funcionColision:function(colObj){}}));
         }

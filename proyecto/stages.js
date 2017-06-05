@@ -24,7 +24,7 @@ window.addEventListener("load",function(){
 
   });
 
-  Q.scene("levelChema",function(stage) { 
+  Q.scene("levelDemo",function(stage) { 
     Q.stageTMX("level.tmx",stage);
     var boss = stage.insert(new Q.Reimu());
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
@@ -35,7 +35,7 @@ window.addEventListener("load",function(){
   });
 
   Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png", function() {
-    Q.stageScene("levelChema");
+    Q.stageScene("levelDemo");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
     Q.stageScene('hudboss', 4, Q('Reimu').first().p);
   });
@@ -52,7 +52,7 @@ window.addEventListener("load",function(){
                                                      label: stage.options.label }));
     button.on("click",function() {
       Q.clearStages();
-      Q.stageScene('levelChema');
+      Q.stageScene('levelDemo');
       Q.stageScene('hud', 3, Q('Marisa').first().p);
       Q.stageScene('hudboss', 4, Q('Reimu').first().p);
     });
