@@ -1,0 +1,10 @@
+{
+  "ataque": {"sx": 0, "sy": 0, "tileW": 279, "tileH":256,"frames": 11},
+  "fin": {"sx": 2816, "sy": 0, "tileW": 279, "tileH":256,"frames": 10},
+  "bottom": {"sx": 5376, "sy": 0, "tileW": 279, "tileH":256,"frames": 5},
+  "top": {"sx": 6656, "sy": 0, "tileW": 279, "tileH":256,"frames": 5},
+  "stand": {"sx": 7936, "sy": 0, "tileW": 279, "tileH":256,"frames":14},
+  "front": {"sx": 11520, "sy": 0, "tileW": 279, "tileH":256,"frames": 10},
+  "back": {"sx": 14080, "sy": 0, "tileW": 279, "tileH":256,"frames": 11},
+  "inicio": {"sx": 16896, "sy": 0, "tileW": 279, "tileH":256,"frames": 13},
+}
