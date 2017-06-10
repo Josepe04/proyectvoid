@@ -34,7 +34,8 @@ window.addEventListener("load",function(){
     stage.add("viewport").centerOn(2200,2000);
   });
 
-  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png", function() {
+  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
+   +"reimu_onmyoBall.png, ooiri.png", function() {
     Q.stageScene("levelChema");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
@@ -90,10 +91,10 @@ window.addEventListener("load",function(){
     //CHEMA
     Q.scene("levelChema",function(stage) { 
     Q.stageTMX("level.tmx",stage);
-    //var boss = stage.insert(new Q.Reimu());
+    var boss = stage.insert(new Q.Reimu());
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
     var player = stage.insert(new Q.Marisa());
-    var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:150}));
+    //var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:250}));
     //var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
     //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
     stage.add("viewport").centerOn(2200,2000);
