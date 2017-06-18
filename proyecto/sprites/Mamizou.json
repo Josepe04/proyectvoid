@@ -1,7 +1,0 @@
-{
-  "attack1": {"sx": 0, "sy": 0, "tileW": 323, "tileH":248, "frames":15},
-  "start": {"sx": 4845, "sy": 0, "tileW": 323, "tileH": 248, "frames": 9},
-  "death": {"sx": 7752, "sy": 0, "tileW": 323, "tileH": 248, "frames": 16},
-  "attack2": {"sx": 12920, "sy": 0, "tileW": 323, "tileH": 248, "frames": 14},
-  "stand": {"sx": 17442, "sy": 0, "tileW": 323, "tileH": 248, "frames": 20}
-}

@@ -179,6 +179,85 @@ window.addEventListener("load",function(){
 
 
   //ANDRES
+  Q.animations("koishi_animations", {
+  stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], rate: 1/5, flip: "x", loop: false, trigger: "swapInverse"},
+  standInverse: {frames: [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0], rate: 1/5, flip: "x", loop: false, trigger: "swapStand"},
+  death: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], rate: 1/5, flip: "x", loop: false, trigger: "destruir"}
+});
+
+  Q.Sprite.extend("Koishi",{
+  init: function(p) {
+      this._super({
+        sprite:"koishi_animations",
+        sheet:"movimiento",
+        x:2700,
+        y:2000,
+        vy:100,
+        // Al principio (fase enemigos) el boss esta presente pero no puede sufrir daño
+        invulnerable:true,
+        time:0,
+        time2:0,
+        gravity:0,
+        radio:30,
+        sensor:true,
+        fase:0,
+        numFases:1,
+        tipo: "boss",
+        vida:10
+      });
+
+      // Funciones para la animacion por defecto (stand)
+      this.on("swapStand", function() {
+        this.play("stand");
+      });
+      this.on("swapInverse", function() {
+        this.play("standInverse");
+      });
+
+      // Muestra el mensaje de victoria y destruye el elemento
+      this.on("destruir", function() {
+
+        Q.stageScene("endGame",1, { label: "You Win" });
+        this.destroy();
+      });
+
+      this.ultimo = 0;
+      this.add('2d, animation');
+      this.on("sensor");
+      //Provisional
+      this.play("stand");
+    },
+
+    // Controla la subida y bajada vertical del boss en el escenario
+    step: function(dt) {
+      if(this.p.y <= 1764) {
+        this.p.vy = 100;
+      } else if(this.p.y >= 2329) {
+        this.p.vy = -100;
+      }
+    },
+
+    // Controla las colisiones de proyectiles sobre el boss
+    sensor: function(colObj){
+        // Si colisiona contra una bala del jugador pierde vida
+        if(colObj.isA("BalaPlayer")){
+          this.p.vida --;
+          // Se muestra la vida que tiene el boss en cada momento
+          Q.stageScene('hudboss', 4, Q('Koishi').first().p);
+          colObj.destroy();
+        }
+        // Cuando el boss pierde activamos la animacion de muerte (que al acabar llamara a la funcion de destruccion)
+        if(this.p.vida<=0){
+          // Hacemos que se deje de mover al morir
+          this.p.vy = 0;
+          this.p.sheet = "muerte";
+          this.play("death");
+        }
+
+    }
+
+
+});
 
   //ADRI
 
@@ -223,12 +302,12 @@ window.addEventListener("load",function(){
               Q.stageScene("endGame",1, { label: "You Win" });
             }else if(this.p.fase == 1){
               this.del("spellCard1Reimu1");
-              this.add("spellCard1Reimu2");              
+              this.add("spellCard1Reimu2");
               this.p.vida = 100;
             }else if(this.p.fase == 2){
               this.spellCard1Reimu2.limpiar();
               this.del("spellCard1Reimu2");
-              this.add("spellCard1Reimu3"); 
+              this.add("spellCard1Reimu3");
               this.p.vida = 100;
             }else if(this.p.fase == 3){
               this.p.vida = 100;
@@ -237,7 +316,7 @@ window.addEventListener("load",function(){
           }
       }
   });
-  
+
   Q.Sprite.extend("OrbeReimu",{
       init: function(p){
       //como crear una bala concreta
@@ -267,12 +346,12 @@ window.addEventListener("load",function(){
         //x
         if(p.x < p.mar.x)
             p.vx = p.vel;
-        else 
+        else
           p.vx = -p.vel;
         //y
         if(p.y < p.mar.y)
           p.vy = p.vel;
-        else 
+        else
           p.vy = -p.vel;
 
         if(p.reloadTime <= p.time){
@@ -285,7 +364,7 @@ window.addEventListener("load",function(){
       }
     }
   });
-  
+
   Q.Sprite.extend("BalaTemporal",{
     init: function(p){
       //como crear una bala concreta
@@ -393,7 +472,7 @@ window.addEventListener("load",function(){
   Q.component("spellCard1Reimu2",{
     added: function() {
       var p = this.entity.p;
-      this.orbe = Q.stage().insert(new Q.OrbeReimu({x:p.x, y:p.y,reloadTime:0.3,vel:250})); 
+      this.orbe = Q.stage().insert(new Q.OrbeReimu({x:p.x, y:p.y,reloadTime:0.3,vel:250}));
     },
     limpiar: function(){
       this.orbe.destroy();
@@ -404,7 +483,7 @@ window.addEventListener("load",function(){
     added: function() {
       this.entity.on("step",this,"step");
       var p = this.entity.p;
-      this.reloadTime1 = 0.2; 
+      this.reloadTime1 = 0.2;
       p.time = 0;
       for(var i = LIMITEUP;i < LIMITEDOWN;i+=30){
          Q.stage().insert(new Q.Bala({asset: "ooiri.png", x:2600,y:i,
@@ -413,7 +492,7 @@ window.addEventListener("load",function(){
       }
     },
     step: function(dt){
-      var p = this.entity.p; 
+      var p = this.entity.p;
       p.time+=dt;
       if(p.time >=this.reloadTime1){
           this.entity.p.time = 0;
@@ -427,7 +506,7 @@ window.addEventListener("load",function(){
       }
     }
   });
-  
+
 
 
 
