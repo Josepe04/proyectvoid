@@ -24,19 +24,27 @@ window.addEventListener("load",function(){
 
   });
 
-  Q.scene("levelDemo",function(stage) { 
+  Q.scene("levelDemo",function(stage) {
     Q.stageTMX("level.tmx",stage);
     //var boss = stage.insert(new Q.Reimu());
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
     var player = stage.insert(new Q.Marisa());
-    var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
-    var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
+    var spwner1 = stage.insert(new Q.Spawner({i: 0, x:2500, y:2200, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobBlue"}));
+    var spwner2 = stage.insert(new Q.Spawner({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobOrange"}));
     stage.add("viewport").centerOn(2200,2000);
   });
 
-  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
+  /*Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
    +"reimu_onmyoBall.png, ooiri.png", function() {
     Q.stageScene("levelChema");
+    Q.stageScene('hud', 3, Q('Marisa').first().p);
+    //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
+  });*/
+
+  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png,"+
+  "arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png,"+
+  "reimu_onmyoBall.png, ooiri.png", function() {
+    Q.stageScene("levelDemo");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
   });
@@ -89,7 +97,7 @@ window.addEventListener("load",function(){
     //ADRI
 
     //CHEMA
-    Q.scene("levelChema",function(stage) { 
+    Q.scene("levelChema",function(stage) {
     Q.stageTMX("level.tmx",stage);
     var boss = stage.insert(new Q.Reimu());
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
@@ -99,6 +107,49 @@ window.addEventListener("load",function(){
     //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
     stage.add("viewport").centerOn(2200,2000);
   });
+
+
+
     //SERGIO
+    Q.scene("levelSergio1",function(stage) {
+     Q.stageTMX("level.tmx",stage);
+     var boss = stage.insert(new Q.Hijiri());
+     var player = stage.insert(new Q.Marisa());
+
+     stage.add("viewport").centerOn(2200,2000);
+ });
+
+
+   Q.Sprite.extend("Spawner",{
+     init: function(p){
+       this._super(p, {
+
+       });
+       this.p.time -= this.p.delay;
+     },
+
+     step: function(dt){
+       this.p.time+=dt;
+       if((this.p.i<this.p.numEnemy) && this.p.time>this.p.timelimit){
+         switch(this.p.enemy){
+           case "mobRed":
+             Q.stage().insert(new Q.EnemigoRed({x:this.p.x, y: this.p.y}));
+             break;
+           case "mobBlue":
+             Q.stage().insert(new Q.EnemigoBlue({x:this.p.x, y: this.p.y}));
+             break;
+           case "mobOrange":
+             Q.stage().insert(new Q.EnemigoOrange({x:this.p.x, y: this.p.y}));
+             break;
+           case "mobWhite":
+             Q.stage().insert(new Q.EnemigoWhite({x:this.p.x, y: this.p.y}));
+             break;
+         }
+          this.p.i++;
+          this.p.time = 0;
+        }
+     }
+
+   });
 
   });

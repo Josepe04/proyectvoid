@@ -223,12 +223,12 @@ window.addEventListener("load",function(){
               Q.stageScene("endGame",1, { label: "You Win" });
             }else if(this.p.fase == 1){
               this.del("spellCard1Reimu1");
-              this.add("spellCard1Reimu2");              
+              this.add("spellCard1Reimu2");
               this.p.vida = 100;
             }else if(this.p.fase == 2){
               this.spellCard1Reimu2.limpiar();
               this.del("spellCard1Reimu2");
-              this.add("spellCard1Reimu3"); 
+              this.add("spellCard1Reimu3");
               this.p.vida = 100;
             }else if(this.p.fase == 3){
               this.p.vida = 100;
@@ -237,7 +237,7 @@ window.addEventListener("load",function(){
           }
       }
   });
-  
+
   Q.Sprite.extend("OrbeReimu",{
       init: function(p){
       //como crear una bala concreta
@@ -267,12 +267,12 @@ window.addEventListener("load",function(){
         //x
         if(p.x < p.mar.x)
             p.vx = p.vel;
-        else 
+        else
           p.vx = -p.vel;
         //y
         if(p.y < p.mar.y)
           p.vy = p.vel;
-        else 
+        else
           p.vy = -p.vel;
 
         if(p.reloadTime <= p.time){
@@ -285,7 +285,7 @@ window.addEventListener("load",function(){
       }
     }
   });
-  
+
   Q.Sprite.extend("BalaTemporal",{
     init: function(p){
       //como crear una bala concreta
@@ -393,7 +393,7 @@ window.addEventListener("load",function(){
   Q.component("spellCard1Reimu2",{
     added: function() {
       var p = this.entity.p;
-      this.orbe = Q.stage().insert(new Q.OrbeReimu({x:p.x, y:p.y,reloadTime:0.3,vel:250})); 
+      this.orbe = Q.stage().insert(new Q.OrbeReimu({x:p.x, y:p.y,reloadTime:0.3,vel:250}));
     },
     limpiar: function(){
       this.orbe.destroy();
@@ -404,7 +404,7 @@ window.addEventListener("load",function(){
     added: function() {
       this.entity.on("step",this,"step");
       var p = this.entity.p;
-      this.reloadTime1 = 0.2; 
+      this.reloadTime1 = 0.2;
       p.time = 0;
       for(var i = LIMITEUP;i < LIMITEDOWN;i+=30){
          Q.stage().insert(new Q.Bala({asset: "ooiri.png", x:2600,y:i,
@@ -413,7 +413,7 @@ window.addEventListener("load",function(){
       }
     },
     step: function(dt){
-      var p = this.entity.p; 
+      var p = this.entity.p;
       p.time+=dt;
       if(p.time >=this.reloadTime1){
           this.entity.p.time = 0;
@@ -427,10 +427,259 @@ window.addEventListener("load",function(){
       }
     }
   });
-  
+
 
 
 
   //SERGIO
+
+  //Boss
+  Q.Sprite.extend("Hijiri",{
+ init: function(p) {
+     this._super({
+       asset:"reimu.png",
+       x:2700,
+       y:2000,
+       time:0,
+       time2:0,
+       gravity:0,
+       radio:30,
+       sensor:true,
+       fase:0,
+       numFases:4,
+       tipo: "boss",
+       vida:100
+     });
+     this.ultimo = 0;
+     this.add('2d, spellCard1Hijiri');
+     this.on("sensor");
+   },
+
+   step: function(dt) {
+     if(this.p.y <= 1664) this.p.vy = 100;
+     else if(this.p.y >= 2329) this.p.vy = -100;
+   },
+
+   sensor: function(colObj){
+       if(colObj.isA("BalaPlayer")){
+         this.p.vida --;
+         Q.stageScene('hudboss', 4, this.p);
+         colObj.destroy();
+       }
+   }
+});
+
+//Habilidad
+Q.component("spellCard1Hijiri",{
+ added: function() {
+   var p = this.entity.p;
+   this.entity.on("step",this,"step");
+   this.reloadTime1 = 0.1;
+   this.reloadTime2 = 0.1;
+ },
+
+ step: function(dt) {
+     var p = this.entity.p;
+     this.entity.p.time+=dt;
+     this.entity.p.time2+=dt;
+     var salida = Math.floor(Math.random() * LIMITER-1) + LIMITEL+1;
+     if(p.time >=this.reloadTime1){
+         this.entity.p.time = 0;
+       Q.stage().insert(new Q.BalaRebota({asset: "sanguinaria.png", x:p.x - 1.5*p.radio,y:p.y,
+                               vx:-100,vy:150,rad: 15,
+                               funcionColision:function(colObj){}}));
+     }
+     if(p.time2 >=this.reloadTime2){
+         this.entity.p.time2 = 0;
+       Q.stage().insert(new Q.Bala({asset: "ooiri.png", x:salida,y:LIMITEY1,
+                               vx:-50,vy:150,rad: 15,
+                               funcionColision:function(colObj){}}));
+     }
+   }
+});
+
+//Enemigos
+Q.Sprite.extend("EnemigoRed",{
+  init: function(p) {
+    this._super(p, {
+      asset:"mobRed.png",
+      radio:60,
+      time: 0,
+      time2:0,
+      gravity:0,
+      vida:10,
+      tipo: "enemy",
+      sensor:true
+    });
+    if(this.p.y == 2329) this.p.vy = -150;
+    else if(this.p.y == 1664) this.p.vy = 150;
+    this.ultimo = 0;
+    this.add('2d, arrowPatron');
+    this.on("sensor");
+  },
+
+  step: function(dt) {
+  },
+
+  sensor: function(colObj){
+  }
+
+});
+Q.Sprite.extend("EnemigoBlue",{
+  init: function(p) {
+    this._super(p, {
+      asset:"mobBlue.png",
+      radio:60,
+      time: 0,
+      time2:0,
+      gravity:0,
+      vida:10,
+      tipo: "enemy",
+      sensor:true
+    });
+     this.p.vx = -150;
+
+    this.ultimo = 0;
+    this.add('2d, musicPatron');
+    this.on("sensor");
+  },
+
+  step: function(dt) {
+  },
+
+  sensor: function(colObj){
+  }
+
+});
+
+Q.Sprite.extend("EnemigoOrange",{
+  init: function(p) {
+    this._super(p, {
+      asset:"mobOrange.png",
+      radio:60,
+      time: 0,
+      gravity:0,
+      vida:10,
+      tipo: "enemy",
+      sensor:true
+    });
+    if(this.p.y == 2329) this.p.vy = -150;
+    else if(this.p.y == 1664) this.p.vy = 150;
+    this.ultimo = 0;
+    this.add('2d, FirePatron');
+    this.on("sensor");
+  },
+
+  step: function(dt) {
+  },
+
+  sensor: function(colObj){
+  }
+
+});
+
+Q.Sprite.extend("EnemigoWhite",{
+  init: function(p) {
+    this._super(p, {
+      asset:"mobWhite.png",
+      radio:60,
+      time: 0,
+      time2:0,
+      gravity:0,
+      vida:10,
+      tipo: "enemy",
+      sensor:true
+    });
+    if(this.p.y == 2329) this.p.vy = -150;
+    else if(this.p.y == 1664) this.p.vy = 150;
+    this.ultimo = 0;
+    this.add('2d');
+    this.on("sensor");
+  },
+
+  step: function(dt) {
+  },
+
+  sensor: function(colObj){
+  }
+
+});
+
+//Balas
+Q.component("musicPatron", {
+
+    added: function() {
+      var p = this.entity.p;
+      this.entity.on("step",this,"step");
+      this.reloadTime = 1;
+    },
+
+    step: function(dt) {
+      var p = this.entity.p;
+      this.entity.p.time+=dt;
+      if(p.time >=this.reloadTime){
+        this.entity.p.time = 0;
+        Q.stage().insert(new Q.Bala({asset: "music.png", x:p.x - 1.5*p.radio,y:p.y,
+                                vx:0,vy:-200,rad: 15,
+                                funcionColision:function(colObj){}}));
+
+      }
+
+    }
+
+});
+
+Q.component("FirePatron", {
+
+    added: function() {
+      var p = this.entity.p;
+      this.entity.on("step",this,"step");
+      this.reloadTime = 0.5;
+    },
+
+    step: function(dt) {
+      var p = this.entity.p;
+      this.entity.p.time+=dt;
+      if(p.time >=this.reloadTime){
+        this.entity.p.time = 0;
+        Q.stage().insert(new Q.BalaArco({asset: "fire.png", x:p.x - 1.5*p.radio,y:p.y,
+                                vx:-400,vy:-100,rad: 15, grav:0.2,
+                                funcionColision:function(colObj){}}));
+
+      }
+
+    }
+
+});
+
+Q.Sprite.extend("BalaArco",{
+  init: function(tipoBala){
+    //como crear una bala arco
+    //this.stage.insert(new Q.BalaArco(args));
+    //Para un arco estandar se recomiendan los siguientes parametros: (para un reloadTime de entre 0.5 y 0.75)
+    //vx: -400;
+    //vy:-100;
+    //grav: 0.2;
+    this._super({
+      //sheet:tipoBala.sh,
+      //sprite:tipoBala.spr,
+      asset:tipoBala.asset,
+      x:tipoBala.x,
+      y:tipoBala.y,
+      vx:tipoBala.vx,
+      vy:tipoBala.vy,
+      radio:tipoBala.rad,
+      gravity:tipoBala.grav,
+      tipo: "bala",
+      sensor:true
+    });
+    this.add('2d');
+    this.on("sensor",tipoBala.funcionColision);
+  },
+  step: function(dt){
+    if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 )
+      this.destroy();
+  }
+});
 
 });

@@ -49,7 +49,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
             p.stepDistance = 9;
           }
 
-          if(Q.inputs['left'] && p.x > 1559) {// 
+          if(Q.inputs['left'] && p.x > 1559) {//
             p.diffX = -p.stepDistance;
           } else if(Q.inputs['right'] && p.x < 2805) {
             p.diffX = p.stepDistance;
@@ -189,6 +189,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       sensor: function(colObj){
         if(colObj.isA("Marisa")){
           colObj.add('powerupDemo');
+          colObj.del('disparoPrincipal');
           this.destroy();
         }
       }
