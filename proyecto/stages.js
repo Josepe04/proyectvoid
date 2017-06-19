@@ -42,7 +42,7 @@ window.addEventListener("load",function(){
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
   });
   */
-  Q.loadTMX("level.tmx, pruebaMarisa.png, pruebabala.png, escenario_koishi.png, koishi.png, koishi.json, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png",  function() {
+  Q.load("pruebaMarisa.png, pruebabala.png, escenario_koishi.png, Torreta.png, koishi_bala1.png, koishi_bala2.png, koishi_bala3.png, koishi_bala4.png, koishi_bala5.png, koishi.png, koishi.json, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png",  function() {
     Q.compileSheets("koishi.png", "koishi.json");
     Q.stageScene("levelAndres");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
@@ -92,11 +92,100 @@ window.addEventListener("load",function(){
 
 
     //ANDRES
+
+    // Estructura con las posiciones de las cuales podran salir los orbes de Invulnerabilidad
+    var veloc1 = 300;
+    var posiciones1 = {
+      // arriba izquierda
+      1: { posX: 1600, posY: 1690, velX: veloc1, velY: veloc1},
+      // abajo izquierda
+      2: { posX: 1600, posY: 2310, velX: veloc1, velY: -veloc1},
+      // arriba derecha
+      3: { posX: 2800, posY: 1690, velX: -veloc1, velY: veloc1},
+      // abajo derecha
+      4: { posX: 2800, posY: 2310, velX: -veloc1, velY: -veloc1}
+    };
+
+    // Estructura con las posiciones de las cuales podran salir los orbes de Sanacion (salen de las torretas)
+    var posiciones2 = {
+      // arriba izquierda
+      1: { posX: 2300, posY: 1760},
+      // abajo izquierda
+      2: { posX: 2420, posY: 2150},
+      // arriba derecha
+      3: { posX: 2600, posY: 1890}
+    };
+
+
+    //SPAWNER Orbes Invulnerabilidad
+    Q.Sprite.extend("SpawnerOrbesInvulnerabilidad",{
+      init: function(p){
+        this._super(p, {
+
+        });
+        // time y delay son pasados por parametros, la idea es que time sufra el retraso de delay
+        this.p.time -= this.p.delay;
+
+      },
+
+      step: function(dt){
+        // time va aumentando en cada step hasta que supera el limite (tambien dado por parametros)
+        this.p.time+=dt;
+        if(this.p.time>this.p.timelimit){
+          // Elegimos al azar una de las posiciones
+          var pos = Math.floor((Math.random() * 10)) % 4 + 1;
+          var px = posiciones1[pos].posX;
+          var py = posiciones1[pos].posY;
+          // Interesa que sea un poco mas rapido horizontalmente
+          var vex = posiciones1[pos].velX  * 1.5;
+          var vey = posiciones1[pos].velY;
+          Q.stage().insert(new Q.OrbeInvulnerabilidad({x:px, y:py, vx:vex, vy:vey}));
+          this.p.time = 0;
+         }
+      }
+
+    });
+
+    //SPAWNER Orbes Sanacion
+    Q.Sprite.extend("SpawnerOrbesSanacion",{
+      init: function(p){
+        this._super(p, {
+
+        });
+        // time y delay son pasados por parametros, la idea es que time sufra el retraso de delay
+        this.p.time -= this.p.delay;
+      },
+
+      step: function(dt){
+        // time va aumentando en cada step hasta que supera el limite (tambien dado por parametros)
+        this.p.time+=dt;
+        if(this.p.time>this.p.timelimit){
+          // Elegimos al azar una de las posiciones
+          var pos = Math.floor((Math.random() * 10)) % 3 + 1;
+          var px = posiciones2[pos].posX;
+          var py = posiciones2[pos].posY;
+          Q.stage().insert(new Q.OrbeSanacion({x:px, y:py}));
+          this.p.time = 0;
+         }
+      }
+
+    });
+
     Q.scene("levelAndres",function(stage) {
-    Q.stageTMX("level.tmx",stage);
-    var boss = stage.insert(new Q.Koishi());
+    // Mete el fondo del escenario
+    stage.insert(new Q.Repeater({ asset: "escenario_koishi.png", speedX: 0, speedY: 0, type: 0, h:screen.height, w:screen.width }));
+
+
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
+    var torreta1 = stage.insert(new Q.Torreta({x:2300, y:1870}));
+    var torreta2 = stage.insert(new Q.Torreta({x:2600, y:2000}));
+    var torreta3 = stage.insert(new Q.Torreta({x:2420, y:2263}));
+    var boss = stage.insert(new Q.Koishi({t1:torreta1, t2:torreta2, t3:torreta3}));
     var player = stage.insert(new Q.Marisa());
+    // cuanto mas timelimit mas tiempo tardan en salir los objetos del spawner, el delay es para determinar cuanto tarda en salir el PRIMERO de ellos
+    var spawner1 = stage.insert(new Q.SpawnerOrbesInvulnerabilidad({time:0, timelimit:8, delay:2}));
+    //var spawner2 = stage.insert(new Q.SpawnerOrbesSanacion({time:0, timelimit:2, delay:2}));
+
     //var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:250}));
     //var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
     //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));

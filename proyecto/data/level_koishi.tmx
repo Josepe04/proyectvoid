@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="60" height="18" tilewidth="34" tileheight="34" nextobjectid="1">
+ <tileset firstgid="1" name="tiles" tilewidth="34" tileheight="34" tilecount="49" columns="7">
+  <image source="../images/tiles.png" width="256" height="256"/>
+ </tileset>
+ <imagelayer name="background" offsetx="2000" offsety="2500">
+  <image source="../images/escenario_koishi.png" width="1280" height="700"/>
+ </imagelayer>
+</map>
