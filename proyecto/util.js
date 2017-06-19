@@ -9,14 +9,24 @@
     var velocidades = {vx:0,vy:0};
     var difx = posPlayer.x-posBoss.x;
     var dify = posPlayer.y-posBoss.y;
-    if(difx < 0){
-      velocidades.vx = 1;
-      velocidades.vy =  (dify/difx);
-    }
-    else{
-      velocidades.vx = -1;
-      velocidades.vy =  -(dify/difx);
-    }
+    if(Math.abs(difx) > Math.abs(dify))
+      if(difx < 0){
+        velocidades.vx = 1;
+        velocidades.vy =  (dify/difx);
+      }
+      else{
+        velocidades.vx = -1;
+        velocidades.vy =  -(dify/difx);
+      }
+    else
+      if(difx < 0){
+        velocidades.vx = 1;
+        velocidades.vy =  (difx/dify);
+      }
+      else{
+        velocidades.vx = -1;
+        velocidades.vy =  -(difx/dify);
+      }
     return velocidades;
   };
 

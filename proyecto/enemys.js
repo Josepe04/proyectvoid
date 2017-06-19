@@ -183,61 +183,150 @@ window.addEventListener("load",function(){
   //ADRI
 
   //CHEMA
-    Q.Sprite.extend("Reimu",{
+
+
+
+Q.Sprite.extend("EnemigoChema",{
+   init: function(p,componentes) {
+     this._super(p, {
+       radio:60,
+       time: 0,
+       time2:0,
+       gravity:0,
+       vida:10,
+       tipo: "enemy",
+       sensor:true
+     });
+     if(this.p.y == 2329) this.p.vy = -150;
+     else if(this.p.y == 1664) this.p.vy = 150;
+     this.ultimo = 0;
+     this.add(componentes);
+     this.on("sensor");
+   },
+ 
+   step: function(dt) {
+   },
+ 
+   sensor: function(colObj){
+   }
+ });
+
+
+
+
+Q.animations("Reimu_animations", {
+   stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12,13], rate: 1/5, flip: "x", loop: true},
+   ataque: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], rate: 1/3, flip: "x", loop: false, trigger: "continuar"},
+   ataque2: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], rate: 1/3, flip: "x", loop: false, trigger: "continuar2"},
+   inicio: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12], rate: 1/3, flip: "x", loop: false, trigger: "empezar"},
+   death: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/3, flip: "x", loop: false, trigger: "destruir"}
+});
+
+Q.Sprite.extend("Reimu",{
     init: function(p) {
         this._super({
-          asset:"reimu.png",
+          sprite:"Reimu_animations",
+          sheet: "inicio",
+          frame:0,
           x:2700,
           y:2000,
-          vy:100,
+          vy:0,
           time:0,
           time2:0,
+          tfase:0,
           gravity:0,
           radio:30,
           sensor:true,
           fase:0,
-          numFases:4,
+          loadFaseTime:5,
+          cambioFase:false,
+          numFases:3,
           tipo: "boss",
-          vida:100
+          vida:1000,
+          invencible: true
         });
         this.ultimo = 0;
-        this.add('2d, spellCard1Reimu1');
+        this.add('2d,animation');
+        this.play("inicio");
         this.on("sensor");
+        this.on("destruir",function(){this.destroy();});
+        this.on("empezar",function(){
+          this.add("spellCard1Reimu1");
+          this.p.vida = 300;
+          this.p.vy = 100;
+          this.p.invencible = false;
+          this.p.sheet = "stand";
+          this.play("stand");
+        });
+        this.on("continuar",function(){
+          this.add("spellCard1Reimu2");
+          this.p.vy = 100;
+          this.p.invencible = false;
+          this.p.sheet = "stand";
+          this.play("stand");
+        });
+        this.on("continuar2",function(){
+          this.add("spellCard1Reimu3");
+          this.p.vy = 100;
+          this.p.invencible = false;
+          this.p.sheet = "stand";
+          this.play("stand");
+        });
       },
 
       step: function(dt) {
+        if(this.p.cambioFase) 
+          this.p.tfase += dt;
+
+        if(this.p.tfase >= this.p.loadFaseTime){
+            this.p.cambioFase = false;
+            this.p.tfase = 0;
+            if(this.p.fase == 0){
+              this.p.vy = 0;
+              this.p.sheet = "ataque";
+              this.play("ataque");              
+              this.p.vida = 200;
+            }else if(this.p.fase == 1){
+              this.p.sheet = "ataque";
+              this.play("ataque2");
+              this.p.vida = 100;
+            }else if(this.p.fase == 2){
+              this.p.vida = 350;
+            }
+            this.p.fase++;
+        }
+        
         if(this.p.y <= 1664) this.p.vy = 100;
         else if(this.p.y >= 2329) this.p.vy = -100;
       },
 
       sensor: function(colObj){
-          if(colObj.isA("BalaPlayer")){
-            this.p.vida --;
+          if(colObj.isA("BalaPlayer") ){
             Q.stageScene('hudboss', 4, this.p);
-            colObj.destroy();
           }
 
-          if(this.p.vida<=0){
-            if(this.p.fase >= this.p.numFases){
-              this.destroy();
+          if(this.p.vida<=0 && !this.p.invencible){
+            this.p.cambioFase = true;
+            if(this.p.fase >= this.p.numFases-1){
+              if(this.spellCard1Reimu3!=null){
+                this.spellCard1Reimu3.limpiar();
+                this.del("spellCard1Reimu3");
+              }
+              this.p.vy = 0;
+              this.p.sheet = "fin";
+              this.play("death");
               Q.stageScene("endGame",1, { label: "You Win" });
-            }else if(this.p.fase == 1){
+            }else if(this.p.fase == 0){
               this.del("spellCard1Reimu1");
-              this.add("spellCard1Reimu2");              
-              this.p.vida = 100;
-            }else if(this.p.fase == 2){
-              this.spellCard1Reimu2.limpiar();
+            }else if(this.p.fase == 1){
+              if(this.spellCard1Reimu2 != null)
+                this.spellCard1Reimu2.limpiar();
               this.del("spellCard1Reimu2");
-              this.add("spellCard1Reimu3"); 
-              this.p.vida = 100;
-            }else if(this.p.fase == 3){
-              this.p.vida = 100;
             }
-            this.p.fase++;
           }
       }
   });
-  
+
   Q.Sprite.extend("OrbeReimu",{
       init: function(p){
       //como crear una bala concreta
@@ -245,7 +334,7 @@ window.addEventListener("load",function(){
       this._super(p,{
         asset:"reimu_onmyoBall.png",
         gravity:0,
-        tipo: "boss",
+        tipo: "orbe",
         time:0,
         time2:0,
         radio:10,
@@ -262,11 +351,10 @@ window.addEventListener("load",function(){
       var p = this.p;
       p.time+=dt;
       p.time2+=dt;
-      var velx=0,vely=0;
       if(p.mar!=null){
         //x
         if(p.x < p.mar.x)
-            p.vx = p.vel;
+          p.vx = p.vel;
         else 
           p.vx = -p.vel;
         //y
@@ -405,11 +493,15 @@ window.addEventListener("load",function(){
       this.entity.on("step",this,"step");
       var p = this.entity.p;
       this.reloadTime1 = 0.2; 
+      this.balas = [];
+      this.j = 0;
       p.time = 0;
+      Math.floor((Math.random() * 10) + 1);
       for(var i = LIMITEUP;i < LIMITEDOWN;i+=30){
-         Q.stage().insert(new Q.Bala({asset: "ooiri.png", x:2600,y:i,
+         this.balas[this.j] = Q.stage().insert(new Q.Bala({asset: "ooiri.png", x:2600,y:i,
                                   vx:-40,vy:0,rad: 15,
                                   funcionColision:function(colObj){}}));
+         this.j++;
       }
     },
     step: function(dt){
@@ -424,6 +516,11 @@ window.addEventListener("load",function(){
           Q.stage().insert(new Q.Bala({asset: "arrow.png", x:p.x - 1.5*p.radio,y:p.y,
                                   vx:modV.vx,vy:modV.vy,rad: 15,
                                   funcionColision:function(colObj){}}));
+      }
+    },
+    limpiar: function(){
+      for(var i = 0;i<this.j;i++){
+        this.balas[i].destroy();
       }
     }
   });

@@ -6,5 +6,5 @@
   "stand": {"sx": 6144, "sy": 0, "tileW": 256, "tileH":320,"frames":13},
   "back": {"sx": 9472, "sy": 0, "tileW": 256, "tileH":320,"frames": 4},
   "front": {"sx": 10496, "sy": 0, "tileW": 256, "tileH":320,"frames": 4},
-  "attack": {"sx": 11520, "sy": 0, "tileW": 256, "tileH":320,"frames": 8},
+  "attack": {"sx": 11520, "sy": 0, "tileW": 256, "tileH":320,"frames": 8}
 }

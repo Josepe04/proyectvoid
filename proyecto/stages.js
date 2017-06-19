@@ -34,10 +34,12 @@ window.addEventListener("load",function(){
     stage.add("viewport").centerOn(2200,2000);
   });
 
-  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
-   +"reimu_onmyoBall.png, ooiri.png", function() {
+  Q.load("pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
+   +"reimu_onmyoBall.png, ooiri.png, reimu.json, Touhou_castles.jpg, fondo_reimu.png", function() {
+    Q.compileSheets("reimu.png", "reimu.json");
     Q.stageScene("levelChema");
-    Q.stageScene('hud', 3, Q('Marisa').first().p);
+    Q.stageScene('hud',3, Q('Marisa').first().p);
+    
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
   });
 
@@ -89,16 +91,50 @@ window.addEventListener("load",function(){
     //ADRI
 
     //CHEMA
-    Q.scene("levelChema",function(stage) { 
-    Q.stageTMX("level.tmx",stage);
-    var boss = stage.insert(new Q.Reimu());
+
+Q.scene("levelChema",function(stage) { 
+    stage.insert(new Q.Repeater({ asset: "fondo_reimu.png", speedX: 0, speedY: 0, type: 0, h:screen.height ,w:screen.width}));
+    //var boss = stage.insert(new Q.Reimu());
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
     var player = stage.insert(new Q.Marisa());
     //var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:250}));
-    //var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
-    //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
+    var spwner1 = stage.insert(new Q.SpawnerChema({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, comp: "2d, arrowPatron"}));
+    numSpawner = 1;
     stage.add("viewport").centerOn(2200,2000);
-  });
+});
+
+var numSpawner;
+
+var eliminarSpawner = function(){
+  numSpawner--;
+  if(numSpawner == 0)
+    Q.stage().insert(new Q.Reimu());
+}
+Q.Sprite.extend("SpawnerChema",{
+      init: function(p){
+        this._super(p, {
+ 
+        });
+        this.p.time -= this.p.delay;
+      },
+
+      step: function(dt){
+        this.p.time+=dt;
+        if((this.p.i<this.p.numEnemy) && this.p.time>this.p.timelimit){
+           Q.stage().insert(new Q.EnemigoChema({x:this.p.x, y: this.p.y,asset: "mobDemo.png"},this.p.comp));
+           this.p.i++;
+           this.p.time = 0;
+         }else if(this.p.i == this.p.numEnemy){
+           eliminarSpawner();
+           this.destroy();
+         }
+      }
+ 
+});
+
+
+
+
     //SERGIO
 
   });
