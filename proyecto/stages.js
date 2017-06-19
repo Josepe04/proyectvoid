@@ -29,8 +29,10 @@ window.addEventListener("load",function(){
     //var boss = stage.insert(new Q.Reimu());
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
     var player = stage.insert(new Q.Marisa());
-    var spwner1 = stage.insert(new Q.Spawner({i: 0, x:2500, y:2200, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobBlue"}));
-    var spwner2 = stage.insert(new Q.Spawner({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobOrange"}));
+  //  var spwner1 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1700, y:2300, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:1}));
+    //var spwner2 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png", x:1700, y:1700, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:2}));
+    //var spwner3 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:2300, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:0}));
+    var spwner4 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png", x:2700, y:1700, time:0, timelimit:1, delay:2, numEnemy:20, level: 1, enemy:3}));
     stage.add("viewport").centerOn(2200,2000);
   });
 
@@ -41,10 +43,11 @@ window.addEventListener("load",function(){
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
   });*/
 
-  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png,"+
-  "arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png,"+
+  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
+  "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json,"+//png Sergio
   "reimu_onmyoBall.png, ooiri.png", function() {
-    Q.stageScene("levelDemo");
+    Q.compileSheets("hijiri.png", "hijiri.json");
+    Q.stageScene("levelSergio1");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
   });
@@ -120,10 +123,11 @@ window.addEventListener("load",function(){
  });
 
 
-   Q.Sprite.extend("Spawner",{
+   Q.Sprite.extend("SpawnerHijiri",{
      init: function(p){
        this._super(p, {
-
+         i:0,
+         sensor: true
        });
        this.p.time -= this.p.delay;
      },
@@ -132,24 +136,50 @@ window.addEventListener("load",function(){
        this.p.time+=dt;
        if((this.p.i<this.p.numEnemy) && this.p.time>this.p.timelimit){
          switch(this.p.enemy){
-           case "mobRed":
-             Q.stage().insert(new Q.EnemigoRed({x:this.p.x, y: this.p.y}));
+           case 0:
+             Q.stage().insert(new Q.EnemigoRed({x:this.p.x, y: this.p.y, vida: this.p.level}));
              break;
-           case "mobBlue":
-             Q.stage().insert(new Q.EnemigoBlue({x:this.p.x, y: this.p.y}));
+           case 1:
+             Q.stage().insert(new Q.EnemigoBlue({x:this.p.x, y: this.p.y, vida: this.p.level}));
              break;
-           case "mobOrange":
-             Q.stage().insert(new Q.EnemigoOrange({x:this.p.x, y: this.p.y}));
+           case 2:
+             Q.stage().insert(new Q.EnemigoOrange({x:this.p.x, y: this.p.y, vida: this.p.level}));
              break;
-           case "mobWhite":
-             Q.stage().insert(new Q.EnemigoWhite({x:this.p.x, y: this.p.y}));
+           case 3:
+             Q.stage().insert(new Q.EnemigoWhite({x:this.p.x, y: this.p.y, vida: this.p.level}));
              break;
          }
           this.p.i++;
           this.p.time = 0;
         }
-     }
+        if(this.p.i==this.p.numEnemy){
+          Q('Hijiri').first().destruyeSpawner();
+          this.destroy();
+        }
+     },
 
+   sensor: function(colObj){
+    }
+
+   });
+
+   Q.scene('endHijiri',function(stage) {
+     var container = stage.insert(new Q.UI.Container({
+       x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+     }));
+
+     var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
+                                                     label: "Play Again", keyActionName: "confirm" }))
+     var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
+                                                      label: stage.options.label }));
+     button.on("click",function() {
+       Q.clearStages();
+       Q.stageScene('levelSergio1');
+       Q.stageScene('hud', 3, Q('Marisa').first().p);
+       Q.stageScene('hudboss', 4, Q('Hijiri').first().p);
+     });
+
+     container.fit(20);
    });
 
   });
