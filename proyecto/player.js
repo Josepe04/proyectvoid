@@ -49,7 +49,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
             p.stepDistance = 9;
           }
 
-          if(Q.inputs['left'] && p.x > 1559) {// 
+          if(Q.inputs['left'] && p.x > 1559) {//
             p.diffX = -p.stepDistance;
           } else if(Q.inputs['right'] && p.x < 2805) {
             p.diffX = p.stepDistance;
@@ -102,12 +102,12 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       },
       sensor: function(colObj){
         if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto){
-           this.p.impacto = true;
+          this.p.impacto = true;
           if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")
             colObj.destroy();
           else if(colObj.p.vida > 0)
             colObj.p.vida--;
-            this.destroy();
+          this.destroy();
         }
       }
     });
