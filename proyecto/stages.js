@@ -44,7 +44,7 @@ window.addEventListener("load",function(){
   });*/
 
   Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
-  "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json,"+//png Sergio
+  "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json, sombrero.png, ovalo.png,"+//png Sergio
   "reimu_onmyoBall.png, ooiri.png", function() {
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.stageScene("levelSergio1");
@@ -152,10 +152,13 @@ window.addEventListener("load",function(){
           this.p.i++;
           this.p.time = 0;
         }
-        if(this.p.i==this.p.numEnemy){
+        if(Q('Hijiri').first()== null){
+          this.destroy();
+        }else if(this.p.i==this.p.numEnemy){
           Q('Hijiri').first().destruyeSpawner();
           this.destroy();
         }
+
      },
 
    sensor: function(colObj){
