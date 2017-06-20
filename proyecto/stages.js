@@ -35,7 +35,8 @@ window.addEventListener("load",function(){
   });
 
   Q.load("pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
-   +"reimu_onmyoBall.png, ooiri.png, reimu.json, Touhou_castles.jpg, fondo_reimu.png", function() {
+   +"reimu_animal.png, bola.png, balaRedonda.png,up.png, flor.png,reimu_onmyoBall.png, ooiri.png"
+   +", reimu.json, Touhou_castles.jpg, fondo_reimu.png, miniOrbeRojo.png", function() {
     Q.compileSheets("reimu.png", "reimu.json");
     Q.stageScene("levelChema");
     Q.stageScene('hud',3, Q('Marisa').first().p);
@@ -95,20 +96,24 @@ window.addEventListener("load",function(){
 Q.scene("levelChema",function(stage) { 
     stage.insert(new Q.Repeater({ asset: "fondo_reimu.png", speedX: 0, speedY: 0, type: 0, h:screen.height ,w:screen.width}));
     //var boss = stage.insert(new Q.Reimu());
-    var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
-    var player = stage.insert(new Q.Marisa());
-    //var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:250}));
-    var spwner1 = stage.insert(new Q.SpawnerChema({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, comp: "2d, arrowPatron"}));
-    numSpawner = 1;
+    stage.insert(new Q.Marisa());
+    stage.insert(new Q.SpawnerChema({i: 0,cambioFase:true,x:2500, y:LIMITEUP, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:100, comp: "2d, orbePatron"}));
+    stage.insert(new Q.SpawnerChema({i: 0,cambioFase:false,x:2500, y:LIMITEDOWN, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:-100, comp: "2d, orbePatron"}));
+    faseNivel = 2;
     stage.add("viewport").centerOn(2200,2000);
 });
 
-var numSpawner;
+var faseNivel;
 
-var eliminarSpawner = function(){
-  numSpawner--;
-  if(numSpawner == 0)
+var cambioFaseNivelChema1 = function(cambio){
+  if(cambio)
+    faseNivel--;
+  if(faseNivel == 0 && cambio)
     Q.stage().insert(new Q.Reimu());
+  else if(faseNivel == 1 && cambio){
+    Q.stage().insert(new Q.SpawnerChema({i: 0,cambioFase:true,x:2500, y:2329, time:0, timelimit:2, delay:20, numEnemy:15,velx:0,vely:-100, comp: "2d, ooiriPatron"}));
+    Q.stage().insert(new Q.SpawnerChema({i: 0,cambioFase:false, x:LIMITEL, y:2300, time:0, timelimit:3, delay:20, numEnemy:15,velx:100,vely:0, comp: "2d, orbesPatron"}));
+  }
 }
 Q.Sprite.extend("SpawnerChema",{
       init: function(p){
@@ -121,11 +126,11 @@ Q.Sprite.extend("SpawnerChema",{
       step: function(dt){
         this.p.time+=dt;
         if((this.p.i<this.p.numEnemy) && this.p.time>this.p.timelimit){
-           Q.stage().insert(new Q.EnemigoChema({x:this.p.x, y: this.p.y,asset: "mobDemo.png"},this.p.comp));
+           Q.stage().insert(new Q.EnemigoChema({vx: this.p.velx,vy:this.p.vely ,x:this.p.x, y: this.p.y,asset: "mobDemo.png"},this.p.comp));
            this.p.i++;
            this.p.time = 0;
          }else if(this.p.i == this.p.numEnemy){
-           eliminarSpawner();
+           cambioFaseNivelChema1(this.p.cambioFase);
            this.destroy();
          }
       }
