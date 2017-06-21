@@ -928,4 +928,246 @@ Q.Sprite.extend("BalaArco",{
   }
 });
 
+
+
+
+
+//Animaciones
+Q.animations("futo_animations", {
+  vuelta: {frames: [0, 1, 2, 3, 4, 5, 6, 7], rate: 1/4, flip: "x", loop: false, trigger: "andanada"},
+  palto: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
+  fantasmas: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
+  flechas: {frames: [0, 1, 2, 3, 4, 5, 6, 7], rate: 1/4, flip: "x", loop: true},
+  stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], rate: 1/4, flip: "x", loop: true},
+  muerte: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/3, flip: "x", loop: false, trigger: "muerte"}
+});
+//Boss
+Q.Sprite.extend("Futo",{
+init: function(p) {
+   this._super({
+     sprite: "futo_animations",
+     sheet:"vueltaF",
+     x:2700,
+     y:2200,
+     time:0,
+     time2:0,
+     fase:0,
+     gravity:0,
+     radio:30,
+     sensor:true,
+     tipo: "boss",
+     maxVida :2000,
+     vida:2000,
+     reload: 15
+   });
+
+
+
+  this.on("stand", function() {
+    this.p.sheet= "standF";
+    this.play("stand");
+    });
+
+  this.on("muerte", function() {
+    this.p.numSpawn = 0;
+     Q.stageScene("endFuto",1, { label: "You Win" });
+     this.destroy();
+   });
+
+   this.on("andanada", function() {
+     if(this.p.y == 1800) this.p.y = 2200;
+     else if(this.p.y == 2200) this.p.y = 2000;
+     else this.p.y = 1800;
+     this.p.sheet = "flechasF";
+     this.play("flechas");
+     Q.stage().insert(new Q.AndanadaFlechas({x:this.p.x, y:this.p.y, reload:this.p.reload/10, numFlechas:3}));
+    });
+
+   this.add('2d, animation');
+   this.on("sensor");
+   this.comenzar();
+   this.play("vuelta");
+
+ },
+
+ comenzar: function(){
+   this.add("spellCard1Futo");
+   this.add("spellCard2Futo");
+   Q.stage().insert(new Q.FutoAdvise());
+   Q.stage().insert(new Q.CartelAdvise({asset:"Advise-futo.png"}));
+   this.p.fase = 1;
+ },
+
+
+ step: function(dt) {
+
+   if(this.p.vida<=(this.p.maxVida/2) && this.p.fase <= 1){
+     this.p.fase = 2;
+     this.p.sheet= "fantasmasF";
+     this.play("fantasmas");
+     this.p.reload = 10;
+   }else if(this.p.vida<=(this.p.maxVida/5) && this.p.fase <= 2){
+     this.add("spellCard3Futo");
+     this.p.sheet= "platoF";
+     this.play("plato");
+     this.p.fase=3;
+   }
+
+
+ },
+
+ sensor: function(colObj){
+     if(colObj.isA("BalaPlayer")){
+       //this.p.vida --;
+       Q.stageScene('hudboss', 4, this.p);
+       //colObj.destroy();
+     }
+     if(this.p.vida<=0){
+      this.p.sheet = "muerteH";
+      this.play("muerte");
+    }
+
+ }
+});
+
+
+Q.component("spellCard1Futo",{
+  added: function() {
+    var p = this.entity.p;
+    this.entity.on("step",this,"step");
+  },
+
+  step: function(dt) {
+      var p = this.entity.p;
+      p.time+=dt;
+      if(p.time >=p.reload/5){
+        this.entity.p.time = 0;
+
+
+        Q.stage().insert(new Q.BalaZigZag({asset: "fantasma.png", x:p.x, y:1700,
+                                vx:-200, vy:300, radio: 15, cambio:0.75,
+                                funcionColision:function(colObj){}}));
+        Q.stage().insert(new Q.BalaZigZag({asset: "fantasma.png", x:p.x, y:1900,
+                                vx:-200, vy:300, radio: 15, cambio:0.75,
+                                funcionColision:function(colObj){}}));
+        Q.stage().insert(new Q.BalaZigZag({asset: "fantasma.png", x:p.x, y:2100,
+                                vx:-200, vy:300, radio: 15, cambio:0.75,
+                                funcionColision:function(colObj){}}));
+
+      }
+    }
+
+
+
+});
+
+Q.Sprite.extend("BalaZigZag",{
+  init: function(p){
+
+    this._super(p, {
+      tipo: "bala",
+      time: 0,
+      gravity: 0,
+      sensor:true
+    });
+    this.add('2d');
+    this.on("sensor",function(){});
+  },
+  step: function(dt){
+
+    this.p.time+=dt;
+
+    if(this.p.time>=this.p.cambio){
+      this.p.vy = - this.p.vy;
+      this.p.time = 0;
+    }
+
+    if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1)
+      this.destroy();
+  }
+});
+
+Q.component("spellCard2Futo",{
+  added: function() {
+    var p = this.entity.p;
+    this.entity.on("step",this,"step");
+  },
+  step: function(dt) {
+      var p = this.entity.p;
+      p.time2+=dt;
+      if(p.time2 >=p.reload){
+        this.entity.p.time2 = 0;
+        p.sheet = "vueltaF";
+        this.entity.play("vuelta");
+    }
+  }
+
+});
+
+Q.Sprite.extend("AndanadaFlechas",{
+  init: function(p){
+    this._super(p, {
+      i:0,
+      vx:0,
+      vy:0,
+      first: true,
+      gravity:0,
+      time: 0,
+      sensor: true
+    });
+  },
+
+  step: function(dt){
+    this.p.time+=dt;
+
+    if((this.p.i<this.p.numFlechas) && (this.p.time>this.p.reload || this.p.first)){
+      var vx = -350;
+        Q.stage().insert(new Q.BalaArco({asset: "flecha.png", x:this.p.x, y:this.p.y,
+                                vx:vx, vy:-400, radio: 15, gravity:0.2,
+                                funcionColision:function(colObj){}}));
+        Q.stage().insert(new Q.BalaArco({asset: "flecha.png", x:this.p.x, y:this.p.y,
+                                vx:vx, vy:-300, radio: 15, gravity:0.2,
+                                funcionColision:function(colObj){}}));
+        Q.stage().insert(new Q.BalaArco({asset: "flecha.png", x:this.p.x, y:this.p.y,
+                                vx:vx, vy:-200, radio: 15, gravity:0.2,
+                                funcionColision:function(colObj){}}));
+        Q.stage().insert(new Q.BalaArco({asset: "flecha.png", x:this.p.x, y:this.p.y,
+                                vx:vx, vy:-100, radio: 15, gravity:0.2,
+                                funcionColision:function(colObj){}}));
+        Q.stage().insert(new Q.BalaArco({asset: "flecha.png", x:this.p.x, y:this.p.y,
+                                vx:vx, vy:0, radio: 15, gravity:0.2,
+                                funcionColision:function(colObj){}}));
+       this.p.i++;
+       this.p.time = 0;
+       this.p.first = false;
+     }
+
+     if(this.p.i == this.p.numFlechas){
+       Q('Futo').first().p.sheet = "standF";
+       Q('Futo').first().play("stand");
+       this.destroy();
+     }
+  },
+
+sensor: function(colObj){
+ }
+
+});
+
+Q.component("spellCard3Futo",{
+  added: function() {
+    var p = this.entity.p;
+    this.entity.on("step",this,"step");
+  },
+
+  step: function(dt) {
+      var p = this.entity.p;
+      p.time+=dt;
+
+    }
+
+
+
+});
+
 });

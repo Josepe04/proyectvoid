@@ -51,12 +51,16 @@ window.addEventListener("load",function(){
   });*/
 
   Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
-  "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json, sombrero.png, ovalo.png, river.png, river.json, hijiri-grande.png, Advise-hijiri.png, marisa.png, marisa.json,"+//png Sergio
+  "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json,"+
+  "sombrero.png, ovalo.png, river.png, river.json, hijiri-grande.png, Advise-hijiri.png, marisa.png, marisa.json, fall.png, fall.json, futo.png, futo.json, futo-grande.png,"+
+  "Advise-futo.png, flecha.png, fantasma.png,"+//png Sergio
   "reimu_onmyoBall.png, ooiri.png", function() {
     Q.compileSheets("river.png","river.json");
-      Q.compileSheets("marisa.png", "marisa.json");
+    Q.compileSheets("fall.png","fall.json");
+    Q.compileSheets("marisa.png", "marisa.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
-    Q.stageScene("levelSergio1");
+    Q.compileSheets("futo.png","futo.json");
+    Q.stageScene("levelSergio2");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
   });
@@ -106,7 +110,7 @@ window.addEventListener("load",function(){
   Q.animations("forestAnim", {
     anim: { frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,
     13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,
-    31,32,33,34,35,36,38,39], rate: 1/3, flip: false, loop: true}
+    31,32,33,34,35,36,37,38,39], rate: 1/3, flip: false, loop: true}
   });
 
   /* Sprite que representa el fondo del bosque */
@@ -185,13 +189,21 @@ window.addEventListener("load",function(){
     //SERGIO
     Q.scene("levelSergio1",function(stage) {
      Q.stageTMX("level.tmx",stage);
-       var fondo = stage.insert(new Q.FondoRio());
+     var fondo = stage.insert(new Q.FondoRio());
      var boss = stage.insert(new Q.Hijiri());
      var player = stage.insert(new Q.Marisa());
-     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
 
      stage.add("viewport").centerOn(2200,2000);
- });
+  });
+
+   Q.scene("levelSergio2",function(stage) {
+    Q.stageTMX("level.tmx",stage);
+    var fondo = stage.insert(new Q.FondoFall());
+    var boss = stage.insert(new Q.Futo());
+    var player = stage.insert(new Q.Marisa());
+
+    stage.add("viewport").centerOn(2200,2000);
+  });
 
 
    Q.Sprite.extend("SpawnerHijiri",{
@@ -248,7 +260,7 @@ window.addEventListener("load",function(){
                                                       label: stage.options.label }));
      button.on("click",function() {
        Q.clearStages();
-       Q.stageScene('levelSergio1');
+       Q.stageScene('levelSergio2');
        Q.stageScene('hud', 3, Q('Marisa').first().p);
        Q.stageScene('hudboss', 4, Q('Hijiri').first().p);
      });
@@ -256,12 +268,31 @@ window.addEventListener("load",function(){
      container.fit(20);
    });
 
-   /*Animación del fondo bosque */
+   Q.scene('endFuto',function(stage) {
+     var container = stage.insert(new Q.UI.Container({
+       x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+     }));
+
+     var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
+                                                     label: "Play Again", keyActionName: "confirm" }))
+     var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
+                                                      label: stage.options.label }));
+     button.on("click",function() {
+       Q.clearStages();
+       Q.stageScene('levelDemo');
+       Q.stageScene('hud', 3, Q('Marisa').first().p);
+       Q.stageScene('hudboss', 4, Q('Futo').first().p);
+     });
+
+     container.fit(20);
+   });
+
+   /*Animación del fondo rio */
    Q.animations("riverAnim", {
      anim: { frames: [0,1,2,3,4,5], rate: 1/3, flip: false, loop: true}
    });
 
-   /* Sprite que representa el fondo del bosque */
+   /* Sprite que representa el fondo del rio */
    Q.Sprite.extend("FondoRio", {
      init: function (p) {
        this._super(p,{
@@ -281,6 +312,41 @@ window.addEventListener("load",function(){
      init: function (p) {
        this._super(p,{
          asset: "hijiri-grande.png",
+         x: 2200,
+         y: 2000,
+         type: 0
+       });
+       this.add('tween');
+       this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0});
+     }
+   });
+
+   /*Animación del fondo otoño(Fall) */
+   Q.animations("fallAnim", {
+     anim: { frames: [37,36,35,34,33,32,31,30,29,28,27,26,25,24,23,22,21,
+     20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0], rate: 1/5, flip: false, loop: true}
+   });
+
+   /* Sprite que representa el fondo del otoño */
+   Q.Sprite.extend("FondoFall", {
+     init: function (p) {
+       this._super(p,{
+         sprite:"fallAnim",
+         sheet:"fall",
+         x: 2200,
+         y: 2000,
+         type: 0
+       });
+       this.add("animation");
+       this.play("anim");
+     }
+
+   });
+
+   Q.Sprite.extend("FutoAdvise", {
+     init: function (p) {
+       this._super(p,{
+         asset: "futo-grande.png",
          x: 2200,
          y: 2000,
          type: 0
