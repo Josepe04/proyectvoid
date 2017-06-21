@@ -190,6 +190,8 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
 
       sensor: function(colObj){
         if(colObj.isA("Marisa")){
+          colObj.p.sheet = "pupMar";
+          colObj.play("pup");
           colObj.add('powerupDemo');
           colObj.del('disparoPrincipal');
           this.destroy();
@@ -209,21 +211,30 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
     Q.Sprite.extend("Marisa",{
       init: function(p) {
         this._super({
-          asset:"pruebaMarisa.png",
+          sprite: "marisa_animations",
+          sheet:"standMar",
           x:2000,
           y:2000,
           gravity:0,
           radio:5,
     	    invencibleTime: 0,
           vidas:4,
+          gameOver: false,
           sensor:true
         });
         this.ultimo = 0;
         this.delPowerups = function(){
           if(this.powerupDemo != null)  this.del("powerupDemo");
         };
-        this.add('2d, controles , disparoPrincipal');
+
+        this.on("stand", function() {
+          this.p.sheet= "standMar";
+          this.play("stand");
+          });
+
+        this.add('2d, controles , disparoPrincipal, animation');
         this.on("sensor");
+        this.play("stand");
       },
 
       step: function(dt) {
@@ -236,16 +247,23 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         if(this.p.invencibleTime <= 0 &&
               (colObj.p.tipo == "enemy" || colObj.p.tipo == "boss" || colObj.p.tipo == "bala")
               && colisionCuadrada(this.p,colObj.p)){
-             if(this.p.vidas > 0)
-        	       this.p.vidas--;
+             if(this.p.vidas > 0){
+               this.p.vidas--;
+               this.p.sheet = "dañoMar";
+               this.play("daño");
+             }
+
              Q.stageScene('hud', 3, this.p);
              console.log("muerto");
-             if(this.p.vidas <= 0){
+             if(this.p.vidas <= 0 && !this.p.gameOver){
+               this.p.sheet = "muerteMar";
+               this.play("muerte");
                Q.stageScene("endGame",1, { label: "You Died" });
                this.p.stepDelay = 1;
                this.del('controles');
                this.del('disparoPrincipal');
                this.delPowerups();
+               this.p.gameOver = true;
              }else{
                this.p.invencibleTime = 2;
                if(colObj.p.tipo == "enemy" || colObj.p.tipo == "bala"){
@@ -268,13 +286,11 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       //SERGIO
       //Animaciones
       Q.animations("marisa_animations", {
-        invocar1: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/4, flip: "x", loop: false, trigger: "fase1"},
-        invocar2: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/5, flip: "x", loop: false, trigger: "fase2"},
-        aparecer: {frames: [0, 1, 2, 3, 4, 5], rate: 1/4, flip: "x", loop: false, trigger: "inicio"},
-        muerte: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: false, trigger: "muerte"},
-        invocar3: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], rate: 1/5, flip: "x", loop: false, trigger: "fase3"},
-        stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: true}
-
+        muerte: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12, 13, 14, 15, 16, 17, 18], rate: 1/5, loop: false},
+        spell: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], rate: 1/5, loop: false, trigger: "stand"},
+        stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], rate: 1/5, loop: true},
+        daño: {frames: [0, 1, 2, 3, 4, 5, 6, 7], rate: 1/4, loop: false, trigger: "stand"},
+        pup: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], rate: 1/5, loop: false, trigger: "stand"},
       });
 
 

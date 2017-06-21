@@ -500,11 +500,11 @@ window.addEventListener("load",function(){
 
   //Animaciones
   Q.animations("hijiri_animations", {
-    invocar1: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/4, flip: "x", loop: false, trigger: "fase1"},
-    invocar2: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/4, flip: "x", loop: false, trigger: "fase1"},
+    invocar1: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
+    invocar2: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
     aparecer: {frames: [0, 1, 2, 3, 4, 5], rate: 1/4, flip: "x", loop: false, trigger: "inicio"},
     muerte: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: false, trigger: "muerte"},
-    invocar3: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], rate: 1/5, flip: "x", loop: false, trigger: "fase3"},
+    invocar3: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], rate: 1/5, flip: "x", loop: false, trigger: "stand"},
     stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: true}
 
   });
@@ -513,7 +513,7 @@ window.addEventListener("load",function(){
  init: function(p) {
      this._super({
        sprite: "hijiri_animations",
-       sheet:"aparecer",
+       sheet:"aparecerH",
        x:2700,
        y:2000,
        time:0,
@@ -532,19 +532,13 @@ window.addEventListener("load",function(){
                               vx:-300,vy:0,rad: 15,
                               funcionColision:function(colObj){}}));
       this.p.fase=1;
-      this.p.sheet= "invocar2";
+      this.p.sheet= "invocar2H";
       this.play("invocar2");
       });
 
-    this.on("fase1", function() {
-      if(this.spellCard1Hijiri == null) this.add("spellCard1Hijiri");
-      this.p.sheet= "stand";
-      this.play("stand");
-      });
 
-    this.on("fase3", function() {
-
-      this.p.sheet= "stand";
+    this.on("stand", function() {
+      this.p.sheet= "standH";
       this.play("stand");
       });
 
@@ -556,8 +550,15 @@ window.addEventListener("load",function(){
 
      this.add('2d, animation');
      this.on("sensor");
+     this.comenzar();
      this.play("aparecer");
 
+   },
+
+   comenzar: function(){
+     this.add("spellCard1Hijiri");
+     Q.stage().insert(new Q.HijiriAdvise());
+     Q.stage().insert(new Q.CartelAdvise({asset:"Advise-hijiri.png"}));
    },
 
    destruyeSpawner: function(){
@@ -565,16 +566,16 @@ window.addEventListener("load",function(){
    },
 
    step: function(dt) {
-     if(this.p.y <= 1664) this.p.vy = 100;
-     else if(this.p.y >= 2329) this.p.vy = -100;
+     if(this.p.y <= 1700) this.p.vy = 100;
+     else if(this.p.y >= 2300) this.p.vy = -100;
 
      if(this.p.vida<=(this.p.maxVida/2) && this.p.fase <= 1){
          this.p.fase=2;
-         this.p.sheet= "invocar2";
+         this.p.sheet= "invocar2H";
          this.play("invocar2");
      }else if(this.p.vida<=(this.p.maxVida/10) && this.p.fase <= 2){
-       if(this.spellCard1Hijiri != null) this.del("spellCard1Hijiri");
-       if(this.spellCard2Hijiri == null) this.add("spellCard2Hijiri");
+       this.del("spellCard1Hijiri");
+       this.add("spellCard2Hijiri");
        this.p.fase=3;
        this.p.vy = 100;
      }
@@ -584,12 +585,12 @@ window.addEventListener("load",function(){
 
    sensor: function(colObj){
        if(colObj.isA("BalaPlayer")){
-         this.p.vida --;
+         //this.p.vida --;
          Q.stageScene('hudboss', 4, this.p);
-         colObj.destroy();
+         //colObj.destroy();
        }
        if(this.p.vida<=0){
-        this.p.sheet = "muerte";
+        this.p.sheet = "muerteH";
         this.play("muerte");
       }
 
@@ -606,7 +607,7 @@ Q.component("spellCard1Hijiri",{
  step: function(dt) {
      var p = this.entity.p;
      var sheet, anim;
-     sheet="invocar1";
+     sheet="invocar1H";
      anim = "invocar1";
 
 
@@ -657,15 +658,15 @@ Q.component("spellCard2Hijiri",{
       p.time+=dt;
       if(p.numSpawn <1 && p.vida > 0){
         var enemy = Math.floor((Math.random() * 10)) % 4;
-        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 10, enemy:enemy}));
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
         enemy = Math.floor((Math.random() * 10)) % 4;
-        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:1700, time:0, timelimit:4, delay:0, numEnemy:2, level: 10, enemy:enemy}));
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:1700, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
         enemy = Math.floor((Math.random() * 10)) % 4;
-        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1600, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 10, enemy:enemy}));
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1600, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
         enemy = Math.floor((Math.random() * 10)) % 4;
-        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1600, y:1700, time:0, timelimit:4, delay:0, numEnemy:2, level: 10, enemy:enemy}));
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1600, y:1700, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
         p.numSpawn=4;
-        p.sheet = "invocar3";
+        p.sheet = "invocar3H";
         this.entity.play("invocar3");
       }
       /*if(Math.floor(p.time)%3 == 0 && p.fase == 3 && p.vida > 0){

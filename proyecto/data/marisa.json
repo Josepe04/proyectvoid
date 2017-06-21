@@ -1,7 +1,7 @@
 {
-  "muerte":{"sx":0,"sy":0,"tileW":288,"tileH":288,"frames":19},
-  "spell":{"sx":5472,"sy":0,"tileW":288,"tileH":288,"frames":16},
-  "stand":{"sx":10080,"sy":0,"tileW":288,"tileH":288,"frames":15},
-  "daño":{"sx":14400,"sy":0,"tileW":288,"tileH":288,"frames":8},
-  "p-up":{"sx":16704,"sy":0,"tileW":288,"tileH":288,"frames":11},
+  "muerteMar":{"sx":0,"sy":0,"tileW":288,"tileH":288,"frames":19},
+  "spellMar":{"sx":5472,"sy":0,"tileW":288,"tileH":288,"frames":16},
+  "standMar":{"sx":10080,"sy":0,"tileW":288,"tileH":288,"frames":15},
+  "dañoMar":{"sx":14400,"sy":0,"tileW":288,"tileH":288,"frames":8},
+  "pupMar":{"sx":16704,"sy":0,"tileW":288,"tileH":288,"frames":11}
 }
