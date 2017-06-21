@@ -108,9 +108,7 @@ window.addEventListener("load",function(){
 
       sensor: function(colObj){
           if(colObj.isA("BalaPlayer")){
-            this.p.vida --;
             Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-            colObj.destroy();
           }
 
           if(this.p.vida<=0){
@@ -181,6 +179,73 @@ window.addEventListener("load",function(){
   //ANDRES
 
   //ADRI
+  Q.animations("mamizouAnim", {
+    "ataque-basico": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], rate: 1/5, flip:"x", loop: false, trigger: "ataqueBasico"},
+    "inicio": {frames:[0,1,2,3,4,5,6,7,8], rate: 1/5, flip:"x", loop: false, trigger: "iniciaBatalla"},
+    "muerte": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], rate: 1/5, flip:"x", loop: false, trigger: "destruir"},
+    "ataque-final": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,13], rate: 1/5, flip:"x", loop: false, trigger: "ataqueFinal"},
+    "movimiento": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], rate: 1/5, flip:"x", loop: true}
+  });
+
+  Q.Sprite.extend("Mamizou", {
+    init: function(p) {
+      this._super(p, {
+        sprite: "mamizouAnim",
+        sheet: "start",
+        x:2700,
+        y:2000,
+        time: 0,
+        radio: 30,
+        gravity: 0,
+        sensor:true,
+        tipo: "boss",
+      });
+      this.add("animation, 2d, arrowPatron");
+      this.play("inicio");
+
+      this.on("iniciaBatalla", function() {
+        this.p.sheet = "stand";
+        this.play("movimiento");
+        this.p.vy = 100;
+        Q.stage().insert(new Q.MamizouAdvise());
+        Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
+      });
+    },
+
+    step: function(dt) {
+      if(this.p.y <= 1664) this.p.vy = 100;
+      else if(this.p.y >= 2329) this.p.vy = -100;
+    }
+
+  });
+
+  //ARROW DEMO
+  Q.component("proyectilFlotante", {
+
+      added: function() {
+        var p = this.entity.p;
+        this.entity.on("step",this,"step");
+        this.reloadTime = 0.5;
+      },
+
+      step: function(dt) {
+        var p = this.entity.p;
+        this.entity.p.time+=dt;
+        if(p.time >=this.reloadTime){
+          this.entity.p.time = 0;
+          var mar = Q('Marisa').first().p;
+          var modV = balaDirigida(mar,p);
+          modV.vx = -modV.vx *200;
+          modV.vy = -modV.vy *200;
+          Q.stage().insert(new Q.Bala({asset: "arrow.png", x:p.x - 1.5*p.radio,y:p.y,
+                                  vx:modV.vx,vy:modV.vy,rad: 15,
+                                  funcionColision:function(colObj){}}));
+
+        }
+
+      }
+
+  });
 
   //CHEMA
 
@@ -486,7 +551,7 @@ window.addEventListener("load",function(){
         //y
         if(p.y < p.mar.y)
           p.vy = p.vel;
-        else 
+        else
           p.vy = -p.vel;
 
         if(p.reloadTime <= p.time){
@@ -499,7 +564,7 @@ window.addEventListener("load",function(){
       }
     }
   });
-  
+
   Q.Sprite.extend("BalaTemporal",{
     init: function(p){
       //como crear una bala concreta
@@ -627,7 +692,7 @@ window.addEventListener("load",function(){
       }
     },
     step: function(dt){
-      var p = this.entity.p; 
+      var p = this.entity.p;
       p.time+=dt;
       if(p.time >=this.reloadTime1){
           this.entity.p.time = 0;
@@ -1027,5 +1092,3 @@ window.addEventListener("load",function(){
 
 
     //SERGIO
-
-  });
