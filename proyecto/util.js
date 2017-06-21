@@ -63,5 +63,4 @@
 
     //CHEMA
     
-const ORBEDOWN = 1910, ORBEUP = 2036;
     //SERGIO

@@ -36,10 +36,9 @@ window.addEventListener("load",function(){
 
   Q.load("pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
    +"reimu_animal.png, bola.png, balaRedonda.png,up.png, flor.png,reimu_onmyoBall.png, ooiri.png"
-   +",bolita.png,fuego.png ,moukou.png, moukou.json, reimu.json, Touhou_castles.jpg, fondo_reimu.png, miniOrbeRojo.png", function() {
+   +", reimu.json, Touhou_castles.jpg, fondo_reimu.png, miniOrbeRojo.png", function() {
     Q.compileSheets("reimu.png", "reimu.json");
-    Q.compileSheets("moukou.png", "moukou.json");
-    Q.stageScene("levelMokou");
+    Q.stageScene("levelChema");
     Q.stageScene('hud',3, Q('Marisa').first().p);
     
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
@@ -94,18 +93,10 @@ window.addEventListener("load",function(){
 
     //CHEMA
 
-Q.scene("levelMokou",function(stage) { 
+Q.scene("levelChema",function(stage) { 
     stage.insert(new Q.Repeater({ asset: "fondo_reimu.png", speedX: 0, speedY: 0, type: 0, h:screen.height ,w:screen.width}));
-    var boss = stage.insert(new Q.Mokou());
-    var mar = stage.insert(new Q.Marisa());
-    faseNivel = 2;
-    stage.add("viewport").centerOn(2200,2000);
-});
-
-Q.scene("levelFinal",function(stage) { 
-    stage.insert(new Q.Repeater({ asset: "fondo_reimu.png", speedX: 0, speedY: 0, type: 0, h:screen.height ,w:screen.width}));
-    var mar = stage.insert(new Q.Marisa());
-    mar.add("powerupChema");
+    //var boss = stage.insert(new Q.Reimu());
+    stage.insert(new Q.Marisa());
     stage.insert(new Q.SpawnerChema({i: 0,cambioFase:true,x:2500, y:LIMITEUP, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:100, comp: "2d, orbePatron"}));
     stage.insert(new Q.SpawnerChema({i: 0,cambioFase:false,x:2500, y:LIMITEDOWN, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:-100, comp: "2d, orbePatron"}));
     faseNivel = 2;

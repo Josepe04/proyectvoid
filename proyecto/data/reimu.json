@@ -1,10 +1,10 @@
 {
-    "ataquer": {"sx":0, "sy":0, "tileW":279, "tileH":256,"frames":11},
-    "finr": {"sx":3069, "sy":0, "tileW":279, "tileH":256,"frames":10},
-    "bottomr": {"sx":5859, "sy":0, "tileW":279, "tileH":256,"frames":5},
-    "topr": {"sx":7254, "sy":0, "tileW":279, "tileH":256,"frames":5},
-    "standr": {"sx":8649, "sy":0, "tileW":279, "tileH":256,"frames":14},
-    "frontr": {"sx":11439, "sy":0, "tileW":279, "tileH":256,"frames":10},
-    "backr": {"sx":14508, "sy":0, "tileW":279, "tileH":256,"frames":11},
-    "inicior": {"sx":17577, "sy":0, "tileW":279, "tileH":256,"frames":13}
+    "ataque": {"sx":0, "sy":0, "tileW":279, "tileH":256,"frames":11},
+    "fin": {"sx":3069, "sy":0, "tileW":279, "tileH":256,"frames":10},
+    "bottom": {"sx":5859, "sy":0, "tileW":279, "tileH":256,"frames":5},
+    "top": {"sx":7254, "sy":0, "tileW":279, "tileH":256,"frames":5},
+    "stand": {"sx":8649, "sy":0, "tileW":279, "tileH":256,"frames":14},
+    "front": {"sx":11439, "sy":0, "tileW":279, "tileH":256,"frames":10},
+    "back": {"sx":14508, "sy":0, "tileW":279, "tileH":256,"frames":11},
+    "inicio": {"sx":17577, "sy":0, "tileW":279, "tileH":256,"frames":13}
 }

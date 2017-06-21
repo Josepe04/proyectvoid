@@ -115,7 +115,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
     Q.component("disparoPrincipal",{
       added: function() {
           this.tAcomulada = 0;
-          this.reloadTime = 0;
+          this.reloadTime = 0.1;
           this.entity.on("step",this,"step");
       },
       step: function(dt){
