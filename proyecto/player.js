@@ -88,7 +88,8 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           vy:tipoBala.vy,
           radio:tipoBala.rad,
           gravity:0,
-          sensor:true
+          sensor:true,
+          impacto: false
         });
         this.add('2d');
         this.on("sensor");
@@ -100,12 +101,13 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.destroy();
       },
       sensor: function(colObj){
-        if(colObj.p.tipo == "enemy"){
-          if(colObj.p.vida <= 0)
+        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto){
+          this.p.impacto = true;
+          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")
             colObj.destroy();
           else
             colObj.p.vida--;
-            this.destroy();
+          this.destroy();
         }
       }
     });
