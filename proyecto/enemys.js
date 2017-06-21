@@ -502,7 +502,7 @@ window.addEventListener("load",function(){
   Q.animations("hijiri_animations", {
     invocar1: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
     invocar2: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
-    aparecer: {frames: [0, 1, 2, 3, 4, 5], rate: 1/4, flip: "x", loop: false, trigger: "inicio"},
+    aparecer: {frames: [0, 1, 2, 3, 4, 5], rate: 1/3, flip: "x", loop: false, trigger: "inicio"},
     muerte: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: false, trigger: "muerte"},
     invocar3: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], rate: 1/5, flip: "x", loop: false, trigger: "stand"},
     stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: true}
@@ -528,12 +528,12 @@ window.addEventListener("load",function(){
      });
 
     this.on("inicio", function() {
+    //  this.p.sheet= "invocar2H";
+    //  this.play("invocar2");
       Q.stage().insert(new Q.Bala({asset: "sombrero.png", x:this.p.x - 1.5*this.p.radio,y:this.p.y,
                               vx:-300,vy:0,rad: 15,
                               funcionColision:function(colObj){}}));
       this.p.fase=1;
-      this.p.sheet= "invocar2H";
-      this.play("invocar2");
       });
 
 
@@ -571,8 +571,8 @@ window.addEventListener("load",function(){
 
      if(this.p.vida<=(this.p.maxVida/2) && this.p.fase <= 1){
          this.p.fase=2;
-         this.p.sheet= "invocar2H";
-         this.play("invocar2");
+         //this.p.sheet= "invocar2H";
+         //this.play("invocar2");
      }else if(this.p.vida<=(this.p.maxVida/10) && this.p.fase <= 2){
        this.del("spellCard1Hijiri");
        this.add("spellCard2Hijiri");
