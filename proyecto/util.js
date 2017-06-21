@@ -20,6 +20,7 @@
     return velocidades;
   };
 
+
   var colisionCuadrada = function(posObj1,posObj2){
     var cat1 = Math.abs(posObj1.x+20 - posObj2.x);
     var cat2 = Math.abs(posObj1.y - posObj2.y);
@@ -52,5 +53,5 @@
     //ADRI
 
     //CHEMA
-    
+
     //SERGIO

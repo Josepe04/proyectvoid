@@ -1,0 +1,8 @@
+{
+  "invocar1":{"sx":0,"sy":0,"tileW":256,"tileH":256,"frames":10},
+  "invocar2":{"sx":2560,"sy":0,"tileW":256,"tileH":256,"frames":7},
+  "aparecer":{"sx":4352,"sy":0,"tileW":256,"tileH":256,"frames":6},
+  "muerte":{"sx":5888,"sy":0,"tileW":256,"tileH":256,"frames":14},
+  "invocar3":{"sx":9472,"sy": 0,"tileW":256,"tileH":256,"frames":19},
+  "stand":{"sx":14336,"sy":0,"tileW":256,"tileH":256,"frames":14}
+}

@@ -498,4 +498,433 @@ window.addEventListener("load",function(){
 
   //SERGIO
 
+  //Animaciones
+  Q.animations("hijiri_animations", {
+    invocar1: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/4, flip: "x", loop: false, trigger: "fase1"},
+    invocar2: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/4, flip: "x", loop: false, trigger: "fase1"},
+    aparecer: {frames: [0, 1, 2, 3, 4, 5], rate: 1/4, flip: "x", loop: false, trigger: "inicio"},
+    muerte: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: false, trigger: "muerte"},
+    invocar3: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], rate: 1/5, flip: "x", loop: false, trigger: "fase3"},
+    stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: true}
+
+  });
+  //Boss
+  Q.Sprite.extend("Hijiri",{
+ init: function(p) {
+     this._super({
+       sprite: "hijiri_animations",
+       sheet:"aparecer",
+       x:2700,
+       y:2000,
+       time:0,
+       fase:0,
+       numSpawn: 0,
+       gravity:0,
+       radio:30,
+       sensor:true,
+       tipo: "boss",
+       maxVida :2000,
+       vida:2000
+     });
+
+    this.on("inicio", function() {
+      Q.stage().insert(new Q.Bala({asset: "sombrero.png", x:this.p.x - 1.5*this.p.radio,y:this.p.y,
+                              vx:-300,vy:0,rad: 15,
+                              funcionColision:function(colObj){}}));
+      this.p.fase=1;
+      this.p.sheet= "invocar2";
+      this.play("invocar2");
+      });
+
+    this.on("fase1", function() {
+      if(this.spellCard1Hijiri == null) this.add("spellCard1Hijiri");
+      this.p.sheet= "stand";
+      this.play("stand");
+      });
+
+    this.on("fase3", function() {
+
+      this.p.sheet= "stand";
+      this.play("stand");
+      });
+
+    this.on("muerte", function() {
+      this.p.numSpawn = 0;
+       Q.stageScene("endHijiri",1, { label: "You Win" });
+       this.destroy();
+     });
+
+     this.add('2d, animation');
+     this.on("sensor");
+     this.play("aparecer");
+
+   },
+
+   destruyeSpawner: function(){
+     this.p.numSpawn--;
+   },
+
+   step: function(dt) {
+     if(this.p.y <= 1664) this.p.vy = 100;
+     else if(this.p.y >= 2329) this.p.vy = -100;
+
+     if(this.p.vida<=(this.p.maxVida/2) && this.p.fase <= 1){
+         this.p.fase=2;
+         this.p.sheet= "invocar2";
+         this.play("invocar2");
+     }else if(this.p.vida<=(this.p.maxVida/10) && this.p.fase <= 2){
+       if(this.spellCard1Hijiri != null) this.del("spellCard1Hijiri");
+       if(this.spellCard2Hijiri == null) this.add("spellCard2Hijiri");
+       this.p.fase=3;
+       this.p.vy = 100;
+     }
+
+
+   },
+
+   sensor: function(colObj){
+       if(colObj.isA("BalaPlayer")){
+         this.p.vida --;
+         Q.stageScene('hudboss', 4, this.p);
+         colObj.destroy();
+       }
+       if(this.p.vida<=0){
+        this.p.sheet = "muerte";
+        this.play("muerte");
+      }
+
+   }
+});
+
+//Habilidad
+Q.component("spellCard1Hijiri",{
+ added: function() {
+   var p = this.entity.p;
+   this.entity.on("step",this,"step");
+ },
+
+ step: function(dt) {
+     var p = this.entity.p;
+     var sheet, anim;
+     sheet="invocar1";
+     anim = "invocar1";
+
+
+     if(p.numSpawn <= p.fase-1){
+       var enemy = Math.floor((Math.random() * 10)) % 4;
+       var pos = Math.floor((Math.random() * 10)) % 4;
+       switch (pos) {
+        case 0:
+          Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:2300, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:enemy}));
+          p.numSpawn++;
+          p.sheet = sheet;
+          this.entity.play(anim);
+          break;
+        case 1:
+          Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:1700, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:enemy}));
+          p.numSpawn++;
+          p.sheet = sheet;
+          this.entity.play(anim);
+          break;
+        case 2:
+          Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1600, y:2300, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:enemy}));
+          p.numSpawn++;
+          p.sheet = sheet;
+          this.entity.play(anim);
+          break;
+        case 3:
+          Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1600, y:1700, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:enemy}));
+          p.numSpawn++;
+          p.sheet = sheet;
+          this.entity.play(anim);
+          break;
+
+       }
+     }
+   }
+
+
+});
+
+Q.component("spellCard2Hijiri",{
+  added: function() {
+    var p = this.entity.p;
+    this.entity.on("step",this,"step");
+  },
+
+  step: function(dt) {
+      var p = this.entity.p;
+      p.time+=dt;
+      if(p.numSpawn <1 && p.vida > 0){
+        var enemy = Math.floor((Math.random() * 10)) % 4;
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 10, enemy:enemy}));
+        enemy = Math.floor((Math.random() * 10)) % 4;
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:1700, time:0, timelimit:4, delay:0, numEnemy:2, level: 10, enemy:enemy}));
+        enemy = Math.floor((Math.random() * 10)) % 4;
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1600, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 10, enemy:enemy}));
+        enemy = Math.floor((Math.random() * 10)) % 4;
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1600, y:1700, time:0, timelimit:4, delay:0, numEnemy:2, level: 10, enemy:enemy}));
+        p.numSpawn=4;
+        p.sheet = "invocar3";
+        this.entity.play("invocar3");
+      }
+      /*if(Math.floor(p.time)%3 == 0 && p.fase == 3 && p.vida > 0){
+        p.sheet= "invocar3";
+        this.entity.play("invocar3");
+      }*/
+    }
+
+
+
+});
+
+
+//Enemigos
+Q.Sprite.extend("EnemigoRed",{
+  init: function(p) {
+    this._super(p, {
+      asset:"mobRed.png",
+      radio:60,
+      time:0,
+      gravity:0,
+      tipo: "enemy",
+      sensor:true
+    });
+    if(this.p.y >= 1996) this.p.vy = -200;
+    else if(this.p.y < 1996) this.p.vy = 200;
+    this.add('2d, OvaloPatron');
+    this.on("sensor");
+  },
+
+  step: function(dt) {
+    if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1  || this.p.y > LIMITEY2 || this.p.y < LIMITEY1){
+        this.destroy();
+    }
+  },
+
+  sensor: function(colObj){
+  }
+
+});
+
+Q.Sprite.extend("EnemigoBlue",{
+  init: function(p) {
+    this._super(p, {
+      asset:"mobBlue.png",
+      radio:60,
+      time:0,
+      gravity:0,
+      tipo: "enemy",
+      sensor:true
+    });
+
+    if(this.p.x >= 2200) this.p.vx = -200;
+    else if(this.p.x < 2200) this.p.vx = 200;
+    this.add('2d, MusicPatron');
+    this.on("sensor");
+  },
+
+  step: function(dt) {
+    if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1  || this.p.y > LIMITEY2 || this.p.y < LIMITEY1){
+        this.destroy();
+    }
+  },
+
+  sensor: function(colObj){
+  }
+
+});
+
+Q.Sprite.extend("EnemigoOrange",{
+  init: function(p) {
+    this._super(p, {
+      asset:"mobOrange.png",
+      radio:60,
+      time:0,
+      gravity:0,
+      tipo: "enemy",
+      sensor:true
+    });
+    if(this.p.y >= 1996) this.p.vy = -150;
+    else if(this.p.y < 1996) this.p.vy = 150;
+    this.add('2d, FirePatron');
+    this.on("sensor");
+  },
+
+  step: function(dt) {
+    if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1  || this.p.y > LIMITEY2 || this.p.y < LIMITEY1){
+        this.destroy();
+    }
+  },
+
+  sensor: function(colObj){
+  }
+
+});
+
+Q.Sprite.extend("EnemigoWhite",{
+  init: function(p) {
+    this._super(p, {
+      asset:"mobWhite.png",
+      radio:60,
+      gravity:0,
+      tipo: "enemy",
+      sensor:true
+    });
+
+    this.add('2d');
+    this.on("sensor");
+  },
+
+  step: function(dt) {
+    var mar = Q('Marisa').first().p;
+    if(mar!==null){
+      //x
+      if(this.p.x < mar.x)
+          this.p.vx = 100;
+      else
+        this.p.vx = -100;
+      //y
+      if(this.p.y < mar.y)
+        this.p.vy = 100;
+      else
+        this.p.vy = -100;
+
+      if(mar.vidas <= 0){
+        this.destroy();
+      }
+    }
+
+  if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1  || this.p.y > LIMITEY2 || this.p.y < LIMITEY1){
+      this.destroy();
+  }
+
+  },
+
+  sensor: function(colObj){
+  }
+
+});
+
+//Balas
+Q.component("MusicPatron", {
+
+    added: function() {
+      var p = this.entity.p;
+      this.entity.on("step",this,"step");
+      this.reloadTime = 1;
+    },
+
+    step: function(dt) {
+      var p = this.entity.p;
+      this.entity.p.time+=dt;
+      if(p.time >=this.reloadTime){
+        this.entity.p.time = 0;
+        var vy;
+        var y = p.y;
+        if(y <= 1996){
+          vy = 400;
+          y = p.y + 1.5*p.radio;
+        }
+        else{
+          vy = -400;
+          y = p.y - 1.5*p.radio;
+        }
+
+        Q.stage().insert(new Q.Bala({asset: "music.png", x:p.x, y:y,
+                                vx:0,vy:vy,rad: 15,
+                                funcionColision:function(colObj){}}));
+
+      }
+
+    }
+
+});
+
+Q.component("FirePatron", {
+
+    added: function() {
+      var p = this.entity.p;
+      this.entity.on("step",this,"step");
+      this.reloadTime = 0.75;
+    },
+
+    step: function(dt) {
+      var p = this.entity.p;
+      this.entity.p.time+=dt;
+      if(p.time >=this.reloadTime){
+        this.entity.p.time = 0;
+        var vx;
+        var x = p.x;
+        if(x <= 2100){
+          vx = 400;
+          x = p.x + 1.5*p.radio;
+        }
+        else{
+          vx = -400;
+          x = p.x - 1.5*p.radio;
+        }
+        Q.stage().insert(new Q.BalaArco({asset: "fire.png", x:x, y:p.y,
+                                vx:vx, vy:-100, radio: 15, gravity:0.2,
+                                funcionColision:function(colObj){}}));
+
+      }
+
+    }
+
+});
+
+Q.component("OvaloPatron", {
+
+  added: function() {
+    var p = this.entity.p;
+    this.entity.on("step",this,"step");
+    this.reloadTime = 1;
+  },
+
+  step: function(dt) {
+    var p = this.entity.p;
+    this.entity.p.time+=dt;
+    if(p.time >=this.reloadTime){
+      this.entity.p.time = 0;
+      var vx;
+      var x = p.x;
+      if(x <= 2100){
+        vx = 400;
+        x = p.x + 1.5*p.radio;
+      }
+      else{
+        vx = -400;
+        x = p.x - 1.5*p.radio;
+      }
+      Q.stage().insert(new Q.Bala({asset: "ovalo.png", x:x, y:p.y,
+                              vx:vx,vy:0,rad: 15,
+                              funcionColision:function(colObj){}}));
+
+    }
+
+  }
+});
+
+Q.Sprite.extend("BalaArco",{
+  init: function(p){
+    //como crear una bala arco
+    //this.stage.insert(new Q.BalaArco(args));
+    //Para un arco estandar se recomiendan los siguientes parametros: (para un reloadTime de entre 0.5 y 0.75)
+    //vx: -400;
+    //vy:-100;
+    //grav: 0.2;
+    this._super(p, {
+      tipo: "bala",
+      sensor:true
+    });
+    this.add('2d');
+    this.on("sensor",function(){});
+  },
+  step: function(dt){
+    if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1  || this.p.y > LIMITEY2)
+      this.destroy();
+  }
+});
+
 });

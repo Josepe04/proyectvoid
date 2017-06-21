@@ -191,6 +191,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       sensor: function(colObj){
         if(colObj.isA("Marisa")){
           colObj.add('powerupDemo');
+          colObj.del('disparoPrincipal');
           this.destroy();
         }
       }
@@ -265,6 +266,16 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       //CHEMA
 
       //SERGIO
+      //Animaciones
+      Q.animations("marisa_animations", {
+        invocar1: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], rate: 1/4, flip: "x", loop: false, trigger: "fase1"},
+        invocar2: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/5, flip: "x", loop: false, trigger: "fase2"},
+        aparecer: {frames: [0, 1, 2, 3, 4, 5], rate: 1/4, flip: "x", loop: false, trigger: "inicio"},
+        muerte: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: false, trigger: "muerte"},
+        invocar3: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], rate: 1/5, flip: "x", loop: false, trigger: "fase3"},
+        stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], rate: 1/5, flip: "x", loop: true}
+
+      });
 
 
 

@@ -1,1 +1,10 @@
-[{"name":"sprite1","x":66,"y":1,"width":31,"height":46},{"name":"sprite2","x":34,"y":2,"width":31,"height":46},{"name":"sprite3","x":98,"y":2,"width":31,"height":45},{"name":"sprite4","x":131,"y":2,"width":30,"height":46},{"name":"sprite5","x":2,"y":3,"width":31,"height":45},{"name":"sprite6","x":162,"y":3,"width":31,"height":44},{"name":"sprite7","x":260,"y":3,"width":60,"height":60},{"name":"sprite8","x":195,"y":4,"width":30,"height":44},{"name":"sprite9","x":226,"y":4,"width":31,"height":43},{"name":"sprite10","x":68,"y":50,"width":29,"height":44},{"name":"sprite11","x":3,"y":51,"width":30,"height":45},{"name":"sprite12","x":37,"y":51,"width":28,"height":44},{"name":"sprite13","x":197,"y":51,"width":29,"height":44},{"name":"sprite14","x":100,"y":52,"width":29,"height":42},{"name":"sprite15","x":132,"y":52,"width":30,"height":42},{"name":"sprite16","x":165,"y":52,"width":29,"height":43},{"name":"sprite17","x":227,"y":52,"width":30,"height":43},{"name":"sprite18","x":3,"y":99,"width":30,"height":45},{"name":"sprite19","x":36,"y":99,"width":28,"height":44},{"name":"sprite20","x":67,"y":99,"width":28,"height":44},{"name":"sprite21","x":98,"y":100,"width":29,"height":42},{"name":"sprite22","x":130,"y":100,"width":29,"height":42},{"name":"sprite23","x":162,"y":100,"width":29,"height":43},{"name":"sprite24","x":194,"y":100,"width":29,"height":43},{"name":"sprite25","x":225,"y":100,"width":30,"height":43},{"name":"sprite26","x":66,"y":146,"width":15,"height":15},{"name":"sprite27","x":82,"y":146,"width":15,"height":15},{"name":"sprite28","x":98,"y":146,"width":15,"height":15},{"name":"sprite32","x":10,"y":201,"width":46,"height":47}]
+{
+  "ataque": {"sx": 0, "sy": 0, "tileW": 279, "tileH":256,"frames": 11},
+  "fin": {"sx": 2816, "sy": 0, "tileW": 279, "tileH":256,"frames": 10},
+  "bottom": {"sx": 5376, "sy": 0, "tileW": 279, "tileH":256,"frames": 5},
+  "top": {"sx": 6656, "sy": 0, "tileW": 279, "tileH":256,"frames": 5},
+  "stand": {"sx": 7936, "sy": 0, "tileW": 279, "tileH":256,"frames":14},
+  "front": {"sx": 11520, "sy": 0, "tileW": 279, "tileH":256,"frames": 10},
+  "back": {"sx": 14080, "sy": 0, "tileW": 279, "tileH":256,"frames": 11},
+  "inicio": {"sx": 16896, "sy": 0, "tileW": 279, "tileH":256,"frames": 13},
+}
