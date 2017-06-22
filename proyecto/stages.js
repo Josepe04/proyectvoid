@@ -43,6 +43,7 @@ window.addEventListener("load",function(){
    "sombrero.png, ovalo.png,flecha.png, fantasma.png, plato.png,"+
    "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png,"+
    "pu1.png, pu1D.png, reimu_animal.png,"+
+   "escudo.png,"+
    "Touhou_castles.jpg, fondo_reimu.png, "+
    "forest.png, forest.json,river.png, river.json,fall.png, fall.json, montaña.png,montaña.json,"+
    "Advise-futo.png, Advise-hijiri.png,Advise-ichirin.png, Advise-kokoro.png, Advise-mamizou.png, Advise-mokou.png, Advise-reimu.png,"+
@@ -58,7 +59,7 @@ window.addEventListener("load",function(){
     Q.compileSheets("moukou.png", "moukou.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelSergio1");
+    Q.stageScene("levelSergio2");
     Q.stageScene('hud',3, Q('Marisa').first().p);
   });
 
@@ -239,6 +240,7 @@ Q.Sprite.extend("SpawnerChema",{
     var fondo = stage.insert(new Q.FondoFall());
     var boss = stage.insert(new Q.Futo());
     var player = stage.insert(new Q.Marisa());
+    player.add("antiSpellFuto");
 
     stage.add("viewport").centerOn(2200,2000);
   });
