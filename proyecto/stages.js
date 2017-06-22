@@ -36,7 +36,7 @@ window.addEventListener("load",function(){
     stage.add("viewport").centerOn(2200,2000);
   });
 
-  Q.load("pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
+  /*Q.load("pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
    +"reimu_animal.png, bola.png, balaRedonda.png,up.png, flor.png,reimu_onmyoBall.png, ooiri.png"
    +",marisa.png, marisa.json,bolita.png,fuego.png ,moukou.png, moukou.json, reimu.json, Touhou_castles.jpg, fondo_reimu.png, miniOrbeRojo.png", function() {
     Q.compileSheets("marisa.png", "marisa.json");
@@ -44,9 +44,9 @@ window.addEventListener("load",function(){
     Q.compileSheets("moukou.png", "moukou.json");
     Q.stageScene("levelMokou");
     Q.stageScene('hud',3, Q('Marisa').first().p);
-    
+
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-  });
+  });*/
 
   /*Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
    +"reimu_onmyoBall.png, ooiri.png", function() {
@@ -185,7 +185,7 @@ window.addEventListener("load",function(){
 
     //CHEMA
 
-Q.scene("levelMokou",function(stage) { 
+Q.scene("levelMokou",function(stage) {
     stage.insert(new Q.Repeater({ asset: "fondo_reimu.png", speedX: 0, speedY: 0, type: 0, h:screen.height ,w:screen.width}));
     var boss = stage.insert(new Q.Mokou());
     var mar = stage.insert(new Q.Marisa());
@@ -193,7 +193,7 @@ Q.scene("levelMokou",function(stage) {
     stage.add("viewport").centerOn(2200,2000);
 });
 
-Q.scene("levelFinal",function(stage) { 
+Q.scene("levelFinal",function(stage) {
     stage.insert(new Q.Repeater({ asset: "fondo_reimu.png", speedX: 0, speedY: 0, type: 0, h:screen.height ,w:screen.width}));
     var mar = stage.insert(new Q.Marisa());
     mar.add("powerupChema");
@@ -218,7 +218,7 @@ var cambioFaseNivelChema1 = function(cambio){
 Q.Sprite.extend("SpawnerChema",{
       init: function(p){
         this._super(p, {
- 
+
         });
         this.p.time -= this.p.delay;
       },
@@ -234,7 +234,7 @@ Q.Sprite.extend("SpawnerChema",{
            this.destroy();
          }
       }
- 
+
 });
 
 
