@@ -36,32 +36,32 @@ window.addEventListener("load",function(){
     stage.add("viewport").centerOn(2200,2000);
   });
 
-<<<<<<< HEAD
   Q.load("pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
    +"reimu_animal.png, bola.png, balaRedonda.png,up.png, flor.png,reimu_onmyoBall.png, ooiri.png"
-   +",bolita.png,fuego.png ,moukou.png, moukou.json, reimu.json, Touhou_castles.jpg, fondo_reimu.png, miniOrbeRojo.png", function() {
+   +",marisa.png, marisa.json,bolita.png,fuego.png ,moukou.png, moukou.json, reimu.json, Touhou_castles.jpg, fondo_reimu.png, miniOrbeRojo.png", function() {
+    Q.compileSheets("marisa.png", "marisa.json");
     Q.compileSheets("reimu.png", "reimu.json");
     Q.compileSheets("moukou.png", "moukou.json");
     Q.stageScene("levelMokou");
     Q.stageScene('hud',3, Q('Marisa').first().p);
     
-=======
+    //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
+  });
 
   /*Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
    +"reimu_onmyoBall.png, ooiri.png", function() {
     Q.stageScene("levelChema");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
-*/
+  */
   /*Q.load("Advise-mamizou.png, mamizou-grande.png,Mamizou.png, Mamizou.json,forest.png, forest.json, pruebaMarisa.png, pruebabala.png, reimu.png, mobRed.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
     Q.compileSheets("Mamizou.png","Mamizou.json");
     Q.stageScene("levelAdrian1");
     //Q.stageScene('hud', 3, Q('Marisa').first().p);
->>>>>>> refs/remotes/origin/master
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-  });*/
-  /*
-  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
+  });
+  */
+  /*Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
   "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json, sombrero.png, ovalo.png, river.png, river.json, hijiri-grande.png, Advise-hijiri.png, marisa.png, marisa.json,"+//png Sergio
   "reimu_onmyoBall.png, ooiri.png", function() {
     Q.compileSheets("river.png","river.json");

@@ -3,8 +3,8 @@
  <tileset firstgid="1" name="tiles" tilewidth="34" tileheight="34" tilecount="49" columns="7">
   <image source="../images/tiles.png" width="256" height="256"/>
  </tileset>
- <imagelayer name="background" offsetx="2000" offsety="2003">
-  <image source="../images/fondo_reimu.jpg" width="603" height="303"/>
+ <imagelayer name="background">
+  <image source="../images/Touhou castles-584642.jpg" width="1600" height="1200"/>
  </imagelayer>
  <layer name="Collision" width="60" height="18">
   <properties>
