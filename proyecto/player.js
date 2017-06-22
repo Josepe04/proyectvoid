@@ -101,9 +101,9 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.destroy();
       },
       sensor: function(colObj){
-        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto){
+        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
-          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")
+          if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
             colObj.destroy();
           else if(colObj.p.vida > 0)
             colObj.p.vida--;
@@ -218,7 +218,8 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           gravity:0,
           radio:5,
     	    invencibleTime: 0,
-          vidas:10,
+          timeSpell:0,
+          vidas:5,
           gameOver: false,
           sensor:true
         });
@@ -230,6 +231,10 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         this.on("stand", function() {
           this.p.sheet= "standMar";
           this.play("stand");
+          });
+        this.on("muerte", function() {
+          Q.stage().pause();
+          Q.stageScene("endGame",1, { label: "You Died" });
           });
 
         this.add('2d, controles , disparoPrincipal, animation');
@@ -246,7 +251,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       sensor: function(colObj){
         if(this.p.invencibleTime <= 0 &&
               (colObj.p.tipo == "enemy" || colObj.p.tipo == "boss" || colObj.p.tipo == "bala")
-              && colisionCuadrada(this.p,colObj.p)){
+              && colisionCuadrada(this.p,colObj.p, 72)){
              if(this.p.vidas > 0){
                this.p.vidas--;
                this.p.sheet = "dañoMar";
@@ -258,7 +263,6 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
              if(this.p.vidas <= 0 && !this.p.gameOver){
                this.p.sheet = "muerteMar";
                this.play("muerte");
-               Q.stageScene("endGame",1, { label: "You Died" });
                this.p.stepDelay = 1;
                this.del('controles');
                this.del('disparoPrincipal');
@@ -318,7 +322,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       }
 
     });
-    
+
 
     Q.component("powerupChema",{
       added: function() {
@@ -335,7 +339,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           if(this.tAcomulada >= this.reloadTime && Q.inputs['fire']){
             this.tAcomulada = 0;
             var velocidad = 300;
-            
+
             if(Q.inputs['up'] && p.y > 1664) {
               Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
                                     vx:0,vy:velocidad
@@ -372,7 +376,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
                                     vx:0,vy:-velocidad
                                     }));
             }
-            
+
           }
         }
       }
@@ -428,7 +432,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       //SERGIO
       //Animaciones
       Q.animations("marisa_animations", {
-        muerte: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12, 13, 14, 15, 16, 17, 18], rate: 1/5, loop: false},
+        muerte: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12, 13, 14, 15, 16, 17, 18], rate: 1/5, loop: false, trigger: "muerte"},
         spell: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], rate: 1/5, loop: false, trigger: "stand"},
         stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], rate: 1/5, loop: true},
         daño: {frames: [0, 1, 2, 3, 4, 5, 6, 7], rate: 1/4, loop: false, trigger: "stand"},

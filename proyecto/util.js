@@ -36,9 +36,11 @@ AÑADIR EL PARAMETRO MOD Y DONDE SE PASAN LOS PIXELES PARA ADAPTAR
 EL CENTRO DE LA COLISON AL SPRITE UTILIZADO
 SE RESTA MODY A POSOBJ1.Y EN CAT2
 */
-  var colisionCuadrada = function(posObj1,posObj2){
-    var cat1 = Math.abs(posObj1.x+20 - posObj2.x);
-    var cat2 = Math.abs(posObj1.y - posObj2.y);
+
+
+  var colisionCuadrada = function(posObj1,posObj2, modY){
+    var cat1 = Math.abs(posObj1.x-10 - posObj2.x);
+    var cat2 = Math.abs((posObj1.y-modY) - posObj2.y);
     if(cat2 >= cat1){
       if(cat2 < (posObj2.h/2+posObj1.radio)){
         return true;

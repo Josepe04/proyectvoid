@@ -1,6 +1,6 @@
 window.addEventListener("load",function(){
 
-  //SPAWNER PRUEBA
+/*  //SPAWNER PRUEBA
   Q.Sprite.extend("SpawnerDemo",{
     init: function(p){
       this._super(p, {
@@ -13,7 +13,7 @@ window.addEventListener("load",function(){
       this.p.time+=dt;
       if((this.p.i<this.p.numEnemy) && this.p.time>this.p.timelimit){
         switch(this.p.enemy){
-          case "mobDemo":
+          case "mobRed":
             Q.stage().insert(new Q.EnemigoDemo({x:this.p.x, y: this.p.y}));
             break;
         }
@@ -22,9 +22,9 @@ window.addEventListener("load",function(){
        }
     }
 
-  });
+  });*/
 
-  Q.scene("levelDemo",function(stage) {
+/*  Q.scene("levelDemo",function(stage) {
     Q.stageTMX("level.tmx",stage);
     //var boss = stage.insert(new Q.Reimu());
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
@@ -35,45 +35,32 @@ window.addEventListener("load",function(){
     var spwner4 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png", x:2700, y:1700, time:0, timelimit:1, delay:2, numEnemy:20, level: 1, enemy:3}));
     stage.add("viewport").centerOn(2200,2000);
   });
+*/
 
-  /*Q.load("pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
-   +"reimu_animal.png, bola.png, balaRedonda.png,up.png, flor.png,reimu_onmyoBall.png, ooiri.png"
-   +",marisa.png, marisa.json,bolita.png,fuego.png ,moukou.png, moukou.json, reimu.json, Touhou_castles.jpg, fondo_reimu.png, miniOrbeRojo.png", function() {
+  Q.load("pruebabala.png, reimu.png, sanguinaria.png,"+
+   "bola.png, balaRedonda.png,up.png, flor.png, reimu_onmyoBall.png, ooiri.png,"+
+   "bolita.png, fuego.png,miniOrbeRojo.png, arrow.png, music.png, fire.png, spawner.png,"+
+   "sombrero.png, ovalo.png,flecha.png, fantasma.png, plato.png,"+
+   "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png,"+
+   "pu1.png, pu1D.png, reimu_animal.png,"+
+   "escudo.png,"+
+   "Touhou_castles.jpg, fondo_reimu.png, "+
+   "forest.png, forest.json,river.png, river.json,fall.png, fall.json, montaña.png,montaña.json,"+
+   "Advise-futo.png, Advise-hijiri.png,Advise-ichirin.png, Advise-kokoro.png, Advise-mamizou.png, Advise-mokou.png, Advise-reimu.png,"+
+   "futo-grande.png, hijiri-grande.png, mamizou-grande.png,"+
+   "futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,koishi.png,koishi.json, kokoro.png,kokoro.json, Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
+   "reimu.png,reimu.json,marisa.png,marisa.json", function() {
+    Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
+    Q.compileSheets("river.png","river.json");
+    Q.compileSheets("fall.png","fall.json");
+    Q.compileSheets("Mamizou.png","Mamizou.json");
     Q.compileSheets("marisa.png", "marisa.json");
     Q.compileSheets("reimu.png", "reimu.json");
     Q.compileSheets("moukou.png", "moukou.json");
-    Q.stageScene("levelMokou");
-    Q.stageScene('hud',3, Q('Marisa').first().p);
-
-    //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-  });*/
-
-  /*Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
-   +"reimu_onmyoBall.png, ooiri.png", function() {
-    Q.stageScene("levelChema");
-    Q.stageScene('hud', 3, Q('Marisa').first().p);
-  */
-  /*Q.load("Advise-mamizou.png, mamizou-grande.png,Mamizou.png, Mamizou.json,forest.png, forest.json, pruebaMarisa.png, pruebabala.png, reimu.png, mobRed.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png", function() {
-    Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
-    Q.compileSheets("Mamizou.png","Mamizou.json");
-    Q.stageScene("levelAdrian1");
-    //Q.stageScene('hud', 3, Q('Marisa').first().p);
-    //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-  });*/
-
-  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
-  "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json,"+
-  "sombrero.png, ovalo.png, river.png, river.json, hijiri-grande.png, Advise-hijiri.png, marisa.png, marisa.json, fall.png, fall.json, futo.png, futo.json, futo-grande.png,"+
-  "Advise-futo.png, flecha.png, fantasma.png, plato.png,"+//png Sergio
-  "reimu_onmyoBall.png, ooiri.png", function() {
-    Q.compileSheets("river.png","river.json");
-    Q.compileSheets("fall.png","fall.json");
-    Q.compileSheets("marisa.png", "marisa.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelSergio1");
-    Q.stageScene('hud', 3, Q('Marisa').first().p);
-    //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
+    Q.stageScene("levelSergio2");
+    Q.stageScene('hud',3, Q('Marisa').first().p);
   });
 
   Q.scene('endGame',function(stage) {
@@ -87,9 +74,9 @@ window.addEventListener("load",function(){
                                                      label: stage.options.label }));
     button.on("click",function() {
       Q.clearStages();
-      Q.stageScene('levelDemo');
+      Q.stageScene('levelChema');
       Q.stageScene('hud', 3, Q('Marisa').first().p);
-      Q.stageScene('hudboss', 4, Q('Reimu').first().p);
+      //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
     });
 
     container.fit(20);
@@ -177,8 +164,8 @@ window.addEventListener("load",function(){
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
     var player = stage.insert(new Q.Marisa());
     //var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:250}));
-    //var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
-    //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
+    //var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobRed"}));
+    //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobRed"}));
     //var direccion = {x:true, y:false};
     stage.add("viewport").centerOn(2200,2000);
     });
@@ -226,7 +213,7 @@ Q.Sprite.extend("SpawnerChema",{
       step: function(dt){
         this.p.time+=dt;
         if((this.p.i<this.p.numEnemy) && this.p.time>this.p.timelimit){
-           Q.stage().insert(new Q.EnemigoChema({vx: this.p.velx,vy:this.p.vely ,x:this.p.x, y: this.p.y,asset: "mobDemo.png"},this.p.comp));
+           Q.stage().insert(new Q.EnemigoChema({vx: this.p.velx,vy:this.p.vely ,x:this.p.x, y: this.p.y,asset: "mobRed.png"},this.p.comp));
            this.p.i++;
            this.p.time = 0;
          }else if(this.p.i == this.p.numEnemy){
@@ -242,7 +229,6 @@ Q.Sprite.extend("SpawnerChema",{
 
     //SERGIO
     Q.scene("levelSergio1",function(stage) {
-     Q.stageTMX("level.tmx",stage);
      var fondo = stage.insert(new Q.FondoRio());
      var boss = stage.insert(new Q.Hijiri());
      var player = stage.insert(new Q.Marisa());
@@ -251,10 +237,10 @@ Q.Sprite.extend("SpawnerChema",{
   });
 
    Q.scene("levelSergio2",function(stage) {
-    Q.stageTMX("level.tmx",stage);
     var fondo = stage.insert(new Q.FondoFall());
     var boss = stage.insert(new Q.Futo());
     var player = stage.insert(new Q.Marisa());
+    player.add("antiSpellFuto");
 
     stage.add("viewport").centerOn(2200,2000);
   });
@@ -289,9 +275,9 @@ Q.Sprite.extend("SpawnerChema",{
           this.p.i++;
           this.p.time = 0;
         }
-        if(Q('Hijiri').first()== null){
+      /*  if(Q('Hijiri').first()== null){
           this.destroy();
-        }else if(this.p.i==this.p.numEnemy){
+        }else */if(this.p.i==this.p.numEnemy){
           Q('Hijiri').first().destruyeSpawner();
           this.destroy();
         }
@@ -309,14 +295,13 @@ Q.Sprite.extend("SpawnerChema",{
      }));
 
      var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
-                                                     label: "Play Again", keyActionName: "confirm" }))
+                                                     label: "Next Stage", keyActionName: "confirm" }))
      var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                                       label: stage.options.label }));
      button.on("click",function() {
        Q.clearStages();
        Q.stageScene('levelSergio2');
        Q.stageScene('hud', 3, Q('Marisa').first().p);
-       Q.stageScene('hudboss', 4, Q('Hijiri').first().p);
      });
 
      container.fit(20);
@@ -328,14 +313,14 @@ Q.Sprite.extend("SpawnerChema",{
      }));
 
      var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
-                                                     label: "Play Again", keyActionName: "confirm" }))
+                                                     label: "Next Stage", keyActionName: "confirm" }))
      var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                                       label: stage.options.label }));
      button.on("click",function() {
        Q.clearStages();
-       Q.stageScene('levelDemo');
+       Q.stageScene('levelFinal');
        Q.stageScene('hud', 3, Q('Marisa').first().p);
-       Q.stageScene('hudboss', 4, Q('Futo').first().p);
+
      });
 
      container.fit(20);
