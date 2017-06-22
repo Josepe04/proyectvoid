@@ -36,21 +36,32 @@ window.addEventListener("load",function(){
     stage.add("viewport").centerOn(2200,2000);
   });
 
+  Q.load("pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
+   +"reimu_animal.png, bola.png, balaRedonda.png,up.png, flor.png,reimu_onmyoBall.png, ooiri.png"
+   +",marisa.png, marisa.json,bolita.png,fuego.png ,moukou.png, moukou.json, reimu.json, Touhou_castles.jpg, fondo_reimu.png, miniOrbeRojo.png", function() {
+    Q.compileSheets("marisa.png", "marisa.json");
+    Q.compileSheets("reimu.png", "reimu.json");
+    Q.compileSheets("moukou.png", "moukou.json");
+    Q.stageScene("levelMokou");
+    Q.stageScene('hud',3, Q('Marisa').first().p);
+    
+    //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
+  });
 
   /*Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png, mobDemo.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png,"
    +"reimu_onmyoBall.png, ooiri.png", function() {
     Q.stageScene("levelChema");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
-*/
+  */
   /*Q.load("Advise-mamizou.png, mamizou-grande.png,Mamizou.png, Mamizou.json,forest.png, forest.json, pruebaMarisa.png, pruebabala.png, reimu.png, mobRed.png, arrow.png, pu1.png, pu1D.png, sanguinaria.png", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
     Q.compileSheets("Mamizou.png","Mamizou.json");
     Q.stageScene("levelAdrian1");
     //Q.stageScene('hud', 3, Q('Marisa').first().p);
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-  });*/
-
-  Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
+  });
+  */
+  /*Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
   "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json, sombrero.png, ovalo.png, river.png, river.json, hijiri-grande.png, Advise-hijiri.png, marisa.png, marisa.json,"+//png Sergio
   "reimu_onmyoBall.png, ooiri.png", function() {
     Q.compileSheets("river.png","river.json");
@@ -59,7 +70,7 @@ window.addEventListener("load",function(){
     Q.stageScene("levelSergio1");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-  });
+  });*/
 
   Q.scene('endGame',function(stage) {
     var container = stage.insert(new Q.UI.Container({
@@ -169,16 +180,59 @@ window.addEventListener("load",function(){
     });
 
     //CHEMA
-    Q.scene("levelChema",function(stage) {
-    Q.stageTMX("level.tmx",stage);
-    var boss = stage.insert(new Q.Reimu());
-    var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
-    var player = stage.insert(new Q.Marisa());
-    //var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:250}));
-    //var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
-    //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobDemo"}));
+
+Q.scene("levelMokou",function(stage) { 
+    stage.insert(new Q.Repeater({ asset: "fondo_reimu.png", speedX: 0, speedY: 0, type: 0, h:screen.height ,w:screen.width}));
+    var boss = stage.insert(new Q.Mokou());
+    var mar = stage.insert(new Q.Marisa());
+    faseNivel = 2;
     stage.add("viewport").centerOn(2200,2000);
-  });
+});
+
+Q.scene("levelFinal",function(stage) { 
+    stage.insert(new Q.Repeater({ asset: "fondo_reimu.png", speedX: 0, speedY: 0, type: 0, h:screen.height ,w:screen.width}));
+    var mar = stage.insert(new Q.Marisa());
+    mar.add("powerupChema");
+    stage.insert(new Q.SpawnerChema({i: 0,cambioFase:true,x:2500, y:LIMITEUP, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:100, comp: "2d, orbePatron"}));
+    stage.insert(new Q.SpawnerChema({i: 0,cambioFase:false,x:2500, y:LIMITEDOWN, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:-100, comp: "2d, orbePatron"}));
+    faseNivel = 2;
+    stage.add("viewport").centerOn(2200,2000);
+});
+
+var faseNivel;
+
+var cambioFaseNivelChema1 = function(cambio){
+  if(cambio)
+    faseNivel--;
+  if(faseNivel == 0 && cambio)
+    Q.stage().insert(new Q.Reimu());
+  else if(faseNivel == 1 && cambio){
+    Q.stage().insert(new Q.SpawnerChema({i: 0,cambioFase:true,x:2500, y:2329, time:0, timelimit:2, delay:20, numEnemy:15,velx:0,vely:-100, comp: "2d, ooiriPatron"}));
+    Q.stage().insert(new Q.SpawnerChema({i: 0,cambioFase:false, x:LIMITEL, y:2300, time:0, timelimit:3, delay:20, numEnemy:15,velx:100,vely:0, comp: "2d, orbesPatron"}));
+  }
+}
+Q.Sprite.extend("SpawnerChema",{
+      init: function(p){
+        this._super(p, {
+ 
+        });
+        this.p.time -= this.p.delay;
+      },
+
+      step: function(dt){
+        this.p.time+=dt;
+        if((this.p.i<this.p.numEnemy) && this.p.time>this.p.timelimit){
+           Q.stage().insert(new Q.EnemigoChema({vx: this.p.velx,vy:this.p.vely ,x:this.p.x, y: this.p.y,asset: "mobDemo.png"},this.p.comp));
+           this.p.i++;
+           this.p.time = 0;
+         }else if(this.p.i == this.p.numEnemy){
+           cambioFaseNivelChema1(this.p.cambioFase);
+           this.destroy();
+         }
+      }
+ 
+});
+
 
 
 

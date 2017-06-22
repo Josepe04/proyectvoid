@@ -9,17 +9,26 @@
     var velocidades = {vx:0,vy:0};
     var difx = posPlayer.x-posBoss.x;
     var dify = posPlayer.y-posBoss.y;
-    if(difx < 0){
-      velocidades.vx = 1;
-      velocidades.vy =  (dify/difx);
-    }
-    else{
-      velocidades.vx = -1;
-      velocidades.vy =  -(dify/difx);
-    }
+    if(Math.abs(difx) > Math.abs(dify))
+      if(difx < 0){
+        velocidades.vx = 1;
+        velocidades.vy =  (dify/difx);
+      }
+      else{
+        velocidades.vx = -1;
+        velocidades.vy =  -(dify/difx);
+      }
+    else
+      if(difx < 0){
+        velocidades.vx = 1;
+        velocidades.vy =  (difx/dify);
+      }
+      else{
+        velocidades.vx = -1;
+        velocidades.vy =  -(difx/dify);
+      }
     return velocidades;
   };
-
 
   var colisionCuadrada = function(posObj1,posObj2){
     var cat1 = Math.abs(posObj1.x+20 - posObj2.x);
@@ -53,5 +62,6 @@
     //ADRI
 
     //CHEMA
-
+    
+const ORBEDOWN = 1910, ORBEUP = 2036;
     //SERGIO
