@@ -53,14 +53,14 @@ window.addEventListener("load",function(){
   Q.loadTMX("level.tmx, pruebaMarisa.png,pruebabala.png, reimu.png,"+
   "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png, arrow.png, music.png, fire.png, pu1.png, pu1D.png, sanguinaria.png, spawner.png, hijiri.png, hijiri.json,"+
   "sombrero.png, ovalo.png, river.png, river.json, hijiri-grande.png, Advise-hijiri.png, marisa.png, marisa.json, fall.png, fall.json, futo.png, futo.json, futo-grande.png,"+
-  "Advise-futo.png, flecha.png, fantasma.png,"+//png Sergio
+  "Advise-futo.png, flecha.png, fantasma.png, plato.png,"+//png Sergio
   "reimu_onmyoBall.png, ooiri.png", function() {
     Q.compileSheets("river.png","river.json");
     Q.compileSheets("fall.png","fall.json");
     Q.compileSheets("marisa.png", "marisa.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelSergio2");
+    Q.stageScene("levelSergio1");
     Q.stageScene('hud', 3, Q('Marisa').first().p);
     //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
   });

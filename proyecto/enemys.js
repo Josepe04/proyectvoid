@@ -523,8 +523,8 @@ window.addEventListener("load",function(){
        radio:30,
        sensor:true,
        tipo: "boss",
-       maxVida :2000,
-       vida:2000
+       maxVida :1000,
+       vida:1000
      });
 
     this.on("inicio", function() {
@@ -935,11 +935,11 @@ Q.Sprite.extend("BalaArco",{
 //Animaciones
 Q.animations("futo_animations", {
   vuelta: {frames: [0, 1, 2, 3, 4, 5, 6, 7], rate: 1/4, flip: "x", loop: false, trigger: "andanada"},
-  palto: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
+  plato: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
   fantasmas: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], rate: 1/4, flip: "x", loop: false, trigger: "stand"},
   flechas: {frames: [0, 1, 2, 3, 4, 5, 6, 7], rate: 1/4, flip: "x", loop: true},
   stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], rate: 1/4, flip: "x", loop: true},
-  muerte: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/3, flip: "x", loop: false, trigger: "muerte"}
+  muerte: {frames: [0, 1, 2, 3, 4, 5, 6], rate: 1/4, flip: "x", loop: false, trigger: "muerte"}
 });
 //Boss
 Q.Sprite.extend("Futo",{
@@ -951,13 +951,14 @@ init: function(p) {
      y:2200,
      time:0,
      time2:0,
+     time3:0,
      fase:0,
      gravity:0,
      radio:30,
      sensor:true,
      tipo: "boss",
-     maxVida :2000,
-     vida:2000,
+     maxVida :500,
+     vida:500,
      reload: 15
    });
 
@@ -1023,7 +1024,7 @@ init: function(p) {
        //colObj.destroy();
      }
      if(this.p.vida<=0){
-      this.p.sheet = "muerteH";
+      this.p.sheet = "muerteF";
       this.play("muerte");
     }
 
@@ -1045,13 +1046,13 @@ Q.component("spellCard1Futo",{
 
 
         Q.stage().insert(new Q.BalaZigZag({asset: "fantasma.png", x:p.x, y:1700,
-                                vx:-200, vy:300, radio: 15, cambio:0.75,
+                                vx:-200, vy:200, radio: 15, cambio:0.75,
                                 funcionColision:function(colObj){}}));
         Q.stage().insert(new Q.BalaZigZag({asset: "fantasma.png", x:p.x, y:1900,
-                                vx:-200, vy:300, radio: 15, cambio:0.75,
+                                vx:-200, vy:200, radio: 15, cambio:0.75,
                                 funcionColision:function(colObj){}}));
         Q.stage().insert(new Q.BalaZigZag({asset: "fantasma.png", x:p.x, y:2100,
-                                vx:-200, vy:300, radio: 15, cambio:0.75,
+                                vx:-200, vy:200, radio: 15, cambio:0.75,
                                 funcionColision:function(colObj){}}));
 
       }
@@ -1157,17 +1158,27 @@ sensor: function(colObj){
 Q.component("spellCard3Futo",{
   added: function() {
     var p = this.entity.p;
+    var first = true;
     this.entity.on("step",this,"step");
   },
 
   step: function(dt) {
       var p = this.entity.p;
-      p.time+=dt;
+      p.time3+=dt;
+      var i = LIMITEY1;
+      if(p.time3>p.reload/2 || this.first){
+        while(i<LIMITEY2){
+            Q.stage().insert(new Q.Bala({asset: "plato.png", x:p.x, y:i,
+                                    vx:-200, vy:0, radio: 10,
+                                    funcionColision:function(colObj){}}));
 
+         i+=150;
+         first = false;
+       }
+       p.time3 = 0;
     }
-
-
-
+  }
 });
+
 
 });
