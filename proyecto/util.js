@@ -9,16 +9,27 @@
     var velocidades = {vx:0,vy:0};
     var difx = posPlayer.x-posBoss.x;
     var dify = posPlayer.y-posBoss.y;
-    if(difx < 0){
-      velocidades.vx = 1;
-      velocidades.vy =  (dify/difx);
-    }
-    else{
-      velocidades.vx = -1;
-      velocidades.vy =  -(dify/difx);
-    }
+    if(Math.abs(difx) > Math.abs(dify))
+      if(difx < 0){
+        velocidades.vx = 1;
+        velocidades.vy =  (dify/difx);
+      }
+      else{
+        velocidades.vx = -1;
+        velocidades.vy =  -(dify/difx);
+      }
+    else
+      if(difx < 0){
+        velocidades.vx = 1;
+        velocidades.vy =  (difx/dify);
+      }
+      else{
+        velocidades.vx = -1;
+        velocidades.vy =  -(difx/dify);
+      }
     return velocidades;
   };
+
 
 /*
 AÑADIR EL PARAMETRO MOD Y DONDE SE PASAN LOS PIXELES PARA ADAPTAR
@@ -57,5 +68,6 @@ SE RESTA MODY A POSOBJ1.Y EN CAT2
     //ADRI
 
     //CHEMA
-
+    
+const ORBEDOWN = 1910, ORBEUP = 2036;
     //SERGIO

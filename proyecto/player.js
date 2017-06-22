@@ -105,7 +105,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.p.impacto = true;
           if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")
             colObj.destroy();
-          else
+          else if(colObj.p.vida > 0)
             colObj.p.vida--;
           this.destroy();
         }
@@ -282,6 +282,148 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       //ADRI
 
       //CHEMA
+
+
+
+    Q.Sprite.extend("BalaRedonda",{
+      init: function(p) {
+        this._super(p, {
+          asset:"balaRedonda.png",
+          gravity:0,
+          radio:30,
+          sensor:true,
+          colisionado:false
+        });
+        this.add('2d');
+        this.on("sensor");
+      },
+      sensor: function(colObj){
+        if(colObj.isA("Bala") && !this.p.colisionado){
+          this.p.colisionado = true;
+          colObj.destroy();
+          this.destroy();
+        }else if(colObj.p.tipo=="enemy"){
+          this.p.colisionado = true;
+          colObj.p.vida--;
+          this.destroy();
+        }else if(colObj.p.tipo=="boss"){
+          this.p.colisionado = true;
+          colObj.p.vida--;
+          this.destroy();
+        }
+      },
+      step: function(){
+        if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 || this.p.y < LIMITEY1 || this.p.y > LIMITEY2)
+          this.destroy();
+      }
+
+    });
+    
+
+    Q.component("powerupChema",{
+      added: function() {
+          this.tAcomulada = 0;
+          this.reloadTime = 0.3;
+          this.entity.on("step",this,"step");
+          this.active = true;
+      },
+      step: function(dt){
+
+        if(this.active){
+          this.tAcomulada += dt;
+          var p = this.entity.p;
+          if(this.tAcomulada >= this.reloadTime && Q.inputs['fire']){
+            this.tAcomulada = 0;
+            var velocidad = 300;
+            
+            if(Q.inputs['up'] && p.y > 1664) {
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:0,vy:velocidad
+                                    }));
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:0,vy:velocidad
+                                    }));
+            } else if(Q.inputs['down'] && p.y < 2329) {
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:0,vy:-velocidad
+                                    }));
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:0,vy:-velocidad
+                                    }));
+            }else if(Q.inputs['right'] && p.y < 2329) {
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:-velocidad,vy:0
+                                    }));
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:-velocidad,vy:0
+                                    }));
+            }else if(Q.inputs['left'] && p.y < 2329) {
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:velocidad,vy:0
+                                    }));
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:velocidad,vy:0
+                                    }));
+            }else{
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:0,vy:velocidad
+                                    }));
+              Q.stage().insert(new Q.BalaRedonda({x:p.x + 1.5*p.radio,y:p.y,
+                                    vx:0,vy:-velocidad
+                                    }));
+            }
+            
+          }
+        }
+      }
+    });
+
+    Q.Sprite.extend("powChemaDisplay",{
+      init: function(p) {
+        this._super(p, {
+          asset:"reimu_animal.png",
+          gravity:0,
+          radio:30,
+          sensor:true,
+          colisionado:false
+        });
+        this.add('2d');
+        this.on("sensor");
+      },
+
+      sensor: function(colObj){
+        if(colObj.isA("Marisa") && !this.p.colisionado){
+          this.p.colisionado = true;
+          colObj.add("powerupChema");
+          this.destroy();
+        }
+      }
+    });
+
+    Q.Sprite.extend("upDisplay",{
+      init: function(p) {
+        this._super(p, {
+          asset:"up.png",
+          vx:-50,
+          gravity:0,
+          radio:30,
+          sensor:true,
+          colisionado:false
+        });
+        this.add('2d');
+        this.on("sensor");
+      },
+
+      sensor: function(colObj){
+        if(colObj.isA("Marisa") && !this.p.colisionado){
+          this.p.colisionado = true;
+          if(colObj.p.vidas < 5)
+            colObj.p.vidas++;
+          Q.stageScene('hud', 3, colObj.p);
+          this.destroy();
+        }
+      }
+    });
 
       //SERGIO
       //Animaciones
