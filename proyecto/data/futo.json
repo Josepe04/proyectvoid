@@ -1,0 +1,8 @@
+{
+  "vueltaF": {"sx": 0, "sy": 0, "tileW": 256, "tileH":256,"frames":8},
+  "platoF": {"sx": 2048, "sy": 0, "tileW": 256, "tileH":256,"frames":12},
+  "fantasmasF": {"sx": 5120, "sy": 0, "tileW": 256, "tileH":256,"frames":11},
+  "flechasF": {"sx": 7936, "sy": 0, "tileW": 256, "tileH":256,"frames":8},
+  "standF": {"sx": 9984, "sy": 0, "tileW": 256, "tileH":256,"frames":12},
+  "muerteF": {"sx": 13056, "sy": 0, "tileW": 256, "tileH":256,"frames":7}
+}
