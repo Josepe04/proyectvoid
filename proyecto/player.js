@@ -218,7 +218,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           gravity:0,
           radio:5,
     	    invencibleTime: 0,
-          vidas:4,
+          vidas:10,
           gameOver: false,
           sensor:true
         });
@@ -432,7 +432,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         spell: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], rate: 1/5, loop: false, trigger: "stand"},
         stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], rate: 1/5, loop: true},
         daño: {frames: [0, 1, 2, 3, 4, 5, 6, 7], rate: 1/4, loop: false, trigger: "stand"},
-        pup: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], rate: 1/5, loop: false, trigger: "stand"},
+        pup: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], rate: 1/5, loop: false, trigger: "stand"}
       });
 
 
