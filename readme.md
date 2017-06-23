@@ -17,11 +17,11 @@ El juego se basa en las siguientes mecánicas:
 
 - El personaje tiene un número limitado de vidas, que puede perder cuando es alcanzado por un enemigo o por un proyectil del mismo.
 
-- El jugador puede moverse en las cuatro direcciones en el espacio del escenario (existen unos límites) mientras lanza magia.
+- El jugador puede moverse en las cuatro direcciones (con las flechas del teclado, si se mantiene pulsado "shift" se realiza un movimiento más lento) en el espacio del escenario (existen unos límites) mientras lanza magia.
 
-- El jugador puede lanzar proyectiles (magia), en un principio la magia básica es en línea recta. Existen power-ups que cambian el patrón que sigue el proyectil, lo potencian, etc. También hay un power-up que da una vida.
+- El jugador puede lanzar proyectiles (magia) (con la tecla espacio o z), en un principio la magia básica es en línea recta. Existen power-ups que cambian el patrón que sigue el proyectil, lo potencian, etc. También hay un power-up que da una vida.
 
-- Según el escenario puede haber una magia especial o no (nivel de dificultad). Esta magia es lanzada con una tecla especial, y es de gran utilidad dentro del escenario.
+- Según el escenario puede haber una magia especial (para usarla hay que pulsar la tecla x) o no (nivel de dificultad). Esta magia es lanzada con una tecla especial, y es de gran utilidad dentro del escenario. En los escenarios que esta magia esté disponible, habrá un indicador en la esquina inferior izquierda que mostrará si es posible usarlo o no.
 
 * **Mecánicas del enemigo**
 
