@@ -50,7 +50,8 @@ window.addEventListener("load",function(){
    "futo-grande.png, hijiri-grande.png, mamizou-grande.png,"+
    "futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,koishi.png,koishi.json, kokoro.png,kokoro.json, Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
    "reimu.png,reimu.json,marisa.png,marisa.json,"+
-   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3", function() {
+   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3,"+
+   "balaPower1.png,balaPower2.png, balaPower3.png", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
     Q.compileSheets("river.png","river.json");
     Q.compileSheets("fall.png","fall.json");

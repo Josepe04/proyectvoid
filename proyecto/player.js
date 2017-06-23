@@ -115,7 +115,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
     Q.component("disparoPrincipal",{
       added: function() {
           this.tAcomulada = 0;
-          this.reloadTime = 0;
+          this.reloadTime = 0.1;
           this.entity.on("step",this,"step");
       },
       step: function(dt){
@@ -127,7 +127,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           if(p.diffX > 0){
             velocidadX = p.diffX * dt/ p.stepDelay;
           }
-          Q.stage().insert(new Q.BalaPlayer({asset:"pruebabala.png",x:p.x + 1.5*p.radio,y:p.y,
+          Q.stage().insert(new Q.BalaPlayer({asset:"pruebabala.png",x:p.x + 1.5*p.radio,y:p.y-50,
                                   vx:400 + velocidadX,vy:0,rad: 2
                                   }));
         }
@@ -426,6 +426,221 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
             colObj.p.vidas++;
           Q.stageScene('hud', 3, colObj.p);
           this.destroy();
+        }
+      }
+    });
+
+    /** 
+     * POWERUPS
+    */
+
+    Q.Sprite.extend("BalaPlayerRebota",{
+      init: function(tipoBala){
+        //como crear una bala concreta
+        //this.stage.insert(new Q.Bala(args));
+        this._super({
+          //sheet:tipoBala.sh,
+          //sprite:tipoBala.spr,
+          asset:tipoBala.asset,
+          x:tipoBala.x,
+          y:tipoBala.y,
+          vx:tipoBala.vx,
+          vy:tipoBala.vy,
+          radio:tipoBala.rad,
+          gravity:0,
+          sensor:true,
+          impacto: false
+        });
+        this.add('2d');
+        this.on("sensor");
+      },
+      step: function(dt){
+        this.p.x += dt*this.p.vx;
+        this.p.y += dt*this.p.vy;
+        if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 )
+          this.destroy();
+        else if(this.p.y < LIMITEUP || this.p.y > LIMITEDOWN){
+          this.p.vy = (-this.p.vy);
+        }
+      },
+      sensor: function(colObj){
+        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+          this.p.impacto = true;
+          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+            colObj.destroy();
+          else if(colObj.p.vida > 0)
+            colObj.p.vida--;
+          this.destroy();
+        }
+      }
+    });
+
+    Q.component("powerup1",{
+      added: function() {
+          this.tAcomulada = 0;
+          this.reloadTime = 0.4;
+          this.entity.on("step",this,"step");
+          this.active = true;
+      },
+      step: function(dt){
+        if(this.active){
+          this.tAcomulada += dt;
+          var p = this.entity.p;
+          if(this.tAcomulada >= this.reloadTime && Q.inputs['fire']){
+            this.tAcomulada = 0;
+            var velocidadX = 0;
+            if(p.diffX > 0){
+              velocidadX = p.diffX * dt/ p.stepDelay;
+            }
+            Q.stage().insert(new Q.BalaPlayerRebota({asset:"balaPower1.png",x:p.x + 1.5*p.radio,y:p.y-50,
+                                    vx:400 + velocidadX,vy:0,rad: 2,
+                                    }));
+            Q.stage().insert(new Q.BalaPlayerRebota({asset:"balaPower1.png",x:p.x + 1.5*p.radio,y:p.y-50,
+                                    vx:400 + velocidadX,vy:0,rad: 2,
+                                    }));
+          }
+        }
+      },
+
+        habilitar: function(){
+          if(this.active) this.active =false;
+          else this.active = true;
+        }
+    });
+
+    Q.Sprite.extend("BalaSenoPlayer",{
+      init: function(p,tipoBala){
+        //como crear una bala concreta
+        //this.stage.insert(new Q.Bala(args));
+        this._super(p,{
+          //sheet:tipoBala.sh,
+          //sprite:tipoBala.spr,
+          asset:tipoBala.asset,
+          x:tipoBala.x,
+          y:tipoBala.y,
+          vx:tipoBala.vx,
+          vy:tipoBala.vy,
+          radio:tipoBala.rad,
+          gravity:0,
+          t:0,
+          sensor:true,
+          impacto: false
+        });
+        this.add('2d');
+        this.on("sensor");
+      },
+      step: function(dt){
+        this.p.t += dt;
+        this.p.vx = this.p.A + this.p.B * Math.sin(this.p.C * this.p.t + this.p.D);
+        this.p.vy = this.p.E + this.p.F * Math.sin(this.p.G * this.p.t + this.p.H);
+        if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 || this.p.y < LIMITEY1 || this.p.y > LIMITEY2)
+          this.destroy();
+      },
+      sensor: function(colObj){
+        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+          this.p.impacto = true;
+          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+            colObj.destroy();
+          else if(colObj.p.vida > 0)
+            colObj.p.vida--;
+          this.destroy();
+        }
+      }
+    });
+
+    Q.component("powerup2",{
+      added: function() {
+          this.tAcomulada = 0;
+          this.reloadTime = 0.3;
+          this.entity.on("step",this,"step");
+          this.active = true;
+      },
+      step: function(dt){
+        if(this.active){
+          this.tAcomulada += dt;
+          var p = this.entity.p;
+          if(this.tAcomulada >= this.reloadTime && Q.inputs['fire']){
+            this.tAcomulada = 0;
+            var velocidadX = 0;
+            if(p.diffX > 0){
+              velocidadX = p.diffX * dt/ p.stepDelay;
+            }
+            Q.stage().insert(new Q.BalaSenoPlayer({A: 300,  B: -100, C: 1, D:0 , E: 20, F: 100, G: 1, H: Math.PI/2},
+                            {asset:"balaPower2.png",x:p.x + 1.5*p.radio,y:p.y-50,
+                                    vx:400 + velocidadX,vy:200,rad: 2,
+                                    }));
+            Q.stage().insert(new Q.BalaSenoPlayer({A: 300,  B: 100, C: 1, D:0 , E: 20, F: 100, G: -1, H: Math.PI/2},
+                            {asset:"balaPower2.png",x:p.x + 1.5*p.radio,y:p.y-50,
+                                    vx:400 + velocidadX,vy:-200,rad: 2,B:100
+                                    }));
+          }
+        }
+      },
+
+        habilitar: function(){
+          if(this.active) this.active =false;
+          else this.active = true;
+        }
+    });
+
+
+
+    Q.Sprite.extend("BalaPlayerOP",{
+      init: function(tipoBala){
+        //como crear una bala concreta
+        //this.stage.insert(new Q.Bala(args));
+        this._super({
+          //sheet:tipoBala.sh,
+          //sprite:tipoBala.spr,
+          asset:tipoBala.asset,
+          x:tipoBala.x,
+          y:tipoBala.y,
+          vx:tipoBala.vx,
+          vy:tipoBala.vy,
+          radio:tipoBala.rad,
+          gravity:0,
+          sensor:true,
+          impacto: false
+        });
+        this.add('2d');
+        this.on("sensor");
+      },
+      step: function(dt){
+        this.p.x += dt*this.p.vx;
+        this.p.y += dt*this.p.vy;
+        if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 || this.p.y < LIMITEY1 || this.p.y > LIMITEY2)
+          this.destroy();
+      },
+      sensor: function(colObj){
+        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+          this.p.impacto = true;
+          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+            colObj.destroy();
+          else if(colObj.p.vida > 0)
+            colObj.p.vida-=2;
+          this.destroy();
+        }
+      }
+    });
+
+    Q.component("powerup3",{
+      added: function() {
+          this.tAcomulada = 0;
+          this.reloadTime = 0.1;
+          this.entity.on("step",this,"step");
+      },
+      step: function(dt){
+        this.tAcomulada += dt;
+        var p = this.entity.p;
+        if(this.tAcomulada >= this.reloadTime && Q.inputs['fire']){
+          this.tAcomulada = 0;
+          var velocidadX = 0;
+          if(p.diffX > 0){
+            velocidadX = p.diffX * dt/ p.stepDelay;
+          }
+          Q.stage().insert(new Q.BalaPlayerOP({asset:"balaPower3.png",x:p.x + 1.5*p.radio,y:p.y-50,
+                                  vx:400 + velocidadX,vy:0,rad: 2
+                                  }));
         }
       }
     });
