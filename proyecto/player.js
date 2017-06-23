@@ -101,11 +101,26 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.destroy();
       },
       sensor: function(colObj){
-        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+        /*if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
           if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
             colObj.destroy();
           else if(colObj.p.vida > 0)
+            colObj.p.vida--;
+          this.destroy();
+        }*/
+
+        if(colObj.p.tipo == "enemy"  && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+          this.p.impacto = true;
+          if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+            colObj.destroy();
+          else if(colObj.p.vida > 0)
+            colObj.p.vida--;
+          this.destroy();
+        }
+        if(colObj.p.tipo == "boss" && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 40)){
+          this.p.impacto = true;
+          if(colObj.p.vida > 0)
             colObj.p.vida--;
           this.destroy();
         }
@@ -429,9 +444,9 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         }
       }
     });
-	
-	
-    /** 
+
+
+    /**
      * POWERUPS GENERALES
     */
 
@@ -472,7 +487,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
             colObj.add('disparoPrincipal');
           }else if(rand < 3/4)
             colObj.add('powerup3');
-          else 
+          else
             colObj.add('powerupDemo');
           this.destroy();
         }
@@ -511,11 +526,25 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         }
       },
       sensor: function(colObj){
-        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+      /*  if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
           if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
             colObj.destroy();
           else if(colObj.p.vida > 0)
+            colObj.p.vida--;
+          this.destroy();
+        }*/
+        if(colObj.p.tipo == "enemy"  && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+          this.p.impacto = true;
+          if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+            colObj.destroy();
+          else if(colObj.p.vida > 0)
+            colObj.p.vida--;
+          this.destroy();
+        }
+        if(colObj.p.tipo == "boss" && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 40)){
+          this.p.impacto = true;
+          if(colObj.p.vida > 0)
             colObj.p.vida--;
           this.destroy();
         }
@@ -584,14 +613,29 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.destroy();
       },
       sensor: function(colObj){
-        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+        /*if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
           if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
             colObj.destroy();
           else if(colObj.p.vida > 0)
             colObj.p.vida--;
           this.destroy();
+        }*/
+        if(colObj.p.tipo == "enemy"  && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+          this.p.impacto = true;
+          if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+            colObj.destroy();
+          else if(colObj.p.vida > 0)
+            colObj.p.vida--;
+          this.destroy();
         }
+        if(colObj.p.tipo == "boss" && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 40)){
+          this.p.impacto = true;
+          if(colObj.p.vida > 0)
+            colObj.p.vida--;
+          this.destroy();
+        }
+
       }
     });
 
@@ -658,7 +702,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.destroy();
       },
       sensor: function(colObj){
-        if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+        /*if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
           if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
             colObj.destroy();
@@ -666,7 +710,22 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
             colObj.p.vida-=2;
           this.destroy();
         }
+      }*/
+      if(colObj.p.tipo == "enemy"  && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
+        this.p.impacto = true;
+        if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+          colObj.destroy();
+        else if(colObj.p.vida > 0)
+          colObj.p.vida--;
+        this.destroy();
       }
+      if(colObj.p.tipo == "boss" && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 40)){
+        this.p.impacto = true;
+        if(colObj.p.vida > 0)
+          colObj.p.vida--;
+        this.destroy();
+      }
+    }
     });
 
     Q.component("powerup3",{
