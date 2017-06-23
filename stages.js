@@ -14,7 +14,7 @@ window.addEventListener("load",function(){
    "templo.png, templo.json,forest.png, forest.json,river.png, river.json,fall.png, fall.json, montaña.png,montaña.json, volcan.png, volcan.json,"+
    "Advise-futo.png, Advise-hijiri.png,Advise-ichirin.png, Advise-kokoro.png, Advise-mamizou.png, Advise-mokou.png, Advise-reimu.png, Advise-koishi.png,"+
    "futo-grande.png, hijiri-grande.png, mamizou-grande.png, reimu-grande.png, mokou-grande.png, ichirin-grande.png, koishi-grande.png, kokoro-grande.png,"+
-   "ichirin.png, Ichirin.json,futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
+   "ichirin.png, ichirin.json,futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,mamizou.png,mamizou.json, moukou.png,moukou.json,"+
    "reimu.png,reimu.json,marisa.png,marisa.json,"+
    "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3, escenarioAdri1.mp3,escenarioAdri2.mp3, byob.mp3,koishi.mp3, kokoro.mp3,"+
    "balaPower1.png, balaPower2.png, balaPower3.png, poweruphud.png", function() {
@@ -26,8 +26,8 @@ window.addEventListener("load",function(){
     Q.compileSheets("montaña.png","montaña.json");
     Q.compileSheets("koishi.png","koishi.json");
     Q.compileSheets("kokoro.png","kokoro.json");
-    Q.compileSheets("Mamizou.png","Mamizou.json");
-    Q.compileSheets("ichirin.png","Ichirin.json")
+    Q.compileSheets("mamizou.png","mamizou.json");
+    Q.compileSheets("ichirin.png","ichirin.json")
     Q.compileSheets("marisa.png", "marisa.json");
     Q.compileSheets("reimu.png", "reimu.json");
     Q.compileSheets("moukou.png", "moukou.json");
