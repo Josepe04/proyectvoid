@@ -138,7 +138,7 @@ window.addEventListener("load",function(){
 
 
   //ANDRES
- 
+
 /*_________________________________________________NIVEL KOISHI__________________________________________________________________________________________*/
   Q.animations("koishi_animations", {
   invulnerable: {frames: [0, 1, 2, 3], rate: 1/4, flip: "x", loop: true},
@@ -243,7 +243,7 @@ Q.component("koishiPatron1", {
             boss =  Q('Koishi').first().p;
 
             // Metemos la posicion de la torreta que dispara y del bossr
-            var modV = balaDirigida(boss,p);
+            var modV = balaSanadora(boss,p);
             // Determinamos la velocidad de los proyectiles
             modV.vx = -modV.vx *100;
             modV.vy = -modV.vy *100;
@@ -278,7 +278,7 @@ Q.component("koishiPatron1", {
     },
 
     sensor: function(colObj){
-      if(colObj.isA("BalaPlayer") && !this.p.impacto) {
+      if(colObj.p.tipo=="balaPlayer" && !this.p.impacto) {
         this.p.impacto = true;
         Q('Koishi').first().destruye_orbe();
       }
@@ -307,7 +307,7 @@ Q.component("koishiPatron1", {
     },
 
     sensor: function(colObj){
-      if(colObj.isA("Koishi") && !this.p.impacto) {
+      if(colObj.isA("Koishi") && !this.p.impacto && colisionCuadrada(colObj.p, this.p, 0)) {
         this.p.impacto = true;
         colObj.sanarse();
         this.destroy();
@@ -351,7 +351,7 @@ Q.Sprite.extend("Torreta",{
         y:1850,
         vy:0,
         // Numero de orbes que hay que romper para que el boss deje de ser invulnerable
-        orbesInv:1,
+        orbesInv:5,
         time:0,
         time2:0,
         gravity:0,
@@ -359,7 +359,7 @@ Q.Sprite.extend("Torreta",{
         sensor:true,
         fase:0,
         tipo: "boss",
-        vida:100,
+        vida:500,
         SpawnerInvulnerableDestruido:false,
         SpawnerSanacionDestruido:false
       });
@@ -373,7 +373,8 @@ Q.Sprite.extend("Torreta",{
           spawner.destroy();
         }
         // Mensaje de victoria y destruccion del objeto boss
-        Q.stageScene("endGame",1, { label: "You Win" });
+        Q.stage().pause();
+        Q.stageScene("endKoishi",1, { label: "You Win" });
       });
 
       // Evento que inicia la Fase Boss
@@ -417,7 +418,7 @@ Q.Sprite.extend("Torreta",{
 
     // Funcion para sanarse. Se llama cuando un orbe de sanacion impacta con el boss
     sanarse: function(p) {
-      this.p.vida += 10;
+      this.p.vida += 5;
       Q.stageScene('hudboss', 4, this.p);
       this.p.sheet = "curacion";
       this.play("curacion");
@@ -433,7 +434,7 @@ Q.Sprite.extend("Torreta",{
     // Controla la subida y bajada vertical del boss en el escenario
     step: function(dt) {
       if(this.p.orbesInv > 0) {
-        this.p.vida = 100;
+        this.p.vida = 500;
       } else {
         if(this.p.y <= 1764) {
           this.p.vy = 100;
@@ -446,7 +447,7 @@ Q.Sprite.extend("Torreta",{
     // Controla las colisiones de proyectiles sobre el boss
     sensor: function(colObj){
       // Si colisiona contra una bala del jugador pierde vida
-      if(colObj.isA("BalaPlayer")){
+      if(colObj.p.tipo=="balaPlayer"){
         // Se muestra la vida que tiene el boss en cada momento
         Q.stageScene('hudboss', 4, Q('Koishi').first().p);
 
@@ -507,7 +508,7 @@ Q.component("kokoroPatron1", {
         waifu.p.sheet = "ataqueBasico";
         waifu.play("ataqueBasico");
         Q.stage().insert(new Q.Bala({asset: "kokoro_bala4.png", x:p.x - 1.5*p.radio,y:p.y,
-                                vx:modV.vx,vy:modV.vy,rad: 15,
+                                vx:modV.vx,vy:modV.vy,rad: 5,
                                 funcionColision:function(colObj){}}));
         // Liberamos el candado del patron1 para que el 2 pueda activarse
         this.entity.p.patron1Lock = false;
@@ -592,7 +593,7 @@ Q.component("kokoroPatron1", {
     },
 
     sensor: function(colObj){
-      if(colObj.isA("BalaPlayer") && !this.p.impacto) {
+      if(colObj.p.tipo=="balaPlayer" && !this.p.impacto) {
         this.p.impacto = true;
         Q('Kokoro').first().destruye_discipula();
       }
@@ -621,7 +622,7 @@ Q.component("kokoroPatron1", {
     },
 
     sensor: function(colObj){
-      if(colObj.isA("BalaPlayer") && !this.p.impacto) {
+      if(colObj.p.tipo=="balaPlayer" && !this.p.impacto) {
         this.p.impacto = true;
         Q('Kokoro').first().destruye_discipula();
       }
@@ -639,7 +640,7 @@ Q.component("kokoroPatron1", {
         y:4850,
         vy:0,
         // Numero de discipulas que hay que derrotar antes de que aparezca
-        discipulas:10,
+        discipulas:50,
         time:0,
         time2:0,
         gravity:0,
@@ -647,7 +648,7 @@ Q.component("kokoroPatron1", {
         sensor:true,
         fase:0,
         tipo: "boss",
-        vida:300,
+        vida:600,
         spawnersDestruidos:false,
         // Candados para que no se solapen los patrones
         patron1Lock:false,
@@ -658,6 +659,7 @@ Q.component("kokoroPatron1", {
       this.on("destruir", function() {
           var spawn = Q('SpawnerCuchillos').first();
           spawn.destroy();
+          Q.stage().pause();
         // Mensaje de victoria y destruccion del objeto boss
         Q.stageScene("endGame",1, { label: "You Win" });
         //this.destroy();
@@ -696,15 +698,6 @@ Q.component("kokoroPatron1", {
       }
     },
 
-    // Funcion para sanarse. Se llama cuando un orbe de sanacion impacta con el boss
-    sanarse: function(p) {
-      this.p.vida += 10;
-      Q.stageScene('hudboss', 4, this.p);
-      this.p.sheet = "curacion";
-      this.play("curacion");
-
-    },
-
 
 
     // Controla la subida y bajada vertical del boss en el escenario
@@ -721,7 +714,7 @@ Q.component("kokoroPatron1", {
     // Controla las colisiones de proyectiles sobre el boss
     sensor: function(colObj){
       // Si colisiona contra una bala del jugador:
-      if(colObj.isA("BalaPlayer")){
+      if(colObj.p.tipo=="balaPlayer"){
         // Se muestra la vida que tiene el boss en cada momento
         Q.stageScene('hudboss', 4, Q('Kokoro').first().p);
 
@@ -738,7 +731,7 @@ Q.component("kokoroPatron1", {
 
 /*______________________________________________FIN NIVEL KOKORO__________________________________________________________________________________________*/
 
-	
+
 
 
   //ADRI

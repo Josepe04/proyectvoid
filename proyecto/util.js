@@ -31,6 +31,25 @@
   };
 
 
+
+
+
+  var balaSanadora = function(posPlayer,posBoss){
+      var velocidades = {vx:0,vy:0};
+      var difx = posPlayer.x-posBoss.x;
+      var dify = posPlayer.y-posBoss.y;
+      if(difx < 0){
+        velocidades.vx = 1;
+        velocidades.vy =  (dify/difx);
+      }
+      else{
+        velocidades.vx = -1;
+        velocidades.vy =  -(dify/difx);
+      }
+      return velocidades;
+    };
+
+
 /*
 AÑADIR EL PARAMETRO MOD Y DONDE SE PASAN LOS PIXELES PARA ADAPTAR
 EL CENTRO DE LA COLISON AL SPRITE UTILIZADO

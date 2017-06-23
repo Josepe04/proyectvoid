@@ -6,15 +6,17 @@ window.addEventListener("load",function(){
    "bolita.png, fuego.png,miniOrbeRojo.png, arrow.png, music.png, fire.png, spawner.png,"+
    "sombrero.png, ovalo.png,flecha.png, fantasma.png, plato.png,"+
    "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png,"+
-   "pu1.png, pu1D.png, reimu_animal.png,"+
-   "escudo.png,"+
+   "pu1.png, pu1D.png, reimu_animal.png, escudo.png,"+
+   "escenario_koishi.png, Torreta.png, koishi_bala1.png, koishi_bala2.png, koishi_bala3.png,"+
+   "koishi_bala4.png, koishi_bala5.png, koishi.png, koishi.json, escenario_kokoro.png, kokoro.png,"+
+   "kokoro.json, kokoro_bala1.png, kokoro_bala2.png, kokoro_bala3.png, kokoro_bala4.png, kokoro_bala5.png, kokoro_bala6.png,"+
    "Touhou_castles.jpg, fondo_reimu.png, "+
    "templo.png, templo.json,forest.png, forest.json,river.png, river.json,fall.png, fall.json, montaña.png,montaña.json, volcan.png, volcan.json,"+
-   "Advise-futo.png, Advise-hijiri.png,Advise-ichirin.png, Advise-kokoro.png, Advise-mamizou.png, Advise-mokou.png, Advise-reimu.png,"+
-   "futo-grande.png, hijiri-grande.png, mamizou-grande.png, reimu-grande.png, mokou-grande.png, ichirin-grande.png,"+
-   "ichirin.png, Ichirin.json,futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,koishi.png,koishi.json, kokoro.png,kokoro.json, Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
+   "Advise-futo.png, Advise-hijiri.png,Advise-ichirin.png, Advise-kokoro.png, Advise-mamizou.png, Advise-mokou.png, Advise-reimu.png, Advise-koishi.png,"+
+   "futo-grande.png, hijiri-grande.png, mamizou-grande.png, reimu-grande.png, mokou-grande.png, ichirin-grande.png, koishi-grande.png, kokoro-grande.png,"+
+   "ichirin.png, Ichirin.json,futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
    "reimu.png,reimu.json,marisa.png,marisa.json,"+
-   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3, escenarioAdri1.mp3,escenarioAdri2.mp3, byob.mp3,"+
+   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3, escenarioAdri1.mp3,escenarioAdri2.mp3, byob.mp3,koishi.mp3, kokoro.mp3,"+
    "balaPower1.png, balaPower2.png, balaPower3.png", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
     Q.compileSheets("templo.png","templo.json"); //Añade la Sheet del bosque.
@@ -22,6 +24,8 @@ window.addEventListener("load",function(){
     Q.compileSheets("fall.png","fall.json");
     Q.compileSheets("volcan.png","volcan.json");
     Q.compileSheets("montaña.png","montaña.json");
+    Q.compileSheets("koishi.png","koishi.json");
+    Q.compileSheets("kokoro.png","kokoro.json");
     Q.compileSheets("Mamizou.png","Mamizou.json");
     Q.compileSheets("ichirin.png","Ichirin.json")
     Q.compileSheets("marisa.png", "marisa.json");
@@ -29,7 +33,7 @@ window.addEventListener("load",function(){
     Q.compileSheets("moukou.png", "moukou.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelHijiri");
+    Q.stageScene("levelKokoro");
   });
 
 
@@ -56,7 +60,7 @@ window.addEventListener("load",function(){
 
 
     //ANDRES
-	
+
 /*__________________________________________________NIVEL KOISHI__________________________________________________________________________________________*/
 
     // Estructura con las posiciones de las cuales podran salir los orbes de Invulnerabilidad
@@ -137,20 +141,7 @@ window.addEventListener("load",function(){
 
     });
 
-    // Declaracion del nivel
-    Q.scene("levelKoishi",function(stage) {
-    // Mete el fondo del escenario
-    stage.insert(new Q.Repeater({ asset: "escenario_koishi.png", speedX: 0, speedY: 0, type: 0, h:screen.height, w:screen.width }));
-    var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
-    var torreta1 = stage.insert(new Q.Torreta({x:2300, y:1870}));
-    var torreta2 = stage.insert(new Q.Torreta({x:2600, y:2000}));
-    var torreta3 = stage.insert(new Q.Torreta({x:2420, y:2263}));
-    var boss = stage.insert(new Q.Koishi({t1:torreta1, t2:torreta2, t3:torreta3}));
-    var player = stage.insert(new Q.Marisa());
-    // cuanto mas timelimit mas tiempo tardan en salir los objetos del spawner, el delay es para determinar cuanto tarda en salir el PRIMERO de ellos
-    var spawner1 = stage.insert(new Q.SpawnerOrbesInvulnerabilidad({time:0, timelimit:8, delay:2}));
-    stage.add("viewport").centerOn(2200,2000);
-  });
+
 /*______________________________________________FIN NIVEL KOISHI__________________________________________________________________________________________*/
 
 
@@ -322,19 +313,6 @@ window.addEventListener("load",function(){
 
     });
 
-    // Declaracion del nivel
-    Q.scene("levelKokoro",function(stage) {
-    // Mete el fondo del escenario
-    stage.insert(new Q.Repeater({ asset: "escenario_kokoro.png", speedX: 0, speedY: 0, type: 0, h:screen.height, w:screen.width }));
-    var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
-    var boss = stage.insert(new Q.Kokoro());
-    var player = stage.insert(new Q.Marisa());
-    // cuanto mas timelimit mas tiempo tardan en salir los objetos del spawner, el delay es para determinar cuanto tarda en salir el PRIMERO de ellos
-    var spawner1 = stage.insert(new Q.SpawnerDiscipulas({time:0, timelimit:0.2, delay:2}));
-    var spawner2 = stage.insert(new Q.SpawnerDiscipulasElite({time:0, timelimit:2, delay:4}));
-    var spawner3 = stage.insert(new Q.SpawnerCuchillos({time:0, timelimit:8, delay:0}));
-    stage.add("viewport").centerOn(2200,2000);
-  });
 /*______________________________________________FIN NIVEL KOKORO__________________________________________________________________________________________*/
 
 
@@ -453,18 +431,18 @@ Q.scene('endHijiri',function(stage) {
                                                    label: stage.options.label }));
   button.on("click",function() {
     Q.clearStages();
-    Q.stageScene('levelMokou');
+    Q.stageScene('levelKoishi');
   });
 
   container.fit(20);
 });
 
 Q.scene("levelKoishi",function(stage) {
- var fondo = stage.insert(new Q.FondoRio());
+ stage.insert(new Q.Repeater({ asset: "escenario_koishi.png", speedX: 0, speedY: 0, type: 0, h:screen.height, w:screen.width }));
  Q.stage().insert(new Q.KoishiAdvise());
  Q.stage().insert(new Q.CartelAdvise({asset:"Advise-koishi.png"}));
  Q.audio.stop();
- Q.audio.play("",{ loop: true });
+ Q.audio.play("koishi.mp3",{ loop: true });
  stage.add("viewport").centerOn(2200,2000);
 });
 
@@ -506,7 +484,7 @@ var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                                  label: stage.options.label }));
 button.on("click",function() {
   Q.clearStages();
-  Q.stageScene('levelIchirin');
+  Q.stageScene('levelMamizou');
 });
 
 container.fit(20);
@@ -560,17 +538,17 @@ var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                                  label: stage.options.label }));
 button.on("click",function() {
   Q.clearStages();
-  Q.stageScene('levelFuto');
+  Q.stageScene('levelKokoro');
 });
 
 container.fit(20);
 });
 Q.scene("levelKokoro",function(stage) {
-  var fondo = stage.insert(new Q.FondoVolcan());
+  Q.stage().insert(new Q.Repeater({ asset: "escenario_kokoro.png", speedX: 0, speedY: 0, type: 0, h:screen.height, w:screen.width }));
   Q.stage().insert(new Q.KokoroAdvise());
   Q.stage().insert(new Q.CartelAdvise({asset:"Advise-kokoro.png"}));
   Q.audio.stop();
-  Q.audio.play("",{ loop: true });
+  Q.audio.play("kokoro.mp3",{ loop: true });
   stage.add("viewport").centerOn(2200,2000);
 });
 
@@ -798,6 +776,27 @@ Q.Sprite.extend("FondoTemplo", {
 
    //////////////////////////////////////////////////////STAGE ADVISES/////////////////////////////////////////////////////////////////////////////
 
+   Q.Sprite.extend("KoishiAdvise", {
+     init: function (p) {
+       this._super(p,{
+         asset: "koishi-grande.png",
+         x: 2200,
+         y: 2000,
+         type: 0
+       });
+       this.add('tween');
+       this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0},1.2, {callback: function() {
+         var torreta1 = Q.stage().insert(new Q.Torreta({x:2300, y:1870}));
+         var torreta2 = Q.stage().insert(new Q.Torreta({x:2600, y:2000}));
+         var torreta3 = Q.stage().insert(new Q.Torreta({x:2420, y:2263}));
+         var boss = Q.stage().insert(new Q.Koishi({t1:torreta1, t2:torreta2, t3:torreta3}));
+         var player = Q.stage().insert(new Q.Marisa());
+         // cuanto mas timelimit mas tiempo tardan en salir los objetos del spawner, el delay es para determinar cuanto tarda en salir el PRIMERO de ellos
+         var spawner1 = Q.stage().insert(new Q.SpawnerOrbesInvulnerabilidad({time:0, timelimit:5, delay:2}));
+       }});
+     }
+   });
+
    Q.Sprite.extend("IchirinAdvise", {
      init: function (p) {
        this._super(p,{
@@ -814,6 +813,28 @@ Q.Sprite.extend("FondoTemplo", {
        }});
      }
    });
+
+   Q.Sprite.extend("KokoroAdvise", {
+     init: function (p) {
+       this._super(p,{
+         asset: "kokoro-grande.png",
+         x: 2200,
+         y: 2000,
+         type: 0
+       });
+       this.add('tween');
+       this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0},1.2, {callback:function(){
+         var boss = Q.stage().insert(new Q.Kokoro());
+         var player = Q.stage().insert(new Q.Marisa());
+         // cuanto mas timelimit mas tiempo tardan en salir los objetos del spawner, el delay es para determinar cuanto tarda en salir el PRIMERO de ellos
+         var spawner1 = Q.stage().insert(new Q.SpawnerDiscipulas({time:0, timelimit:0.2, delay:2}));
+         var spawner2 = Q.stage().insert(new Q.SpawnerDiscipulasElite({time:0, timelimit:2, delay:4}));
+         var spawner3 = Q.stage().insert(new Q.SpawnerCuchillos({time:0, timelimit:8, delay:0}));
+       }});
+     }
+   });
+
+
 
    Q.Sprite.extend("HijiriAdvise", {
      init: function (p) {
