@@ -1,15 +1,15 @@
 # Magic Waifus
 
-### 1. Diseño del juego
+## 1. Diseño del juego
 
 > Magic Waifus es un juego que pertenece al género "bullet hell" (toma claras referencias de Touhou), que lo convierte en un frenético juego en el que te enfrentas a oleadas de enemigos, esquivando sus proyectiles y lanzando los tuyos.
 El juego se basa en enfrentamiento a jefes finales, por lo que no tiene ningún tipo de scroll.
 
-**1.1. Objetivos del juego**
+## 1.1. Objetivos del juego
 
 El objetivo principal del juego, es vencer a todos los jefes finales (8 en total). Se pierde la partida cuando ya no le quedan más vidas al jugador.
 
-**1.2. Principales mecánicas**
+## 1.2. Principales mecánicas
 
 El juego se basa en las siguientes mecánicas:
 
@@ -30,9 +30,23 @@ El juego se basa en las siguientes mecánicas:
 - Hay un jefe final por escenario, el cual tiene
 vidas, que pierde si es alcanzado por un proyectil del jugador. También puede lanzar magia al jugador, invocar esbirros... según se tercie.
 
+## 2. Diseño de la implementación
+
+Para la implementación se ha usado el motor Quintus.
+
+### Arquitectura
+
+### Componentes principales
+
+## 3. Equipo de trabajo y reparto de tareas
+
+Los miembros del grupo que han desarrollado el juego son:
+
+**Sergio Freire Fernandez - @Wizsmiles**
+**Jose Manuel Perez Zamorano - @Josepe04**
+**Andrés Pascual Contreras - @DrasenPC**
+**Adrián Muñoz Gámez - @Nadrixa**
 
 
 
-### 2. Diseño de la implementación
-### 3. Equipo de trabajo y reparto de tareas
-### 4. Fuentes y referencias
+## 4. Fuentes y referencias
