@@ -65,7 +65,7 @@ window.addEventListener("load",function(){
     Q.compileSheets("moukou.png", "moukou.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelFuto");
+    Q.stageScene("levelMamizou");
   });
 
   Q.scene('endGame',function(stage) {
@@ -108,63 +108,11 @@ window.addEventListener("load",function(){
     container.fit(16);
   });
 
-  /*Animación del templo*/
-  Q.animations("temploAnim", {
-    anim: { frames: [0,1,2,3,4,5,6,7], rate: 1/3, flip: false, loop: true}
-  });
-
-  /* Sprite que representa el templo */
-  Q.Sprite.extend("FondoTemplo", {
-    init: function (p) {
-      this._super(p,{
-        sprite:"temploAnim",
-        sheet:"templo",
-        x: 2200,
-        y: 2000,
-        type: 0
-      });
-      this.add("animation");
-      this.play("anim");
-    }
-
-  });
-
-  Q.Sprite.extend("IchirinAdvise", {
-    init: function (p) {
-      this._super(p,{
-        asset: "ichirin-grande.png",
-        x: 2200,
-        y: 2000,
-        type: 0
-      });
-      this.add('tween');
-      this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0},1.2, {callback: function() {
-        Q.stage().insert(new Q.Ichirin({vida: 500}));
-        Q.stage().insert(new Q.PowerDisplay({x:2300, y:2300}));
-        var player = Q.stage().insert(new Q.Marisa());
-        player.add("antiSpellIchirin");
-        Q.stageScene('hud',3, Q('Marisa').first().p);
-      }});
-    }
-  });
 
 
     //ANDRES
 
     //ADRI
-    Q.scene("levelAdrian1",function(stage) {
-    var fondo = stage.insert(new Q.FondoBosque());
-    stage.add("viewport").centerOn(2200,2000);
-    Q.stage().insert(new Q.MamizouAdvise());
-    Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
-    });
-
-    Q.scene("levelAdrian2",function(stage) {
-    var fondo = stage.insert(new Q.FondoTemplo());
-    stage.add("viewport").centerOn(2200,2000);
-    Q.stage().insert(new Q.IchirinAdvise());
-    Q.stage().insert(new Q.CartelAdvise({asset:"Advise-ichirin.png"}));
-    });
 
     //CHEMA
 
@@ -260,10 +208,9 @@ sensor: function(colObj){
 Q.scene("levelMamizou",function(stage) {
 
 var fondo = stage.insert(new Q.FondoBosque());
-var boss = stage.insert(new Q.Mamizou());
-var player = stage.insert(new Q.Marisa());
-
 stage.add("viewport").centerOn(2200,2000);
+Q.stage().insert(new Q.MamizouAdvise());
+Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
 });
 
 Q.scene('endMamizou',function(stage) {
@@ -366,12 +313,12 @@ container.fit(20);
 
 
 Q.scene("levelIchirin",function(stage) {
-  var fondo = stage.insert(new Q.FondoVolcan());
+  var fondo = stage.insert(new Q.FondoTemplo());
+  stage.add("viewport").centerOn(2200,2000);
   Q.stage().insert(new Q.IchirinAdvise());
   Q.stage().insert(new Q.CartelAdvise({asset:"Advise-ichirin.png"}));
   Q.audio.stop();
   Q.audio.play("reach_for_the_moon.mp3",{ loop: true });
-  stage.add("viewport").centerOn(2200,2000);
 });
 
 Q.scene('endIchirin',function(stage) {
@@ -482,6 +429,27 @@ Q.Sprite.extend("FondoBosque", {
 
 });
 
+/*Animación del templo*/
+Q.animations("temploAnim", {
+  anim: { frames: [0,1,2,3,4,5,6,7], rate: 1/3, flip: false, loop: true}
+});
+
+/* Sprite que representa el templo */
+Q.Sprite.extend("FondoTemplo", {
+  init: function (p) {
+    this._super(p,{
+      sprite:"temploAnim",
+      sheet:"templo",
+      x: 2200,
+      y: 2000,
+      type: 0
+    });
+    this.add("animation");
+    this.play("anim");
+  }
+
+});
+
 
    /*Animación del fondo rio */
    Q.animations("riverAnim", {
@@ -569,6 +537,24 @@ Q.Sprite.extend("FondoBosque", {
 
    //////////////////////////////////////////////////////STAGE ADVISES/////////////////////////////////////////////////////////////////////////////
 
+   Q.Sprite.extend("IchirinAdvise", {
+     init: function (p) {
+       this._super(p,{
+         asset: "ichirin-grande.png",
+         x: 2200,
+         y: 2000,
+         type: 0
+       });
+       this.add('tween');
+       this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0},1.2, {callback: function() {
+         Q.stage().insert(new Q.Ichirin({vida: 500}));
+         Q.stage().insert(new Q.PowerDisplay({x:2300, y:2300}));
+         var player = Q.stage().insert(new Q.Marisa());
+         Q.stageScene('hud',3, Q('Marisa').first().p);
+       }});
+     }
+   });
+   
    Q.Sprite.extend("HijiriAdvise", {
      init: function (p) {
        this._super(p,{
@@ -650,7 +636,13 @@ Q.Sprite.extend("FondoBosque", {
        type: 0
      });
      this.add('tween');
-     this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0});
+     this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0}, 1.2, {callback: function() {
+       var boss = Q.stage().insert(new Q.Mamizou({vida:1000, fake: false, insertar: true, y: 2000, x: 2700, tipo:"boss"}));
+       var player = Q.stage().insert(new Q.Marisa());
+       player.add("antiSpellMamizou");
+       Q.stageScene('hud',3, Q('Marisa').first().p);
+
+     }});
    }
  });
 
