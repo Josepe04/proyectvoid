@@ -56,6 +56,289 @@ window.addEventListener("load",function(){
 
 
     //ANDRES
+	
+/*__________________________________________________NIVEL KOISHI__________________________________________________________________________________________*/
+
+    // Estructura con las posiciones de las cuales podran salir los orbes de Invulnerabilidad
+    var veloc1 = 300;
+    var posiciones1 = {
+      // arriba izquierda
+      1: { posX: 1600, posY: 1690, velX: veloc1, velY: veloc1},
+      // abajo izquierda
+      2: { posX: 1600, posY: 2310, velX: veloc1, velY: -veloc1},
+      // arriba derecha
+      3: { posX: 2800, posY: 1690, velX: -veloc1, velY: veloc1},
+      // abajo derecha
+      4: { posX: 2800, posY: 2310, velX: -veloc1, velY: -veloc1}
+    };
+
+    // Estructura con las posiciones de las cuales podran salir los orbes de Sanacion (salen de las torretas)
+    var posiciones2 = {
+      // arriba izquierda
+      1: { posX: 2300, posY: 1760},
+      // abajo izquierda
+      2: { posX: 2420, posY: 2150},
+      // arriba derecha
+      3: { posX: 2600, posY: 1890}
+    };
+
+
+    //SPAWNER Orbes Invulnerabilidad
+    Q.Sprite.extend("SpawnerOrbesInvulnerabilidad",{
+      init: function(p){
+        this._super(p, {
+
+        });
+        // time y delay son pasados por parametros, la idea es que time sufra el retraso de delay para el primer spawn
+        this.p.time -= this.p.delay;
+
+      },
+
+      step: function(dt){
+        // time va aumentando en cada step hasta que supera el limite (tambien dado por parametros)
+        this.p.time+=dt;
+        if(this.p.time>this.p.timelimit){
+          // Elegimos al azar una de las posiciones
+          var pos = Math.floor((Math.random() * 10)) % 4 + 1;
+          var px = posiciones1[pos].posX;
+          var py = posiciones1[pos].posY;
+          // Interesa que sea un poco mas rapido horizontalmente
+          var vex = posiciones1[pos].velX  * 1.5;
+          var vey = posiciones1[pos].velY;
+          Q.stage().insert(new Q.OrbeInvulnerabilidad({x:px, y:py, vx:vex, vy:vey}));
+          this.p.time = 0;
+         }
+      }
+
+    });
+
+    //SPAWNER Orbes Sanacion
+    Q.Sprite.extend("SpawnerOrbesSanacion",{
+      init: function(p){
+        this._super(p, {
+
+        });
+        // time y delay son pasados por parametros, la idea es que time sufra el retraso de delay
+        this.p.time -= this.p.delay;
+      },
+
+      step: function(dt){
+        // time va aumentando en cada step hasta que supera el limite (tambien dado por parametros)
+        this.p.time+=dt;
+        if(this.p.time>this.p.timelimit){
+          // Elegimos al azar una de las posiciones
+          var pos = Math.floor((Math.random() * 10)) % 3 + 1;
+          var px = posiciones2[pos].posX;
+          var py = posiciones2[pos].posY;
+          Q.stage().insert(new Q.OrbeSanacion({x:px, y:py}));
+          this.p.time = 0;
+         }
+      }
+
+    });
+
+    // Declaracion del nivel
+    Q.scene("levelKoishi",function(stage) {
+    // Mete el fondo del escenario
+    stage.insert(new Q.Repeater({ asset: "escenario_koishi.png", speedX: 0, speedY: 0, type: 0, h:screen.height, w:screen.width }));
+    var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
+    var torreta1 = stage.insert(new Q.Torreta({x:2300, y:1870}));
+    var torreta2 = stage.insert(new Q.Torreta({x:2600, y:2000}));
+    var torreta3 = stage.insert(new Q.Torreta({x:2420, y:2263}));
+    var boss = stage.insert(new Q.Koishi({t1:torreta1, t2:torreta2, t3:torreta3}));
+    var player = stage.insert(new Q.Marisa());
+    // cuanto mas timelimit mas tiempo tardan en salir los objetos del spawner, el delay es para determinar cuanto tarda en salir el PRIMERO de ellos
+    var spawner1 = stage.insert(new Q.SpawnerOrbesInvulnerabilidad({time:0, timelimit:8, delay:2}));
+    stage.add("viewport").centerOn(2200,2000);
+  });
+/*______________________________________________FIN NIVEL KOISHI__________________________________________________________________________________________*/
+
+
+/*__________________________________________________NIVEL KOKORO__________________________________________________________________________________________*/
+
+    // Estructura con las posiciones de las cuales podran salir las discipulas
+    var posiciones3 = {
+      // Las discipulas saldran de la derecha del todo en 5 puntos equdistantes verticalmente
+      1: { posX: 2800, posY: 1690},
+      2: { posX: 2800, posY: 1845},
+      3: { posX: 2800, posY: 2000},
+      4: { posX: 2800, posY: 2155},
+      5: { posX: 2800, posY: 2310}
+    };
+
+    //SPAWNER Discipulas
+    Q.Sprite.extend("SpawnerDiscipulas",{
+      init: function(p){
+        this._super(p, {
+
+        });
+        // time y delay son pasados por parametros, la idea es que time sufra el retraso de delay para el primer spawn
+        this.p.time -= this.p.delay;
+      },
+
+      step: function(dt){
+        // time va aumentando en cada step hasta que supera el limite (tambien dado por parametros)
+        this.p.time+=dt;
+        if(this.p.time>this.p.timelimit){
+          // Elegimos al azar una de las posiciones
+          var pos = Math.floor((Math.random() * 10)) % 5 + 1;
+          var px = posiciones3[pos].posX;
+          var py = posiciones3[pos].posY;
+          Q.stage().insert(new Q.Discipula({x:px, y:py, vx:-350}));
+          this.p.time = 0;
+         }
+      }
+
+    });
+
+
+    Q.Sprite.extend("AndanadaKunais",{
+      init: function(p){
+        this._super(p, {
+          i:0,
+          vx:0,
+          vy:0,
+          first: true,
+          gravity:0,
+          time: 0,
+          sensor: true
+        });
+      },
+
+      step: function(dt){
+        this.p.time+=dt;
+
+        if((this.p.i<this.p.numAndanadas) && (this.p.time>this.p.reload || this.p.first)){
+          var vx = -500;
+          // Lanzaremos un abanico infernal de kunais
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala3.png", x:this.p.x ,y:this.p.y,
+                                  vx:vx, vy:-300,rad: 15,
+                                  funcionColision:function(colObj){}}));
+            Q.stage().insert(new Q.Bala({asset: "kokoro_bala3.png", x:this.p.x ,y:this.p.y,
+                                    vx:vx, vy:-200,rad: 15,
+                                    funcionColision:function(colObj){}}));
+            Q.stage().insert(new Q.Bala({asset: "kokoro_bala3.png", x:this.p.x ,y:this.p.y,
+                                    vx:vx, vy:-100,rad: 15,
+                                    funcionColision:function(colObj){}}));
+            Q.stage().insert(new Q.Bala({asset: "kokoro_bala3.png", x:this.p.x ,y:this.p.y,
+                                    vx:vx, vy:0,rad: 15,
+                                    funcionColision:function(colObj){}}));
+            Q.stage().insert(new Q.Bala({asset: "kokoro_bala3.png", x:this.p.x ,y:this.p.y,
+                                    vx:vx, vy:100,rad: 15,
+                                    funcionColision:function(colObj){}}));
+            Q.stage().insert(new Q.Bala({asset: "kokoro_bala3.png", x:this.p.x ,y:this.p.y,
+                                    vx:vx, vy:200,rad: 15,
+                                    funcionColision:function(colObj){}}));
+            Q.stage().insert(new Q.Bala({asset: "kokoro_bala3.png", x:this.p.x ,y:this.p.y,
+                                    vx:vx, vy:300,rad: 15,
+                                    funcionColision:function(colObj){}}));
+           this.p.i++;
+           this.p.time = 0;
+           // Variable de control para la primera andanada
+           this.p.first = false;
+         }
+
+         if(this.p.i == this.p.numAndanadas){
+           this.destroy();
+         }
+      },
+
+    sensor: function(colObj){
+     }
+
+   });
+
+
+    //SPAWNER Discipulas de elite
+    Q.Sprite.extend("SpawnerDiscipulasElite",{
+      init: function(p){
+        this._super(p, {
+
+        });
+        // time y delay son pasados por parametros, la idea es que time sufra el retraso de delay para el primer spawn
+        this.p.time -= this.p.delay;
+      },
+
+      step: function(dt){
+        // time va aumentando en cada step hasta que supera el limite (tambien dado por parametros)
+        this.p.time+=dt;
+        if(this.p.time>this.p.timelimit){
+          // Elegimos al azar una de las posiciones
+          var pos = Math.floor((Math.random() * 10)) % 5 + 1;
+          var px = posiciones3[pos].posX;
+          var py = posiciones3[pos].posY;
+          Q.stage().insert(new Q.DiscipulaElite({x:px, y:py}));
+          this.p.time = 0;
+         }
+      }
+
+    });
+
+    //SPAWNER Cuchillos
+    Q.Sprite.extend("SpawnerCuchillos",{
+      init: function(p){
+        this._super(p, {
+
+        });
+        // time y delay son pasados por parametros, la idea es que time sufra el retraso de delay
+        this.p.time -= this.p.delay;
+      },
+
+      step: function(dt){
+        // time va aumentando en cada step hasta que supera el limite (tambien dado por parametros)
+        this.p.time+=dt;
+        if(this.p.time>this.p.timelimit){
+          var inf = 2310;
+          var sup = 1690;
+          var vec = 300;
+          // Dispararemos dos filas de balas desde los extremos inferior y superior del escenario en sentido contrario
+          // Fila Inferior:
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:1650, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:1770, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:1890, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:2010, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:2130, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:2250, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:2370, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:2490, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:2610, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala2.png", x:2730, y:inf, vy:-vec, rad: 15, funcionColision:function(colObj){}}));
+
+          // Fila Superior:
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:1650, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:1770, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:1890, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:2010, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:2130, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:2250, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:2370, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:2490, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:2610, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.Bala({asset: "kokoro_bala1.png", x:2730, y:sup, vy:vec, rad: 15, funcionColision:function(colObj){}}));
+
+          this.p.time = 0;
+         }
+      }
+
+    });
+
+    // Declaracion del nivel
+    Q.scene("levelKokoro",function(stage) {
+    // Mete el fondo del escenario
+    stage.insert(new Q.Repeater({ asset: "escenario_kokoro.png", speedX: 0, speedY: 0, type: 0, h:screen.height, w:screen.width }));
+    var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
+    var boss = stage.insert(new Q.Kokoro());
+    var player = stage.insert(new Q.Marisa());
+    // cuanto mas timelimit mas tiempo tardan en salir los objetos del spawner, el delay es para determinar cuanto tarda en salir el PRIMERO de ellos
+    var spawner1 = stage.insert(new Q.SpawnerDiscipulas({time:0, timelimit:0.2, delay:2}));
+    var spawner2 = stage.insert(new Q.SpawnerDiscipulasElite({time:0, timelimit:2, delay:4}));
+    var spawner3 = stage.insert(new Q.SpawnerCuchillos({time:0, timelimit:8, delay:0}));
+    stage.add("viewport").centerOn(2200,2000);
+  });
+/*______________________________________________FIN NIVEL KOKORO__________________________________________________________________________________________*/
+
+
+
 
     //ADRI
 

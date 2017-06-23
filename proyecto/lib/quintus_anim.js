@@ -105,7 +105,7 @@ Quintus.Anim = function(Q) {
         repeatY: true,
         repeatX: true,
         renderAlways: true,
-        type: 0,
+        type: 0
       }));
       this.p.repeatW = this.p.repeatW || this.p.w;
       this.p.repeatH = this.p.repeatH || this.p.h;

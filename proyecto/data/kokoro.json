@@ -1,6 +1,6 @@
 {
   "ataqueBasico": {"sx":0,"sy":0,"tileW":384,"tileH":384,"frames":10},
   "ataqueEspecial": {"sx": 3840, "sy":0, "tileW":384 , "tileH": 256 , "frames": 11 },
-  "muerte": {"sx":8064 , "sy":0, "tileW":384 , "tileH":256 , "frames":6 },
-  "movimiento": {"sx":10368 , "sy":0, "tileW":384 , "tileH": 256, "frames": 9}
+  "muerte2": {"sx":8064 , "sy":0, "tileW":384 , "tileH":256 , "frames":6 },
+  "movimiento2": {"sx":10368 , "sy":0, "tileW":384 , "tileH": 256, "frames": 9}
 }

@@ -1,8 +1,8 @@
 {
-  "start": {"sx":0,"sy":0,"tileW":284,"tileH":323,"frames":11},
-  "invulnerable": {"sx": 3124, "sy":0, "tileW":292 , "tileH": 323 , "frames": 4 },
-  "curacion": {"sx":4292 , "sy":0, "tileW":283 , "tileH":323 , "frames":6 },
-  "movimiento": {"sx":5990 , "sy":0, "tileW":290 , "tileH": 323, "frames": 12},
-  "ataque": {"sx": 9479, "sy":0, "tileW": 192, "tileH": 323, "frames": 9},
-  "muerte": {"sx": 11207 , "sy":0, "tileW": 337, "tileH": 323, "frames": 18 }
+  "start": {"sx":0,"sy":0,"tileW":288,"tileH":320,"frames":11},
+  "invulnerable": {"sx": 3168, "sy":0, "tileW":288 , "tileH": 320 , "frames": 4 },
+  "curacion": {"sx":4320 , "sy":0, "tileW":288 , "tileH":320 , "frames":6 },
+  "movimiento": {"sx":6048 , "sy":0, "tileW":288 , "tileH": 320, "frames": 12},
+  "ataque": {"sx": 9504, "sy":0, "tileW": 288, "tileH": 320, "frames": 9},
+  "muerte": {"sx": 12096 , "sy":0, "tileW": 288, "tileH": 320, "frames": 18 }
 }
