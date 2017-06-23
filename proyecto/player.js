@@ -103,7 +103,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       sensor: function(colObj){
         if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
-          if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
             colObj.destroy();
           else if(colObj.p.vida > 0)
             colObj.p.vida--;

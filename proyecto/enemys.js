@@ -1780,18 +1780,20 @@ Q.component("spellCard3Futo",{
 Q.component("antiSpellFuto",{
   added: function() {
     var p = this.entity.p;
-    this.reloadTime = 0;
+    this.reloadTime = 20;
+    this.activo = true;
     this.entity.on("step",this,"step");
   },
 
   step: function(dt) {
       var p = this.entity.p;
       p.timeSpell+=dt;
-      if(p.timeSpell >= this.reloadTime && Q.inputs['action']){
+      if(p.timeSpell >= this.reloadTime && Q.inputs['action'] && this.activo){
          p.timeSpell = 0;
+         this.activo = false;
          p.sheet = "spellMar";
          this.entity.play("spell");
-         Q.stage().insert(new Q.Escudo({player:p}));
+         Q.stage().insert(new Q.Escudo({player:p, comp:this}));
        }
      }
 
@@ -1823,6 +1825,7 @@ Q.Sprite.extend("Escudo",{
 
     if(this.p.time>=5){
       this.p.time = 0;
+      this.p.comp.activo = true;
       this.destroy();
     }
   },
