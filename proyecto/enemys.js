@@ -759,6 +759,7 @@ window.addEventListener("load",function(){
             this.play("stand");
           });
           this.on("destruir",function(){
+            Q.stage().pause();
             Q.stageScene("endMokou",1, { label: "Next Stage" });
           });
           this.on("empezar",function(){
@@ -1154,8 +1155,6 @@ window.addEventListener("load",function(){
 
    comenzar: function(){
      this.add("spellCard1Hijiri");
-     Q.stage().insert(new Q.HijiriAdvise());
-     Q.stage().insert(new Q.CartelAdvise({asset:"Advise-hijiri.png"}));
    },
 
    destruyeSpawner: function(){
@@ -1592,8 +1591,6 @@ init: function(p) {
  comenzar: function(){
    this.add("spellCard1Futo");
    this.add("spellCard2Futo");
-   Q.stage().insert(new Q.FutoAdvise());
-   Q.stage().insert(new Q.CartelAdvise({asset:"Advise-futo.png"}));
    this.p.fase = 1;
  },
 
@@ -1778,67 +1775,7 @@ Q.component("spellCard3Futo",{
   }
 });
 
-Q.component("antiSpellFuto",{
-  added: function() {
-    var p = this.entity.p;
-    this.reloadTime = 20;
-    this.activo = true;
-    this.entity.on("step",this,"step");
-  },
 
-  step: function(dt) {
-      var p = this.entity.p;
-      p.timeSpell+=dt;
-      if(p.timeSpell >= this.reloadTime && Q.inputs['action'] && this.activo){
-         p.timeSpell = 0;
-         this.activo = false;
-         p.sheet = "spellMar";
-         this.entity.play("spell");
-         Q.stage().insert(new Q.Escudo({player:p, comp:this}));
-       }
-     }
-
-});
-
-Q.Sprite.extend("Escudo",{
-  init: function(p){
-    this._super(p, {
-      asset: "escudo.png",
-      time: 0,
-      //radio: 500,
-      gravity: 0,
-      sensor:true
-    });
-    this.add('2d');
-    this.invulnerable();
-    this.on("sensor");
-  },
-
-  invulnerable: function(){
-    this.p.player.invencibleTime=5;
-  },
-
-  step: function(dt){
-
-    this.p.time+=dt;
-    this.p.y = this.p.player.y-20;
-    this.p.x = this.p.player.x-10;
-
-    if(this.p.time>=5){
-      this.p.time = 0;
-      this.p.comp.activo = true;
-      this.destroy();
-    }
-  },
-
-//&& colisionCuadrada(colObj.p,this.p, -72)
-sensor: function(colObj){
-    if((!colObj.isA('Futo') && !colObj.isA('Marisa') && !colObj.isA('BalaPlayer'))){
-      colObj.destroy();
-    }
-   }
-
-});
 
 
 

@@ -115,7 +115,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
     Q.component("disparoPrincipal",{
       added: function() {
           this.tAcomulada = 0;
-          this.reloadTime = 0;
+          this.reloadTime = 0.1;
           this.entity.on("step",this,"step");
       },
       step: function(dt){
@@ -127,7 +127,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           if(p.diffX > 0){
             velocidadX = p.diffX * dt/ p.stepDelay;
           }
-          Q.stage().insert(new Q.BalaPlayer({asset:"pruebabala.png",x:p.x + 1.5*p.radio,y:p.y,
+          Q.stage().insert(new Q.BalaPlayer({asset:"balaPlayer.png",x:p.x + 1.5*p.radio,y:p.y-50,
                                   vx:400 + velocidadX,vy:0,rad: 2
                                   }));
         }
@@ -154,13 +154,13 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
             if(p.diffX > 0){
               velocidadX = p.diffX * dt/ p.stepDelay;
             }
-            Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+            Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y-50,
                                     vx:400 + velocidadX,vy:0,rad: 2,
                                     }));
-           Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+           Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y-50,
                                     vx:400 + velocidadX,vy:100,rad: 2,
                                     }));
-            Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y,
+            Q.stage().insert(new Q.BalaPlayer({asset:"pu1.png",x:p.x + 1.5*p.radio,y:p.y-50,
                                     vx:400 + velocidadX,vy:-100,rad: 2,
                                     }));
           }
@@ -217,7 +217,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           y:2000,
           gravity:0,
           radio:5,
-    	    invencibleTime: 0,
+    	    invencibleTime: 10000000,
           timeSpell:0,
           vidas:5,
           gameOver: false,
@@ -263,7 +263,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
              console.log("muerto");
              if(this.p.vidas <= 0 && !this.p.gameOver){
                this.p.sheet = "muerteMar";
-               this.play("muerte");
+               this.play("muerte", 5);
                this.p.stepDelay = 1;
                this.del('controles');
                this.del('disparoPrincipal');
@@ -438,6 +438,68 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         stand: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], rate: 1/5, loop: true},
         daño: {frames: [0, 1, 2, 3, 4, 5, 6, 7], rate: 1/4, loop: false, trigger: "stand"},
         pup: {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], rate: 1/5, loop: false, trigger: "stand"}
+      });
+
+      Q.component("antiSpellFuto",{
+        added: function() {
+          var p = this.entity.p;
+          this.reloadTime = 20;
+          this.activo = true;
+          this.entity.on("step",this,"step");
+        },
+
+        step: function(dt) {
+            var p = this.entity.p;
+            p.timeSpell+=dt;
+            if(p.timeSpell >= this.reloadTime && Q.inputs['action'] && this.activo){
+               p.timeSpell = 0;
+               this.activo = false;
+               p.sheet = "spellMar";
+               this.entity.play("spell");
+               Q.stage().insert(new Q.Escudo({player:p, comp:this}));
+             }
+           }
+
+      });
+
+      Q.Sprite.extend("Escudo",{
+        init: function(p){
+          this._super(p, {
+            asset: "escudo.png",
+            time: 0,
+            //radio: 500,
+            gravity: 0,
+            sensor:true
+          });
+          this.add('2d');
+          this.invulnerable();
+          this.on("sensor");
+        },
+
+        invulnerable: function(){
+          this.p.player.invencibleTime=5;
+        },
+
+        step: function(dt){
+
+          this.p.time+=dt;
+          this.p.y = this.p.player.y-20;
+          this.p.x = this.p.player.x-10;
+
+          if(this.p.time>=5){
+            this.p.time = 0;
+            this.p.comp.activo = true;
+            this.destroy();
+          }
+        },
+
+      //&& colisionCuadrada(colObj.p,this.p, -72)
+      sensor: function(colObj){
+          if((!colObj.isA('Futo') && !colObj.isA('Marisa') && !colObj.isA('BalaPlayer'))){
+            colObj.destroy();
+          }
+         }
+
       });
 
 
