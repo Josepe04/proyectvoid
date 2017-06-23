@@ -182,45 +182,176 @@ window.addEventListener("load",function(){
   Q.animations("mamizouAnim", {
     "ataque-basico": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], rate: 1/5, flip:"x", loop: false, trigger: "ataqueBasico"},
     "inicio": {frames:[0,1,2,3,4,5,6,7,8], rate: 1/5, flip:"x", loop: false, trigger: "iniciaBatalla"},
+    "giro":{frames:[0,1,2,3,4,5,6,7,8], rate: 1/5, flip:"x", loop: true},
     "muerte": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], rate: 1/5, flip:"x", loop: false, trigger: "destruir"},
     "ataque-final": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,13], rate: 1/5, flip:"x", loop: false, trigger: "ataqueFinal"},
     "movimiento": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], rate: 1/5, flip:"x", loop: true}
+  });
+
+  Q.Sprite.extend("MamizouGiratoria", {
+    init: function(p) {
+      this._super(p, {
+        sprite: "mamizouAnim",
+        sheet: "startMam",
+        x:2700,
+        y:p.y,
+        time: 0,
+        vida: p.vida,
+        vidaInicial: p.vida,
+        fake: p.fake,
+        insertar: p.insertada,
+        radio: 30,
+        gravity: 0,
+        tiempoSecundario: 10,
+        sensor:true,
+        tipo: "boss",
+      });
+      this.add("animation, 2d");
+      this.on("sensor");
+      this.play("giro");
+    },
+
+    sensor: function(colObj){
+    }
+
+
   });
 
   Q.Sprite.extend("Mamizou", {
     init: function(p) {
       this._super(p, {
         sprite: "mamizouAnim",
-        sheet: "start",
+        sheet: "startMam",
         x:2700,
-        y:2000,
+        y:p.y,
         time: 0,
+        vida: p.vida,
+        vidaInicial: p.vida,
+        fake: p.fake,
+        insertar: p.insertada,
+        timeGiratoria: 5,
         radio: 30,
         gravity: 0,
+        tiempoSecundario: 10,
         sensor:true,
         tipo: "boss",
       });
-      this.add("animation, 2d, arrowPatron");
+      this.add("animation, 2d, rafagaFlotante");
+      this.on("sensor");
       this.play("inicio");
 
       this.on("iniciaBatalla", function() {
-        this.p.sheet = "stand";
+        this.p.sheet = "standMam";
         this.play("movimiento");
         this.p.vy = 100;
-        Q.stage().insert(new Q.MamizouAdvise());
-        Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
+      });
+
+      this.on("ataqueBasico", function() {
+        //Falta realizar el comportamiento de atracción.
+        var balasFlotantes = Q("BalaFlotante");
+        var i = 0;
+        while(i < balasFlotantes.length){
+          var mar = Q('Marisa').first().p;
+          var modV = balaDirigida(mar, balasFlotantes.items[i].p);
+          modV.vx = -modV.vx *200;
+          modV.vy = -modV.vy *200;
+          balasFlotantes.items[i].p.vy = modV.vy;
+          balasFlotantes.items[i].p.vx = modV.vx;
+          i++;
+        }
+        this.p.sheet= 'standMam';
+        this.play('movimiento');
+        this.add('rafagaFlotante');
       });
     },
 
+    sensor: function(colObj){
+        if(colObj.isA("BalaPlayer") ){
+          Q.stageScene('hudboss', 4, this.p);
+        }
+    },
+
     step: function(dt) {
-      if(this.p.y <= 1664) this.p.vy = 100;
+      if(this.p.vida < this.p.vidaInicial-this.p.vidaInicial/3 && !this.p.fake && this.p.insertar){
+        this.p.insertar = false;
+        Q.stage().insert(new Q.Mamizou({fake:true, vida: 1, insertar: false, y:this.p.y-300, opacity: 0.7}));
+        Q.stage().insert(new Q.Mamizou({fake:true, vida: 1, insertar: false, y:this.p.y+300, opacity: 0.7}));
+      }
+      if (this.p.vida < this.p.vidaInicial-(this.p.vidaInicial/3)*2 && !this.p.fake && this.p.timeGiratoria <= 0){
+        this.del('rafagaFlotante'); // No se si va a ser necesario.
+        this.p.timeGiratoria = 5;
+        Q.stage().insert(new Q.MamizouGiratoria({y:1780,x:1600,vx:210,vy:100, opacity: 0.7}));
+        Q.stage().insert(new Q.MamizouGiratoria({y:1780,x:2700,vx:-210,vy:100, opacity: 0.7}));
+        Q.stage().insert(new Q.MamizouGiratoria({y:2300,x:1600,vx:210,vy:-100, opacity: 0.7}));
+        Q.stage().insert(new Q.MamizouGiratoria({y:2300,x:2700,vx:-210,vy:-100, opacity: 0.7}));
+        /*Q.stage().insert(new Q.MamizouGiratoria({y:2000,x:2600,vx:50,vy:50}));
+        Q.stage().insert(new Q.MamizouGiratoria({y:2000,x:2600,vx:50,vy:50}));
+        Q.stage().insert(new Q.MamizouGiratoria({y:2000,x:2600,vx:50,vy:50}));*/
+      }
+      else {
+        this.p.timeGiratoria -= dt;
+      }
+      if(this.p.tiempoSecundario <= 0){
+        this.p.tiempoSecundario = 10;
+        this.del('rafagaFlotante');
+        this.p.sheet = 'attack1Mam';
+        this.play("ataque-basico");
+      }
+      else {
+        this.p.tiempoSecundario -= dt;
+      }
+      if(this.p.y <= 1700) this.p.vy = 100;
       else if(this.p.y >= 2329) this.p.vy = -100;
     }
 
   });
 
-  //ARROW DEMO
-  Q.component("proyectilFlotante", {
+  var velocidadesFlotante = {
+    1: {vx: 0.2},
+    2: {vx: 0.13},
+    3: {vx: 0.15},
+    4: {vx: 0.8},
+    5: {vx: 0.7},
+    6: {vx: 0.3},
+    7: {vx: 0.4},
+    8: {vx: 0.5},
+    9: {vx: 0.6},
+  };
+
+  const NUM_VEL_FLOTANTES = 9;
+
+  Q.Sprite.extend("BalaFlotante",{
+    init: function(tipoBala){
+      //como crear una bala concreta
+      //this.stage.insert(new Q.Bala(args));
+      this._super({
+        //sheet:tipoBala.sh,
+        //sprite:tipoBala.spr,
+        asset:tipoBala.asset,
+        x:tipoBala.x,
+        y:tipoBala.y,
+        vx:tipoBala.vx,
+        vy:tipoBala.vy,
+        radio:tipoBala.rad,
+        velFlotante: tipoBala.velFlotante,
+        gravity:0,
+        tipo: "bala",
+        sensor:true
+      });
+      this.add('2d');
+      this.on("sensor",tipoBala.funcionColision);
+    },
+    step: function(dt){
+      if(this.p.vx < 0) {
+        this.p.vx = this.p.vx + velocidadesFlotante[this.p.velFlotante].vx;
+      }
+
+      if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 || this.p.y < LIMITEY1 || this.p.y > LIMITEY2)
+        this.destroy();
+    }
+  });
+
+  Q.component("rafagaFlotante", {
 
       added: function() {
         var p = this.entity.p;
@@ -233,12 +364,14 @@ window.addEventListener("load",function(){
         this.entity.p.time+=dt;
         if(p.time >=this.reloadTime){
           this.entity.p.time = 0;
-          var mar = Q('Marisa').first().p;
-          var modV = balaDirigida(mar,p);
-          modV.vx = -modV.vx *200;
-          modV.vy = -modV.vy *200;
-          Q.stage().insert(new Q.Bala({asset: "arrow.png", x:p.x - 1.5*p.radio,y:p.y,
-                                  vx:modV.vx,vy:modV.vy,rad: 15,
+          Q.stage().insert(new Q.BalaFlotante({asset: "bolita.png", x:p.x - 1.5*p.radio,y:p.y-100, velFlotante: calculaRandomFlotantes(),
+                                  vx:-200,vy:-30,rad: 15,
+                                  funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.BalaFlotante({asset: "bolita.png", x:p.x - 1.5*p.radio,y:p.y, velFlotante: calculaRandomFlotantes(),
+                                  vx:-200,vy:0,rad: 15,
+                                  funcionColision:function(colObj){}}));
+          Q.stage().insert(new Q.BalaFlotante({asset: "bolita.png", x:p.x - 1.5*p.radio,y:p.y+100, velFlotante: calculaRandomFlotantes(),
+                                  vx:-200,vy:30,rad: 15,
                                   funcionColision:function(colObj){}}));
 
         }
@@ -246,6 +379,15 @@ window.addEventListener("load",function(){
       }
 
   });
+
+  var calculaRandomFlotantes = function() {
+    var velFlotante = Math.floor((Math.random()*10)+1)%NUM_VEL_FLOTANTES;
+    if(velFlotante === 0) {
+      velFlotante += 1;
+    }
+
+    return velFlotante;
+  };
 
   //CHEMA
 

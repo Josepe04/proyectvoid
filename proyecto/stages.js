@@ -38,7 +38,7 @@ window.addEventListener("load",function(){
 */
 
   Q.load("pruebabala.png, reimu.png, sanguinaria.png,"+
-   "bola.png, balaRedonda.png,up.png, flor.png, reimu_onmyoBall.png, ooiri.png,"+
+   "bola.png, balaRedonda.png,up.png, flor.png, reimu_onmyoBall.png, ooiri.png,  bolita.png,"+
    "bolita.png, fuego.png,miniOrbeRojo.png, arrow.png, music.png, fire.png, spawner.png,"+
    "sombrero.png, ovalo.png,flecha.png, fantasma.png, plato.png,"+
    "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png,"+
@@ -59,7 +59,7 @@ window.addEventListener("load",function(){
     Q.compileSheets("moukou.png", "moukou.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelSergio2");
+    Q.stageScene("levelAdrian1");
     Q.stageScene('hud',3, Q('Marisa').first().p);
   });
 
@@ -160,7 +160,7 @@ window.addEventListener("load",function(){
     Q.scene("levelAdrian1",function(stage) {
     //stage.insert(new Q.Repeater({ asset: "fondoForest1.png", speedX: 0.5, vx:0.5, speedY: 0.5, repeatY: true, type: 0}));
     var fondo = stage.insert(new Q.FondoBosque());
-    var boss = stage.insert(new Q.Mamizou());
+    var boss = stage.insert(new Q.Mamizou({fake: false, vida: 100, insertar: true, y:2000}));
     var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
     var player = stage.insert(new Q.Marisa());
     //var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:250}));
@@ -168,6 +168,8 @@ window.addEventListener("load",function(){
     //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobRed"}));
     //var direccion = {x:true, y:false};
     stage.add("viewport").centerOn(2200,2000);
+    Q.stage().insert(new Q.MamizouAdvise());
+    Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
     });
 
     //CHEMA
