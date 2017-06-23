@@ -60,7 +60,7 @@ window.addEventListener("load",function(){
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
     Q.stageScene("levelAdrian1");
-    Q.stageScene('hud',3, Q('Marisa').first().p);
+    //Q.stageScene('hud',3, Q('Marisa').first().p);
   });
 
   Q.scene('endGame',function(stage) {
@@ -136,7 +136,12 @@ window.addEventListener("load",function(){
         type: 0
       });
       this.add('tween');
-      this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0});
+      this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0},1.2, {callback: function() {
+        Q.stage().insert(new Q.Mamizou({fake: false, vida: 100, insertar: true, y:2000}));
+        Q.stage().insert(new Q.PowerDisplay({x:2300, y:2300}));
+        Q.stage().insert(new Q.Marisa());
+        Q.stageScene('hud',3, Q('Marisa').first().p);
+      }});
     }
   });
 
@@ -158,15 +163,7 @@ window.addEventListener("load",function(){
 
     //ADRI
     Q.scene("levelAdrian1",function(stage) {
-    //stage.insert(new Q.Repeater({ asset: "fondoForest1.png", speedX: 0.5, vx:0.5, speedY: 0.5, repeatY: true, type: 0}));
     var fondo = stage.insert(new Q.FondoBosque());
-    var boss = stage.insert(new Q.Mamizou({fake: false, vida: 100, insertar: true, y:2000}));
-    var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
-    var player = stage.insert(new Q.Marisa());
-    //var orbe = stage.insert(new Q.OrbeReimu({x:2500, y:2329,reloadTime:0.1,destroyTime:30,vel:250}));
-    //var spwner1 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:2329, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobRed"}));
-    //var spwner2 = stage.insert(new Q.SpawnerDemo({i: 0, x:2500, y:1664, time:0, timelimit:2, delay:2, numEnemy:20, enemy:"mobRed"}));
-    //var direccion = {x:true, y:false};
     stage.add("viewport").centerOn(2200,2000);
     Q.stage().insert(new Q.MamizouAdvise());
     Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
