@@ -86,3 +86,13 @@ La organización del proyecto es la siguiente:
   * Escenarios @Nadrixa -> Mamizou e Ichirin.
 
 ## 4. Fuentes y referencias
+
+- Todos los sprites de enemigos finales y el jugador principal pertenecen a Touhou 14.5 (ZUN all rights reserved).
+- Los sprites de los escenarios han sido sacados de GIF encontrados en Google.
+- Los enemigos son de diversos Touhou (ZUN all rights reserved).
+- Los proyectiles de los enemigos, jefes finales, y el jugador son de diversos Touhou (ZUN all rights reserved).
+- La música del escenario de Mokou es de Touhou 8 (ZUN all rights reserved).
+- La música del escenario de Reimu es de Touhou 7 (ZUN all rights reserved).
+- La música del escenario de Futo es una versión de 8 bits de "Song of storms" de Zelda (Nintendo).
+- La música del escenario de Hijiri es una versión en 8 bits de "Byob" sacada del canal de youtube "8 bit universe" (youtube.com/user/8BitUniverseMusic).
+- La música del escenario de Mamizou e Ichirin es de la banda sonora original (8 bits) de Fire Emblem Echoes (Nintendo).
