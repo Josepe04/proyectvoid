@@ -208,12 +208,6 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
 
     });
 
-
-
-
-
-
-
     //PLAYER DEMO
     Q.Sprite.extend("Marisa",{
       init: function(p) {
@@ -229,6 +223,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           timeSpell:0,
           vidas:30,
           gameOver: false,
+          antispell:false,
           sensor:true
         });
         this.ultimo = 0;
@@ -320,6 +315,12 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
                  balasFlotantes.items[i].destroy();
 
                }
+             }
+             if(p.timeSpell >= this.reloadTime) {
+               p.antispell = true;
+             }
+             else{
+               p.antispell = false;
              }
            }
 
@@ -774,12 +775,19 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         step: function(dt) {
             var p = this.entity.p;
             p.timeSpell+=dt;
+
             if(p.timeSpell >= this.reloadTime && Q.inputs['action'] && this.activo){
                p.timeSpell = 0;
                this.activo = false;
                p.sheet = "spellMar";
                this.entity.play("spell");
                Q.stage().insert(new Q.Escudo({player:p, comp:this}));
+             }
+             if(p.timeSpell >= this.reloadTime) {
+               p.antispell = true;
+             }
+             else{
+               p.antispell = false;
              }
            }
 

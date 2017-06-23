@@ -17,7 +17,7 @@ window.addEventListener("load",function(){
    "ichirin.png, Ichirin.json,futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
    "reimu.png,reimu.json,marisa.png,marisa.json,"+
    "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3, escenarioAdri1.mp3,escenarioAdri2.mp3, byob.mp3,koishi.mp3, kokoro.mp3,"+
-   "balaPower1.png, balaPower2.png, balaPower3.png", function() {
+   "balaPower1.png, balaPower2.png, balaPower3.png, poweruphud.png", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
     Q.compileSheets("templo.png","templo.json"); //Añade la Sheet del bosque.
     Q.compileSheets("river.png","river.json");
@@ -33,7 +33,7 @@ window.addEventListener("load",function(){
     Q.compileSheets("moukou.png", "moukou.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelKokoro");
+    Q.stageScene("levelHijiri");
   });
 
 
@@ -57,6 +57,39 @@ window.addEventListener("load",function(){
     container.fit(16);
   });
 
+
+  Q.Sprite.extend("antiSpellBoton", {
+    init: function (p) {
+      this._super(p,{
+        asset: "poweruphud.png",
+        didAnimationOn: false,
+        didAnimationOff: false,
+        opacity: 0.6,
+        type: 0
+      });
+
+    },
+
+    step: function (dt) {
+      var marisa = Q('Marisa').first();
+      if(marisa.p.antispell && !this.p.didAnimationOn) {
+        this.p.didAnimationOn = true;
+        this.add('tween');
+        this.animate({opacity: 1},{callback: function() {
+          this.p.didAnimationOn = false;
+        }});
+      }
+      else if(!marisa.p.antispell && !this.p.didAnimationOff){
+        this.p.didAnimationOff = true;
+        this.add('tween');
+        this.animate({opacity: 0.4},{callback: function() {
+          this.p.didAnimationOff = false;
+        }});
+      }
+
+    }
+
+  });
 
 
     //ANDRES
@@ -634,7 +667,7 @@ Q.scene('endGame',function(stage) {
                                                    label: stage.options.label }));
   button.on("click",function() {
     Q.clearStages();
-    Q.stageScene('levelMamizou');
+    Q.stageScene('levelHijiri');
   });
 
   container.fit(20);
@@ -867,6 +900,7 @@ Q.Sprite.extend("FondoTemplo", {
          var player = Q.stage().insert(new Q.Marisa());
          player.add("antiSpellFuto");
          Q.stageScene('hud',3, Q('Marisa').first().p);
+         Q.stage().insert(new Q.antiSpellBoton({x:LIMITEX1+100, y: 2300}));
        }});
      }
    });
@@ -922,6 +956,7 @@ Q.Sprite.extend("FondoTemplo", {
        var player = Q.stage().insert(new Q.Marisa());
        player.add("antiSpellMamizou");
        Q.stageScene('hud',3, Q('Marisa').first().p);
+       Q.stage().insert(new Q.antiSpellBoton({x:LIMITEX1+100, y: 2300}));
 
      }});
    }

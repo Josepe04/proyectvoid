@@ -499,8 +499,8 @@ Q.component("kokoroPatron1", {
         // Metemos la posicion del boss
         var modV = balaDirigida(mar,p);
         // Determinamos la velocidad de los proyectiles
-        modV.vx = -modV.vx *250;
-        modV.vy = -modV.vy *250;
+        modV.vx = -modV.vx *350;
+        modV.vy = -modV.vy *350;
         // Usamos balas "estandard" (ver el sprite Bala)
         // 3 Disparos:
         // Un disparo lento dirigido al jugador
@@ -556,6 +556,7 @@ Q.component("kokoroPatron1", {
         },
         step: function(dt) {
           var p = this.entity.p;
+          /*
           //Extraemos la posicion del jugador
           var marisa = Q('Marisa').first().p;
           // Metemos la posicion del jugador y del enemigo
@@ -565,8 +566,25 @@ Q.component("kokoroPatron1", {
           modV.vy = -modV.vy *250;
           // Modificamos las propiedades de velocidad del enemigo segun las caracteristicas de balaDirigida
           this.entity.p.vx = modV.vx;
-          this.entity.p.vy = modV.vy;
+          this.entity.p.vy = modV.vy;*/
+          var mar = Q('Marisa').first().p;
+          if(mar!==null){
+            //x
+            if(p.x < mar.x)
+                p.vx = 200;
+            else
+              p.vx = -200;
+            //y
+            if(p.y < mar.y-72)
+              p.vy = 100;
+            else
+              p.vy = -100;
+
+            if(mar.vidas <= 0){
+              this.destroy();
+            }
         }
+      }
       });
 
 
@@ -656,13 +674,9 @@ Q.component("kokoroPatron1", {
       });
 
       // Muestra el mensaje de victoria y destruye el elemento
-      this.on("destruir", function() {
-          var spawn = Q('SpawnerCuchillos').first();
-          spawn.destroy();
-          Q.stage().pause();
-        // Mensaje de victoria y destruccion del objeto boss
-        Q.stageScene("endGame",1, { label: "You Win" });
-        //this.destroy();
+      this.on("death", function() {
+        Q.stage().pause();
+        Q.stageScene("endKokoro",1, { label: "You Win" });
       });
 
       // Funcion para continuar la animacion de movimiento tras curarse (se llama desde trigger en la animacion curacion)
