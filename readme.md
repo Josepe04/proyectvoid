@@ -38,22 +38,23 @@ Para la implementación se ha usado el motor Quintus.
 
 La organización del proyecto es la siguiente:
 
-* Se compone de las siguientes carpetas:
+* *Se compone de las siguientes carpetas:*
 
-  - audio - guarda todos los sonidos que usa el juego.
-  - data - guarda todos los JSON necesarios para las animaciones.
-  - images - guarda todos los recursos visuales que se usan en el juego.
-  - lib - guarda las librerias de Quintus.
-  - directorio raiz - en este directorio, están los archivos de código:
-    - enemys.js - Guarda el código relacionado con los enemigos y jefes finales.
-    - stages.js - Guarda el código realacionado con los stages, spawners y niveles.
-    - player.js - Guarda el código relacionado con el jugador (con todo lo que conlleva: disparo básico, power-ups...).
-    - util.js - Guarda código referente a distintas funcionalidades comunes que no se corresponden con los otros archivos de código (Límites, colisiones...).
+  - **audio** - guarda todos los sonidos que usa el juego.
+  - **data** - guarda todos los JSON necesarios para las animaciones.
+  - **images** - guarda todos los recursos visuales que se usan en el juego.
+  - **lib** - guarda las librerias de Quintus.
+  - **directorio raíz** - en este directorio, están los archivos de código:
+    - **enemys.js** - Guarda el código relacionado con los enemigos y jefes finales.
+    - **stages.js** - Guarda el código realacionado con los stages, spawners y niveles.
+    - **player.js** - Guarda el código relacionado con el jugador (con todo lo que conlleva: disparo básico, power-ups...).
+    - **util.js** - Guarda código referente a distintas funcionalidades comunes que no se corresponden con los otros archivos de código (Límites, colisiones...).
 
 
 ### Componentes principales
 
-* Los componentes principales son los siguientes:
+* *Los componentes principales son los siguientes:*
+
   - **Marisa**: es la clase referente al jugador (Q.Sprite.extends("Marisa")). Se encuentra en player.js.
   - **Disparos Marisa**: cada disparo es un componente (component en Quintus). Se encuentran en player.js.
   - **Bosses**: según el nombre del boss, el nombre de la clase cambia. Por ejemplo: Boss Mamizou -> clase Mamizou (Q.Sprite.extends("Mamizou")). Se encuentran en enemys.js
@@ -65,14 +66,14 @@ La organización del proyecto es la siguiente:
 
 ## 3. Equipo de trabajo y reparto de tareas
 
-Los miembros del grupo que han desarrollado el juego son:
+*Los miembros del grupo que han desarrollado el juego son:*
 
 @Wizsmiles **- Sergio Freire Fernandez**
 @Josepe04 **- José Manuel Pérez Zamorano**
 @DrasenPC **- Andrés Pascual Contreras**
 @Nadrixa **- Adrián Muñoz Gámez**
 
-El reparto de tareas ha sido el siguiente:
+*El reparto de tareas ha sido el siguiente:*
 
 - Realización en conjunto de la idea del juego, estructura, elementos que aparecen en él...
 
