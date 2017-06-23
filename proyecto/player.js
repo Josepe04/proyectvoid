@@ -300,6 +300,29 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       //ANDRES
 
       //ADRI
+      Q.component("antiSpellMamizou",{
+        added: function() {
+          var p = this.entity.p;
+          this.reloadTime = 7;
+          this.entity.on("step",this,"step");
+        },
+
+        step: function(dt) {
+            var p = this.entity.p;
+            p.timeSpell+=dt;
+            if(p.timeSpell >= this.reloadTime && Q.inputs['action']){
+               p.timeSpell = 0;
+               p.sheet = "spellMar";
+               this.entity.play("spell");
+               var balasFlotantes = Q("BalaFlotante");
+               for(var i =0; i < balasFlotantes.length; i++){
+                 balasFlotantes.items[i].destroy();
+
+               }
+             }
+           }
+
+      });
 
       //CHEMA
 

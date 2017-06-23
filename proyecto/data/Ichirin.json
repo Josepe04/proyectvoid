@@ -1,7 +1,7 @@
 {
-  "attack1": {"sx": 0, "sy": 0, "tileW": 256, "tileH":256, "frames":13},
-  "start": {"sx": 3328, "sy": 0, "tileW": 256, "tileH": 256, "frames": 8},
-  "attack2": {"sx": 5376, "sy": 0, "tileW": 256, "tileH": 256, "frames": 9},
-  "death": {"sx": 7680, "sy": 0, "tileW": 256, "tileH": 256, "frames": 8},
-  "stand": {"sx": 9728, "sy": 0, "tileW": 256, "tileH": 256, "frames": 15}
+  "attack1Ich": {"sx": 0, "sy": 0, "tileW": 256, "tileH":256, "frames":13},
+  "startIch": {"sx": 3328, "sy": 0, "tileW": 256, "tileH": 256, "frames": 8},
+  "attack2Ich": {"sx": 5376, "sy": 0, "tileW": 256, "tileH": 256, "frames": 9},
+  "deathIch": {"sx": 7680, "sy": 0, "tileW": 256, "tileH": 256, "frames": 8},
+  "standIch": {"sx": 9728, "sy": 0, "tileW": 256, "tileH": 256, "frames": 15}
 }

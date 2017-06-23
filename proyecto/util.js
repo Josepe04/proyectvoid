@@ -55,9 +55,9 @@ SE RESTA MODY A POSOBJ1.Y EN CAT2
 
   //PLAYER COLISION CENTER DEMO
 
-  var colisionCircular = function(posObj1,posObj2,dist){
+  var colisionCircular = function(posObj1,posObj2,dist, modY){
     var cat1 = Math.abs(posObj1.x - posObj2.x);
-    var cat2 = Math.abs(posObj1.y - posObj2.y);
+    var cat2 = Math.abs((posObj1.y-modY) - posObj2.y);
     var value = Math.sqrt(Math.pow(cat1,2)+Math.pow(cat2,2));
     if(value <= dist)
       return true;

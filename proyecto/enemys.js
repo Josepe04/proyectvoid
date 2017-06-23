@@ -179,11 +179,15 @@ window.addEventListener("load",function(){
   //ANDRES
 
   //ADRI
+
+  /*
+  MAMIZOU
+  */
   Q.animations("mamizouAnim", {
     "ataque-basico": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], rate: 1/5, flip:"x", loop: false, trigger: "ataqueBasico"},
     "inicio": {frames:[0,1,2,3,4,5,6,7,8], rate: 1/5, flip:"x", loop: false, trigger: "iniciaBatalla"},
     "giro":{frames:[0,1,2,3,4,5,6,7,8], rate: 1/5, flip:"x", loop: true},
-    "muerte": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], rate: 1/5, flip:"x", loop: false, trigger: "destruir"},
+    "muerte": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], rate: 1/5, flip:"x", loop: false, trigger: "muerte"},
     "ataque-final": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,13], rate: 1/5, flip:"x", loop: false, trigger: "ataqueFinal"},
     "movimiento": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], rate: 1/5, flip:"x", loop: true}
   });
@@ -200,11 +204,11 @@ window.addEventListener("load",function(){
         vidaInicial: p.vida,
         fake: p.fake,
         insertar: p.insertada,
-        radio: 30,
+        radio: 100,
         gravity: 0,
         tiempoSecundario: 10,
         sensor:true,
-        tipo: "boss",
+        tipo: "bossGiratorio",
       });
       this.add("animation, 2d");
       this.on("sensor");
@@ -212,6 +216,29 @@ window.addEventListener("load",function(){
     },
 
     sensor: function(colObj){
+      if(colObj.isA("Marisa")&&colisionCircular(colObj.p,this.p,colObj.p.radio+this.p.radio,72)&&colObj.p.invencibleTime <= 0){
+        if(colObj.p.vidas>0){
+          colObj.p.invencibleTime = 2;
+          colObj.p.sheet = "dañoMar";
+          colObj.play("daño");
+          colObj.p.vidas--;
+          Q.stageScene('hud', 3, colObj.p);
+        }
+        if(colObj.p.vidas <= 0 && !colObj.p.gameOver){
+          colObj.p.sheet = "muerteMar";
+          colObj.play("muerte", 3);
+          colObj.p.stepDelay = 1;
+          colObj.del('controles');
+          colObj.del('disparoPrincipal');
+          colObj.delPowerups();
+          colObj.p.gameOver = true;
+        }
+
+      }
+    },
+    step: function(dt){
+      if(this.p.x > LIMITEX2 || this.p.x < LIMITEX1 || this.p.y < LIMITEY1 || this.p.y > LIMITEY2)
+        this.destroy();
     }
 
 
@@ -234,7 +261,7 @@ window.addEventListener("load",function(){
         gravity: 0,
         tiempoSecundario: 10,
         sensor:true,
-        tipo: "boss",
+        tipo: p.tipo,
       });
       this.add("animation, 2d, rafagaFlotante");
       this.on("sensor");
@@ -243,11 +270,16 @@ window.addEventListener("load",function(){
       this.on("iniciaBatalla", function() {
         this.p.sheet = "standMam";
         this.play("movimiento");
-        this.p.vy = 100;
+        if(!this.p.fake)
+          this.p.vy += 100;
+      });
+
+      this.on("muerte", function() {
+        Q.stage().pause();
+        Q.stageScene("endHijiri",1, { label: "You Win" });
       });
 
       this.on("ataqueBasico", function() {
-        //Falta realizar el comportamiento de atracción.
         var balasFlotantes = Q("BalaFlotante");
         var i = 0;
         while(i < balasFlotantes.length){
@@ -267,26 +299,28 @@ window.addEventListener("load",function(){
 
     sensor: function(colObj){
         if(colObj.isA("BalaPlayer") ){
-          Q.stageScene('hudboss', 4, this.p);
+          if(!this.p.fake)
+            Q.stageScene('hudboss', 4, this.p);
+          if(this.p.vida<=0 && this.p.tipo == "boss"){
+            this.p.vy = 0;
+           this.p.sheet = "deathMam";
+           this.play("muerte");
+         }
         }
     },
 
     step: function(dt) {
       if(this.p.vida < this.p.vidaInicial-this.p.vidaInicial/3 && !this.p.fake && this.p.insertar){
         this.p.insertar = false;
-        Q.stage().insert(new Q.Mamizou({fake:true, vida: 1, insertar: false, y:this.p.y-300, opacity: 0.7}));
-        Q.stage().insert(new Q.Mamizou({fake:true, vida: 1, insertar: false, y:this.p.y+300, opacity: 0.7}));
+        Q.stage().insert(new Q.Mamizou({fake:true, vida: this.p.vidaInicial/10, insertar: false, y:this.p.y-300, opacity: 0.7, vy: 200,tipo: "enemy"}));
+        Q.stage().insert(new Q.Mamizou({fake:true, vida: this.p.vidaIncial/10, insertar: false, y:this.p.y+300, opacity: 0.7, vy: -200,tipo: "enemy"}));
       }
       if (this.p.vida < this.p.vidaInicial-(this.p.vidaInicial/3)*2 && !this.p.fake && this.p.timeGiratoria <= 0){
-        this.del('rafagaFlotante'); // No se si va a ser necesario.
         this.p.timeGiratoria = 5;
         Q.stage().insert(new Q.MamizouGiratoria({y:1780,x:1600,vx:210,vy:100, opacity: 0.7}));
         Q.stage().insert(new Q.MamizouGiratoria({y:1780,x:2700,vx:-210,vy:100, opacity: 0.7}));
         Q.stage().insert(new Q.MamizouGiratoria({y:2300,x:1600,vx:210,vy:-100, opacity: 0.7}));
         Q.stage().insert(new Q.MamizouGiratoria({y:2300,x:2700,vx:-210,vy:-100, opacity: 0.7}));
-        /*Q.stage().insert(new Q.MamizouGiratoria({y:2000,x:2600,vx:50,vy:50}));
-        Q.stage().insert(new Q.MamizouGiratoria({y:2000,x:2600,vx:50,vy:50}));
-        Q.stage().insert(new Q.MamizouGiratoria({y:2000,x:2600,vx:50,vy:50}));*/
       }
       else {
         this.p.timeGiratoria -= dt;
@@ -300,8 +334,14 @@ window.addEventListener("load",function(){
       else {
         this.p.tiempoSecundario -= dt;
       }
-      if(this.p.y <= 1700) this.p.vy = 100;
-      else if(this.p.y >= 2329) this.p.vy = -100;
+      if(this.p.y <= 1700) {
+        if(this.p.vy < 0)
+          this.p.vy = -this.p.vy;
+      }
+      else if(this.p.y >= 2329) {
+        if(this.p.vy > 0)
+          this.p.vy = -this.p.vy;
+      }
     }
 
   });
@@ -388,6 +428,173 @@ window.addEventListener("load",function(){
 
     return velFlotante;
   };
+
+  /*
+  ICHIRIN
+  */
+  Q.animations("ichirinAnim", {
+    "ataque-basico": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12], rate: 1/5, flip:"x", loop: false, trigger: "ataqueBasico"},
+    "inicio": {frames:[0,1,2,3,4,5,6,7], rate: 1/5, flip:"x", loop: false, trigger: "iniciaBatalla"},
+    "muerte": {frames:[0,1,2,3,4,5,6,7], rate: 1/5, flip:"x", loop: false, trigger: "muerte"},
+    "ataque-final": {frames:[0,1,2,3,4,5,6,7,8], rate: 1/5, flip:"x", loop: false, trigger: "ataqueFinal"},
+    "movimiento": {frames:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], rate: 1/5, flip:"x", loop: true}
+  });
+
+  Q.Sprite.extend("Ichirin", {
+    init: function(p) {
+      this._super(p, {
+        sprite: "ichirinAnim",
+        sheet: "startIch",
+        x:2700,
+        y:2000,
+        time: 0,
+        vida: p.vida,
+        vidaInicial: p.vida,
+        timeGiratoria: 5,
+        radio: 30,
+        gravity: 0,
+        tiempoSecundario: 7,
+        tiempoBasico: 5,
+        sensor:true,
+        tipo: "boss",
+      });
+      this.add("animation, 2d");
+      this.on("sensor");
+      this.play("inicio");
+
+      this.on("iniciaBatalla", function() {
+        this.p.sheet = "standIch";
+        this.play("movimiento");
+        if(!this.p.fake)
+          this.p.vy += 100;
+      });
+
+      this.on("muerte", function() {
+        Q.stage().pause();
+        Q.stageScene("endHijiri",1, { label: "You Win" });
+      });
+
+      this.on("ataqueBasico", function() {
+        this.del("rafagaLateral");
+        this.add("rafagaInferior");
+        this.p.sheet= 'standIch';
+        this.play('movimiento');
+      });
+
+      this.on("ataqueFinal", function() {
+        this.del("rafagaInferior");
+        this.add("rafagaLateral");
+        this.p.sheet= 'standIch';
+        this.play('movimiento');
+      });
+    },
+
+    sensor: function(colObj){
+        if(colObj.isA("BalaPlayer") ){
+          if(!this.p.fake)
+            Q.stageScene('hudboss', 4, this.p);
+          if(this.p.vida<=0 && this.p.tipo == "boss"){
+            this.p.vy = 0;
+           this.p.sheet = "deathIch";
+           this.play("muerte");
+         }
+        }
+    },
+
+    step: function(dt) {
+      if(this.p.tiempoSecundario <= 0){
+        console.log("final");
+        this.p.tiempoSecundario = 8;
+        this.p.sheet = 'attack2Ich';
+        this.play("ataque-final",2);
+      }
+      else {
+        this.p.tiempoSecundario -= dt;
+      }
+
+      if(this.p.tiempoBasico <= 0){
+        console.log("basico");
+        this.p.tiempoBasico = 5;
+        this.p.sheet = 'attack1Ich';
+        this.play("ataque-basico");
+      }
+      else {
+        this.p.tiempoBasico -= dt;
+      }
+
+      if(this.p.y <= 1700) {
+        if(this.p.vy < 0)
+          this.p.vy = -this.p.vy;
+      }
+      else if(this.p.y >= 2329) {
+        if(this.p.vy > 0)
+          this.p.vy = -this.p.vy;
+      }
+    }
+
+  });
+
+
+
+
+  Q.component("rafagaInferior", {
+
+      added: function() {
+        var p = this.entity.p;
+        this.entity.on("step",this,"step");
+        this.reloadTime = 0.5;
+      },
+
+      step: function(dt) {
+        var p = this.entity.p;
+        this.entity.p.time+=dt;
+        if(p.time >=this.reloadTime){
+          this.entity.p.time = 0;
+          var posIni= 2.5;
+          var modPos = 0;
+          for(var i = 0; i < 10; i++){
+            Q.stage().insert(new Q.Bala({asset: "bolita.png", x:p.x - (posIni+modPos)*p.radio,y:LIMITEY2,
+                                    vx:0,vy:-150,rad: 15,
+                                    funcionColision:function(colObj){}}));
+            modPos += 5;
+          }
+        }
+
+      }
+
+  });
+
+  Q.component("rafagaLateral", {
+
+      added: function() {
+        var p = this.entity.p;
+        this.entity.on("step",this,"step");
+        this.reloadTime = 0.5;
+      },
+
+      step: function(dt) {
+        var p = this.entity.p;
+        this.entity.p.time+=dt;
+        if(p.time >=this.reloadTime){
+          this.entity.p.time = 0;
+          var modPos = 0;
+          var posIni = Math.floor((Math.random()*10)+1)%2;
+          if(modPos === 0) {
+            modPos += 1;
+          }
+          for(var i = 0; i < 15; i++){
+            Q.stage().insert(new Q.Bala({asset: "bolita.png", x:LIMITEX1,y:LIMITEY1 + 500 +(posIni+modPos)*p.radio,
+                                    vx:150,vy:0,rad: 15,
+                                    funcionColision:function(colObj){}}));
+            modPos += 3.5;
+          }
+        }
+
+      }
+
+  });
+
+
 
   //CHEMA
 
