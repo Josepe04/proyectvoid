@@ -431,8 +431,52 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
     });
 
     /** 
-     * POWERUPS
+     * POWERUPS GENERALES
     */
+
+    Q.Sprite.extend("PowerDisplayFinal",{
+      init: function(p) {
+        this._super(p, {
+          asset:"pu1D.png",
+          gravity:0,
+          radio:30,
+          sensor:true
+        });
+        this.colisionado = false;
+        this.add('2d');
+        this.on("sensor");
+      },
+
+      sensor: function(colObj){
+        var rand = Math.random();
+        if(colObj.isA("Marisa") && !this.colisionado){
+          this.colisionado = true;
+          colObj.p.sheet = "pupMar";
+          colObj.play("pup");
+          if(colObj.disparoPrincipal != null)
+            colObj.del('disparoPrincipal');
+          if(colObj.powerup1 != null)
+            colObj.del('powerup1');
+          if(colObj.powerup2 != null)
+            colObj.del('powerup2');
+          if(colObj.powerup3 != null)
+            colObj.del('powerup3');
+          if(colObj.powerupDemo != null)
+            colObj.del('powerupDemo');
+          if(rand < 1/4)
+            colObj.add('powerup1');
+          else if(rand < 2/4)
+            colObj.add('powerup2');
+          else if(rand < 3/4)
+            colObj.add('powerup3');
+          else 
+            colObj.add('powerupDemo');
+          this.destroy();
+        }
+      }
+
+
+    });
 
     Q.Sprite.extend("BalaPlayerRebota",{
       init: function(tipoBala){
@@ -493,10 +537,10 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
               velocidadX = p.diffX * dt/ p.stepDelay;
             }
             Q.stage().insert(new Q.BalaPlayerRebota({asset:"balaPower1.png",x:p.x + 1.5*p.radio,y:p.y-50,
-                                    vx:400 + velocidadX,vy:0,rad: 2,
+                                    vx:400 + velocidadX,vy:-200,rad: 2,
                                     }));
             Q.stage().insert(new Q.BalaPlayerRebota({asset:"balaPower1.png",x:p.x + 1.5*p.radio,y:p.y-50,
-                                    vx:400 + velocidadX,vy:0,rad: 2,
+                                    vx:400 + velocidadX,vy:200,rad: 2,
                                     }));
           }
         }

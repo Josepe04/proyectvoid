@@ -190,6 +190,8 @@ Q.scene("levelFinal",function(stage) {
     mar.add("powerupChema");
     stage.insert(new Q.SpawnerChema({i: 0,cambioFase:true,x:2500, y:LIMITEUP, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:100, comp: "2d, orbePatron"}));
     stage.insert(new Q.SpawnerChema({i: 0,cambioFase:false,x:2500, y:LIMITEDOWN, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:-100, comp: "2d, orbePatron"}));
+    stage.insert(new Q.PowerDisplayFinal({x:2400,y:2000,vx:-40}))
+    stage.insert(new Q.PowerDisplayFinal({x:2400,y:2300,vx:-40}))
     faseNivel = 2;
     Q.audio.stop();
     Q.audio.play("Necrofantasia.mp3",{ loop: true });
