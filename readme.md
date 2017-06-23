@@ -42,10 +42,10 @@ Para la implementación se ha usado el motor Quintus.
 
 Los miembros del grupo que han desarrollado el juego son:
 
-**Sergio Freire Fernandez - @Wizsmiles**
-**Jose Manuel Perez Zamorano - @Josepe04**
-**Andrés Pascual Contreras - @DrasenPC**
-**Adrián Muñoz Gámez - @Nadrixa**
+@Wizsmiles **- Sergio Freire Fernandez**
+@Josepe04 **- José Manuel Pérez Zamorano**
+@DrasenPC **- Andrés Pascual Contreras**
+@Nadrixa **- Adrián Muñoz Gámez**
 
 
 
