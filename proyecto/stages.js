@@ -38,26 +38,28 @@ window.addEventListener("load",function(){
 */
 
   Q.load("pruebabala.png, reimu.png, sanguinaria.png, balaPlayer.png,"+
-   "bola.png, balaRedonda.png,up.png, flor.png, reimu_onmyoBall.png, ooiri.png,"+
+   "bola.png, balaRedonda.png,up.png, flor.png, reimu_onmyoBall.png, ooiri.png, bolita.png,"+
    "bolita.png, fuego.png,miniOrbeRojo.png, arrow.png, music.png, fire.png, spawner.png,"+
    "sombrero.png, ovalo.png,flecha.png, fantasma.png, plato.png,"+
    "mobRed.png, mobBlue.png, mobOrange.png, mobWhite.png,"+
    "pu1.png, pu1D.png, reimu_animal.png,"+
    "escudo.png,"+
    "Touhou_castles.jpg, fondo_reimu.png, "+
-   "forest.png, forest.json,river.png, river.json,fall.png, fall.json, montaña.png,montaña.json, volcan.png, volcan.json,"+
+   "templo.png, templo.json,forest.png, forest.json,river.png, river.json,fall.png, fall.json, montaña.png,montaña.json, volcan.png, volcan.json,"+
    "Advise-futo.png, Advise-hijiri.png,Advise-ichirin.png, Advise-kokoro.png, Advise-mamizou.png, Advise-mokou.png, Advise-reimu.png,"+
-   "futo-grande.png, hijiri-grande.png, mamizou-grande.png, reimu-grande.png, mokou-grande.png,"+
-   "futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,koishi.png,koishi.json, kokoro.png,kokoro.json, Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
+   "futo-grande.png, hijiri-grande.png, mamizou-grande.png, reimu-grande.png, mokou-grande.png, ichirin-grande.png,"+
+   "ichirin.png, Ichirin.json,futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,koishi.png,koishi.json, kokoro.png,kokoro.json, Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
    "reimu.png,reimu.json,marisa.png,marisa.json,"+
    "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3,"+
    "balaPower1.png, balaPower2.png, balaPower3.png", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
+    Q.compileSheets("templo.png","templo.json"); //Añade la Sheet del bosque.
     Q.compileSheets("river.png","river.json");
     Q.compileSheets("fall.png","fall.json");
     Q.compileSheets("volcan.png","volcan.json");
     Q.compileSheets("montaña.png","montaña.json");
     Q.compileSheets("Mamizou.png","Mamizou.json");
+    Q.compileSheets("ichirin.png","Ichirin.json")
     Q.compileSheets("marisa.png", "marisa.json");
     Q.compileSheets("reimu.png", "reimu.json");
     Q.compileSheets("moukou.png", "moukou.json");
@@ -106,11 +108,63 @@ window.addEventListener("load",function(){
     container.fit(16);
   });
 
+  /*Animación del templo*/
+  Q.animations("temploAnim", {
+    anim: { frames: [0,1,2,3,4,5,6,7], rate: 1/3, flip: false, loop: true}
+  });
+
+  /* Sprite que representa el templo */
+  Q.Sprite.extend("FondoTemplo", {
+    init: function (p) {
+      this._super(p,{
+        sprite:"temploAnim",
+        sheet:"templo",
+        x: 2200,
+        y: 2000,
+        type: 0
+      });
+      this.add("animation");
+      this.play("anim");
+    }
+
+  });
+
+  Q.Sprite.extend("IchirinAdvise", {
+    init: function (p) {
+      this._super(p,{
+        asset: "ichirin-grande.png",
+        x: 2200,
+        y: 2000,
+        type: 0
+      });
+      this.add('tween');
+      this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0},1.2, {callback: function() {
+        Q.stage().insert(new Q.Ichirin({vida: 500}));
+        Q.stage().insert(new Q.PowerDisplay({x:2300, y:2300}));
+        var player = Q.stage().insert(new Q.Marisa());
+        player.add("antiSpellIchirin");
+        Q.stageScene('hud',3, Q('Marisa').first().p);
+      }});
+    }
+  });
+
 
     //ANDRES
 
     //ADRI
+    Q.scene("levelAdrian1",function(stage) {
+    var fondo = stage.insert(new Q.FondoBosque());
+    stage.add("viewport").centerOn(2200,2000);
+    Q.stage().insert(new Q.MamizouAdvise());
+    Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
+    });
 
+    Q.scene("levelAdrian2",function(stage) {
+    var fondo = stage.insert(new Q.FondoTemplo());
+    stage.add("viewport").centerOn(2200,2000);
+    Q.stage().insert(new Q.IchirinAdvise());
+    Q.stage().insert(new Q.CartelAdvise({asset:"Advise-ichirin.png"}));
+    });
 
     //CHEMA
 
