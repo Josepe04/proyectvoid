@@ -80,45 +80,6 @@ window.addEventListener("load",function(){
   });
 
 
-  //BOSS PRUEBA
-  Q.Sprite.extend("ReimuDemo",{
-    init: function(p) {
-        this._super({
-          asset:"reimu.png",
-          x:2700,
-          y:2000,
-          vy:100,
-          time:0,
-          time2:0,
-          gravity:0,
-          radio:30,
-          sensor:true,
-          tipo: "boss",
-          vida:2000
-        });
-        this.ultimo = 0;
-        this.add('2d, speellCard1Reimu2');
-        this.on("sensor");
-      },
-
-      step: function(dt) {
-        if(this.p.y <= 1664) this.p.vy = 100;
-        else if(this.p.y >= 2329) this.p.vy = -100;
-      },
-
-      sensor: function(colObj){
-          if(colObj.isA("BalaPlayer")){
-            Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-          }
-
-          if(this.p.vida<=0){
-            this.destroy();
-            Q.stageScene("endGame",1, { label: "You Win" });
-          }
-      }
-  });
-
-
   //ENEMIGO PRUEBA
   Q.Sprite.extend("EnemigoDemo",{
     init: function(p) {
@@ -276,7 +237,7 @@ window.addEventListener("load",function(){
 
       this.on("muerte", function() {
         Q.stage().pause();
-        Q.stageScene("endHijiri",1, { label: "You Win" });
+        Q.stageScene("endMamizou",1, { label: "You Win" });
       });
 
       this.on("ataqueBasico", function() {
@@ -298,7 +259,7 @@ window.addEventListener("load",function(){
     },
 
     sensor: function(colObj){
-        if(colObj.isA("BalaPlayer") ){
+        if(colObj.p.tipo=="balaPlayer" ){
           if(!this.p.fake)
             Q.stageScene('hudboss', 4, this.p);
           if(this.p.vida<=0 && this.p.tipo == "boss"){
@@ -471,7 +432,7 @@ window.addEventListener("load",function(){
 
       this.on("muerte", function() {
         Q.stage().pause();
-        Q.stageScene("endHijiri",1, { label: "You Win" });
+        Q.stageScene("endIchirin",1, { label: "You Win" });
       });
 
       this.on("ataqueBasico", function() {
@@ -490,7 +451,7 @@ window.addEventListener("load",function(){
     },
 
     sensor: function(colObj){
-        if(colObj.isA("BalaPlayer") ){
+        if(colObj.p.tipo=="balaPlayer" ){
           if(!this.p.fake)
             Q.stageScene('hudboss', 4, this.p);
           if(this.p.vida<=0 && this.p.tipo == "boss"){
@@ -725,7 +686,7 @@ window.addEventListener("load",function(){
           });
           this.add('2d');
           this.on("sensor",function(colObj){
-            if (colObj.isA("BalaPlayer") && !this.p.colisionado) {
+            if (colObj.p.tipo=="balaPlayer" && !this.p.colisionado) {
               this.p.colisionado = true;
               if (Math.random() < 0.15) {
                 Q.stage().insert(new Q.upDisplay({ x: this.p.x, y: this.p.y }));
@@ -790,7 +751,11 @@ window.addEventListener("load",function(){
           this.add('2d,animation');
           this.play("inicio");
           this.on("sensor");
-          this.on("destruir",function(){this.destroy();});
+          this.on("destruir",function(){
+            Q.audio.stop();
+            Q.audio.play("staffroll.mp3",{ loop: true });
+            this.destroy();
+          });
           this.on("empezar",function(){
             this.add("spellCard1Reimu1");
             this.p.vida = 300;
@@ -841,7 +806,7 @@ window.addEventListener("load",function(){
         },
 
         sensor: function(colObj){
-            if(colObj.isA("BalaPlayer") ){
+            if(colObj.p.tipo=="balaPlayer" ){
               Q.stageScene('hudboss', 4, this.p);
             }
 
@@ -1160,7 +1125,7 @@ window.addEventListener("load",function(){
         },
 
         sensor: function(colObj){
-            if(colObj.isA("BalaPlayer") ){
+            if(colObj.p.tipo=="balaPlayer" ){
               Q.stageScene('hudboss', 4, this.p);
             }
 
@@ -1516,9 +1481,7 @@ window.addEventListener("load",function(){
 
      if(this.p.vida<=(this.p.maxVida/2) && this.p.fase <= 1){
          this.p.fase=2;
-         //this.p.sheet= "invocar2H";
-         //this.play("invocar2");
-     }else if(this.p.vida<=(this.p.maxVida/10) && this.p.fase <= 2){
+     }else if(this.p.vida<=(this.p.maxVida/5) && this.p.fase <= 2){
        this.del("spellCard1Hijiri");
        this.add("spellCard2Hijiri");
        this.p.fase=3;
@@ -1529,7 +1492,7 @@ window.addEventListener("load",function(){
    },
 
    sensor: function(colObj){
-       if(colObj.isA("BalaPlayer")){
+       if(colObj.p.tipo=="balaPlayer"){
          //this.p.vida --;
          Q.stageScene('hudboss', 4, this.p);
          //colObj.destroy();
@@ -1562,13 +1525,13 @@ Q.component("spellCard1Hijiri",{
        var pos = Math.floor((Math.random() * 10)) % 4;
        switch (pos) {
         case 0:
-          Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2600, y:2300, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:enemy}));
+          Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2800, y:2300, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:enemy}));
           p.numSpawn++;
           p.sheet = sheet;
           this.entity.play(anim);
           break;
         case 1:
-          Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2600, y:1700, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:enemy}));
+          Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2800, y:1700, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:enemy}));
           p.numSpawn++;
           p.sheet = sheet;
           this.entity.play(anim);
@@ -1604,9 +1567,9 @@ Q.component("spellCard2Hijiri",{
       p.time+=dt;
       if(p.numSpawn <1 && p.vida > 0){
         var enemy = Math.floor((Math.random() * 10)) % 4;
-        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2600, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2800, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
         enemy = Math.floor((Math.random() * 10)) % 4;
-        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2600, y:1700, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
+        Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2800, y:1700, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
         enemy = Math.floor((Math.random() * 10)) % 4;
         Q.stage().insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1700, y:2300, time:0, timelimit:4, delay:0, numEnemy:2, level: 5, enemy:enemy}));
         enemy = Math.floor((Math.random() * 10)) % 4;
@@ -1615,10 +1578,7 @@ Q.component("spellCard2Hijiri",{
         p.sheet = "invocar3H";
         this.entity.play("invocar3");
       }
-      /*if(Math.floor(p.time)%3 == 0 && p.fase == 3 && p.vida > 0){
-        p.sheet= "invocar3";
-        this.entity.play("invocar3");
-      }*/
+
     }
 
 
@@ -1962,10 +1922,8 @@ init: function(p) {
  },
 
  sensor: function(colObj){
-     if(colObj.isA("BalaPlayer")){
-       //this.p.vida --;
+     if(colObj.p.tipo=="balaPlayer"){
        Q.stageScene('hudboss', 4, this.p);
-       //colObj.destroy();
      }
      if(this.p.vida<=0){
       this.p.sheet = "muerteF";

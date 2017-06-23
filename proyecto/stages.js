@@ -1,41 +1,5 @@
 window.addEventListener("load",function(){
 
-/*  //SPAWNER PRUEBA
-  Q.Sprite.extend("SpawnerDemo",{
-    init: function(p){
-      this._super(p, {
-
-      });
-      this.p.time -= this.p.delay;
-    },
-
-    step: function(dt){
-      this.p.time+=dt;
-      if((this.p.i<this.p.numEnemy) && this.p.time>this.p.timelimit){
-        switch(this.p.enemy){
-          case "mobRed":
-            Q.stage().insert(new Q.EnemigoDemo({x:this.p.x, y: this.p.y}));
-            break;
-        }
-         this.p.i++;
-         this.p.time = 0;
-       }
-    }
-
-  });*/
-
-/*  Q.scene("levelDemo",function(stage) {
-    Q.stageTMX("level.tmx",stage);
-    //var boss = stage.insert(new Q.Reimu());
-    var pu = stage.insert(new Q.PowerDisplay({x:2300, y:2300}));
-    var player = stage.insert(new Q.Marisa());
-  //  var spwner1 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png",x:1700, y:2300, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:1}));
-    //var spwner2 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png", x:1700, y:1700, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:2}));
-    //var spwner3 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png",x:2700, y:2300, time:0, timelimit:2, delay:2, numEnemy:5, level: 1, enemy:0}));
-    var spwner4 = stage.insert(new Q.SpawnerHijiri({asset: "spawner.png", x:2700, y:1700, time:0, timelimit:1, delay:2, numEnemy:20, level: 1, enemy:3}));
-    stage.add("viewport").centerOn(2200,2000);
-  });
-*/
 
   Q.load("pruebabala.png, reimu.png, sanguinaria.png, balaPlayer.png,"+
    "bola.png, balaRedonda.png,up.png, flor.png, reimu_onmyoBall.png, ooiri.png, bolita.png,"+
@@ -50,7 +14,7 @@ window.addEventListener("load",function(){
    "futo-grande.png, hijiri-grande.png, mamizou-grande.png, reimu-grande.png, mokou-grande.png, ichirin-grande.png,"+
    "ichirin.png, Ichirin.json,futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,koishi.png,koishi.json, kokoro.png,kokoro.json, Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
    "reimu.png,reimu.json,marisa.png,marisa.json,"+
-   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3,"+
+   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3, escenarioAdri1.mp3,escenarioAdri2.mp3, byob.mp3,"+
    "balaPower1.png, balaPower2.png, balaPower3.png", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
     Q.compileSheets("templo.png","templo.json"); //Añade la Sheet del bosque.
@@ -65,26 +29,7 @@ window.addEventListener("load",function(){
     Q.compileSheets("moukou.png", "moukou.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelMamizou");
-  });
-
-  Q.scene('endGame',function(stage) {
-    var container = stage.insert(new Q.UI.Container({
-      x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
-    }));
-    Q.audio.stop();
-    var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
-                                                    label: "Play Again", keyActionName: "confirm" }))
-    var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
-                                                     label: stage.options.label }));
-    button.on("click",function() {
-      Q.clearStages();
-      Q.stageScene('levelMokou');
-      Q.stageScene('hud', 3, Q('Marisa').first().p);
-      //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
-    });
-
-    container.fit(20);
+    Q.stageScene("levelHijiri");
   });
 
 
@@ -187,9 +132,7 @@ Q.Sprite.extend("SpawnerHijiri",{
       this.p.i++;
       this.p.time = 0;
     }
-  /*  if(Q('Hijiri').first()== null){
-      this.destroy();
-    }else */if(this.p.i==this.p.numEnemy){
+  if(this.p.i==this.p.numEnemy){
       Q('Hijiri').first().destruyeSpawner();
       this.destroy();
     }
@@ -205,37 +148,14 @@ sensor: function(colObj){
 
 //////////////////////////////////////////////////////END OF STAGES/////////////////////////////////////////////////////////////////////////////
 
-Q.scene("levelMamizou",function(stage) {
 
-var fondo = stage.insert(new Q.FondoBosque());
-stage.add("viewport").centerOn(2200,2000);
-Q.stage().insert(new Q.MamizouAdvise());
-Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
-});
-
-Q.scene('endMamizou',function(stage) {
-var container = stage.insert(new Q.UI.Container({
-  x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
-}));
-
-var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
-                                                label: "Next Stage", keyActionName: "confirm" }))
-var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
-                                                 label: stage.options.label }));
-button.on("click",function() {
-  Q.clearStages();
-  Q.stageScene('levelHijiri');
-  //Q.stageScene('hud', 3, Q('Marisa').first().p);
-});
-
-container.fit(20);
-});
 
 Q.scene("levelHijiri",function(stage) {
  var fondo = stage.insert(new Q.FondoRio());
  Q.stage().insert(new Q.HijiriAdvise());
  Q.stage().insert(new Q.CartelAdvise({asset:"Advise-hijiri.png"}));
-
+ Q.audio.stop();
+ Q.audio.play("byob.mp3",{ loop: true });
  stage.add("viewport").centerOn(2200,2000);
 });
 
@@ -250,8 +170,7 @@ Q.scene('endHijiri',function(stage) {
                                                    label: stage.options.label }));
   button.on("click",function() {
     Q.clearStages();
-    Q.stageScene('levelKoishi');
-    //Q.stageScene('hud', 3, Q('Marisa').first().p);
+    Q.stageScene('levelMokou');
   });
 
   container.fit(20);
@@ -261,7 +180,8 @@ Q.scene("levelKoishi",function(stage) {
  var fondo = stage.insert(new Q.FondoRio());
  Q.stage().insert(new Q.KoishiAdvise());
  Q.stage().insert(new Q.CartelAdvise({asset:"Advise-koishi.png"}));
-
+ Q.audio.stop();
+ Q.audio.play("",{ loop: true });
  stage.add("viewport").centerOn(2200,2000);
 });
 
@@ -277,7 +197,6 @@ Q.scene('endKoishi',function(stage) {
   button.on("click",function() {
     Q.clearStages();
     Q.stageScene('levelMokou');
-    //Q.stageScene('hud', 3, Q('Marisa').first().p);
   });
 
   container.fit(20);
@@ -305,7 +224,33 @@ var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
 button.on("click",function() {
   Q.clearStages();
   Q.stageScene('levelIchirin');
-  //Q.stageScene('hud', 3, Q('Marisa').first().p);
+});
+
+container.fit(20);
+});
+
+Q.scene("levelMamizou",function(stage) {
+
+var fondo = stage.insert(new Q.FondoBosque());
+stage.add("viewport").centerOn(2200,2000);
+Q.stage().insert(new Q.MamizouAdvise());
+Q.stage().insert(new Q.CartelAdvise({asset:"Advise-mamizou.png"}));
+Q.audio.stop();
+Q.audio.play("escenarioAdri1.mp3",{ loop: true });
+});
+
+Q.scene('endMamizou',function(stage) {
+var container = stage.insert(new Q.UI.Container({
+  x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+}));
+
+var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
+                                                label: "Next Stage", keyActionName: "confirm" }))
+var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
+                                                 label: stage.options.label }));
+button.on("click",function() {
+  Q.clearStages();
+  Q.stageScene('levelIchirin');
 });
 
 container.fit(20);
@@ -318,7 +263,7 @@ Q.scene("levelIchirin",function(stage) {
   Q.stage().insert(new Q.IchirinAdvise());
   Q.stage().insert(new Q.CartelAdvise({asset:"Advise-ichirin.png"}));
   Q.audio.stop();
-  Q.audio.play("reach_for_the_moon.mp3",{ loop: true });
+  Q.audio.play("escenarioAdri2.mp3",{ loop: true });
 });
 
 Q.scene('endIchirin',function(stage) {
@@ -332,7 +277,7 @@ var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                                  label: stage.options.label }));
 button.on("click",function() {
   Q.clearStages();
-  Q.stageScene('levelKokoro');
+  Q.stageScene('levelFuto');
 });
 
 container.fit(20);
@@ -342,7 +287,7 @@ Q.scene("levelKokoro",function(stage) {
   Q.stage().insert(new Q.KokoroAdvise());
   Q.stage().insert(new Q.CartelAdvise({asset:"Advise-kokoro.png"}));
   Q.audio.stop();
-  Q.audio.play("reach_for_the_moon.mp3",{ loop: true });
+  Q.audio.play("",{ loop: true });
   stage.add("viewport").centerOn(2200,2000);
 });
 
@@ -358,7 +303,6 @@ var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
 button.on("click",function() {
   Q.clearStages();
   Q.stageScene('levelFuto');
-  //Q.stageScene('hud', 3, Q('Marisa').first().p);
 });
 
 container.fit(20);
@@ -368,7 +312,7 @@ Q.scene("levelFuto",function(stage) {
  var fondo = stage.insert(new Q.FondoFall());
  Q.stage().insert(new Q.FutoAdvise());
  Q.stage().insert(new Q.CartelAdvise({asset:"Advise-futo.png"}));
- Q.stage().insert(new Q.PowerDisplayFinal({x:2400,y:2000,vx:-40}));
+
  Q.audio.stop();
  Q.audio.play("Song_of_storms.mp3",{loop:true});
  stage.add("viewport").centerOn(2200,2000);
@@ -386,7 +330,6 @@ Q.scene('endFuto',function(stage) {
   button.on("click",function() {
     Q.clearStages();
     Q.stageScene('levelFinal');
-    //Q.stageScene('hud', 3, Q('Marisa').first().p);
   });
 
   container.fit(20);
@@ -399,6 +342,41 @@ Q.scene("levelFinal",function(stage) {
     Q.audio.stop();
     Q.audio.play("Necrofantasia.mp3",{ loop: true });
     stage.add("viewport").centerOn(2200,2000);
+});
+
+Q.scene('endFinal',function(stage) {
+  var container = stage.insert(new Q.UI.Container({
+    x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+  }));
+
+  var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
+                                                  label: "RESTART", keyActionName: "confirm" }))
+  var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
+                                                   label: stage.options.label }));
+  button.on("click",function() {
+    Q.clearStages();
+    Q.stageScene('levelHijiri');
+
+  });
+
+  container.fit(20);
+});
+
+Q.scene('endGame',function(stage) {
+  var container = stage.insert(new Q.UI.Container({
+    x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+  }));
+  Q.audio.stop();
+  var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
+                                                  label: "Play Again", keyActionName: "confirm" }))
+  var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
+                                                   label: stage.options.label }));
+  button.on("click",function() {
+    Q.clearStages();
+    Q.stageScene('levelMamizou');
+  });
+
+  container.fit(20);
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -548,13 +526,12 @@ Q.Sprite.extend("FondoTemplo", {
        this.add('tween');
        this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0},1.2, {callback: function() {
          Q.stage().insert(new Q.Ichirin({vida: 500}));
-         Q.stage().insert(new Q.PowerDisplay({x:2300, y:2300}));
          var player = Q.stage().insert(new Q.Marisa());
          Q.stageScene('hud',3, Q('Marisa').first().p);
        }});
      }
    });
-   
+
    Q.Sprite.extend("HijiriAdvise", {
      init: function (p) {
        this._super(p,{
@@ -565,8 +542,8 @@ Q.Sprite.extend("FondoTemplo", {
        });
        this.add('tween');
        this.animate({w: this.p.w - 300, h: this.p.h - 100, angle: 360 }, 1).chain({y:this.p.y-20},1.2).chain({y: this.p.y - 20, opacity: 0.0},1.2, {callback:function(){
-         var boss = stage.insert(new Q.Hijiri());
-         var player = stage.insert(new Q.Marisa());
+         var boss = Q.stage().insert(new Q.Hijiri());
+         var player = Q.stage().insert(new Q.Marisa());
          Q.stageScene('hud',3, Q('Marisa').first().p);
        }});
      }

@@ -87,6 +87,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           vx:tipoBala.vx,
           vy:tipoBala.vy,
           radio:tipoBala.rad,
+          tipo:"balaPlayer",
           gravity:0,
           sensor:true,
           impacto: false
@@ -101,18 +102,9 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.destroy();
       },
       sensor: function(colObj){
-        /*if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
-          this.p.impacto = true;
-          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
-            colObj.destroy();
-          else if(colObj.p.vida > 0)
-            colObj.p.vida--;
-          this.destroy();
-        }*/
-
         if(colObj.p.tipo == "enemy"  && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
-          if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+          if(colObj.p.vida <= 0)
             colObj.destroy();
           else if(colObj.p.vida > 0)
             colObj.p.vida--;
@@ -232,9 +224,10 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           y:2000,
           gravity:0,
           radio:5,
-    	    invencibleTime: 10000000,
+    	    invencibleTime:0,
+          powerTimer: 10,
           timeSpell:0,
-          vidas:5,
+          vidas:30,
           gameOver: false,
           sensor:true
         });
@@ -258,9 +251,17 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
       },
 
       step: function(dt) {
+        this.p.powerTimer-=dt;
         if(this.p.invencibleTime > 0){
           this.p.invencibleTime = this.p.invencibleTime-dt;
         }
+        if(this.p.powerTimer<=0){
+          this.p.powerTimer = 10;
+          if((Math.floor(Math.random()*10)%2) == 1) {
+            Q.stage().insert(new Q.PowerDisplayFinal({x:2700,y:this.p.y,vx:-40}))
+          }
+        }
+
       },
 
       sensor: function(colObj){
@@ -488,8 +489,9 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
 
       sensor: function(colObj){
         var rand = Math.random();
-        if(colObj.isA("Marisa") && !this.colisionado){
+        if(colObj.isA("Marisa") && !this.colisionado && colisionCuadrada(colObj.p, this.p, 72)){
           this.colisionado = true;
+          Q.audio.play("levelup.mp3");
           colObj.p.sheet = "pupMar";
           colObj.play("pup");
           if(colObj.disparoPrincipal != null)
@@ -532,6 +534,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           vx:tipoBala.vx,
           vy:tipoBala.vy,
           radio:tipoBala.rad,
+          tipo:"balaPlayer",
           gravity:0,
           sensor:true,
           impacto: false
@@ -549,17 +552,9 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
         }
       },
       sensor: function(colObj){
-      /*  if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
-          this.p.impacto = true;
-          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
-            colObj.destroy();
-          else if(colObj.p.vida > 0)
-            colObj.p.vida--;
-          this.destroy();
-        }*/
         if(colObj.p.tipo == "enemy"  && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
-          if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+          if(colObj.p.vida <= 0)
             colObj.destroy();
           else if(colObj.p.vida > 0)
             colObj.p.vida--;
@@ -620,6 +615,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           vx:tipoBala.vx,
           vy:tipoBala.vy,
           radio:tipoBala.rad,
+          tipo:"balaPlayer",
           gravity:0,
           t:0,
           sensor:true,
@@ -636,17 +632,9 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.destroy();
       },
       sensor: function(colObj){
-        /*if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
-          this.p.impacto = true;
-          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
-            colObj.destroy();
-          else if(colObj.p.vida > 0)
-            colObj.p.vida--;
-          this.destroy();
-        }*/
         if(colObj.p.tipo == "enemy"  && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
           this.p.impacto = true;
-          if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+          if(colObj.p.vida <= 0)
             colObj.destroy();
           else if(colObj.p.vida > 0)
             colObj.p.vida--;
@@ -711,6 +699,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           vx:tipoBala.vx,
           vy:tipoBala.vy,
           radio:tipoBala.rad,
+          tipo:"balaPlayer",
           gravity:0,
           sensor:true,
           impacto: false
@@ -725,27 +714,18 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           this.destroy();
       },
       sensor: function(colObj){
-        /*if((colObj.p.tipo == "enemy" || colObj.p.tipo == "boss") && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
-          this.p.impacto = true;
-          if(colObj.p.vida <= 0 && colObj.p.tipo == "enemy")//CHEMA TIENE QUE CAMBIAR LOS NIVELES
-            colObj.destroy();
-          else if(colObj.p.vida > 0)
-            colObj.p.vida-=2;
-          this.destroy();
-        }
-      }*/
       if(colObj.p.tipo == "enemy"  && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 0)){
         this.p.impacto = true;
-        if(colObj.p.vida <= 0)//CHEMA TIENE QUE CAMBIAR LOS NIVELES
+        if(colObj.p.vida <= 0)
           colObj.destroy();
         else if(colObj.p.vida > 0)
-          colObj.p.vida--;
+          colObj.p.vida-=2;
         this.destroy();
       }
       if(colObj.p.tipo == "boss" && !this.p.impacto && colisionCuadrada(colObj.p,this.p, 40)){
         this.p.impacto = true;
         if(colObj.p.vida > 0)
-          colObj.p.vida--;
+          colObj.p.vida-=2;
         this.destroy();
       }
     }
@@ -836,11 +816,8 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
           }
         },
 
-      //&& colisionCuadrada(colObj.p,this.p, -72)
+
       sensor: function(colObj){
-          if((!colObj.isA('Futo') && !colObj.isA('Marisa') && !colObj.isA('BalaPlayer'))){
-            colObj.destroy();
-          }
          }
 
       });
