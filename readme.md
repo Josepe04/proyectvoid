@@ -1,6 +1,6 @@
-#Magic Waifus
+# Magic Waifus
 
-###1. Diseño del juego
+### 1. Diseño del juego
 
 > Magic Waifus es un juego que pertenece al género "bullet hell" (toma claras referencias de Touhou), que lo convierte en un frenético juego en el que te enfrentas a oleadas de enemigos, esquivando sus proyectiles y lanzando los tuyos.
 El juego se basa en enfrentamiento a jefes finales, por lo que no tiene ningún tipo de scroll.
@@ -33,6 +33,6 @@ vidas, que pierde si es alcanzado por un proyectil del jugador. También puede l
 
 
 
-###2. Diseño de la implementación
-###3. Equipo de trabajo y reparto de tareas
-###4. Fuentes y referencias
+### 2. Diseño de la implementación
+### 3. Equipo de trabajo y reparto de tareas
+### 4. Fuentes y referencias
