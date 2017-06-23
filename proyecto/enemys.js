@@ -758,7 +758,9 @@ window.addEventListener("load",function(){
             this.p.sheet = "standm";
             this.play("stand");
           });
-          this.on("destruir",function(){this.destroy();});
+          this.on("destruir",function(){
+            Q.stageScene("endMokou",1, { label: "Next Stage" });
+          });
           this.on("empezar",function(){
             this.add("spellCard1Mokou");
             this.p.vida = 300;
@@ -822,7 +824,6 @@ window.addEventListener("load",function(){
                 this.p.vy = 0;
                 this.p.sheet = "finm";
                 this.play("death");
-                Q.stageScene("endGame",1, { label: "You Win" });
               }else if(this.p.fase == 0){
                 this.del("spellCard1Mokou");
               }else if(this.p.fase == 1){

@@ -49,7 +49,8 @@ window.addEventListener("load",function(){
    "Advise-futo.png, Advise-hijiri.png,Advise-ichirin.png, Advise-kokoro.png, Advise-mamizou.png, Advise-mokou.png, Advise-reimu.png,"+
    "futo-grande.png, hijiri-grande.png, mamizou-grande.png,"+
    "futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,koishi.png,koishi.json, kokoro.png,kokoro.json, Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
-   "reimu.png,reimu.json,marisa.png,marisa.json", function() {
+   "reimu.png,reimu.json,marisa.png,marisa.json,"+
+   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
     Q.compileSheets("river.png","river.json");
     Q.compileSheets("fall.png","fall.json");
@@ -59,7 +60,7 @@ window.addEventListener("load",function(){
     Q.compileSheets("moukou.png", "moukou.json");
     Q.compileSheets("hijiri.png", "hijiri.json");
     Q.compileSheets("futo.png","futo.json");
-    Q.stageScene("levelSergio2");
+    Q.stageScene("levelFinal");
     Q.stageScene('hud',3, Q('Marisa').first().p);
   });
 
@@ -67,14 +68,14 @@ window.addEventListener("load",function(){
     var container = stage.insert(new Q.UI.Container({
       x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
     }));
-
+    Q.audio.stop();
     var button = container.insert(new Q.UI.Button({ x: 0, y: 0, fill: "#CCCCCC",
                                                     label: "Play Again", keyActionName: "confirm" }))
     var label = container.insert(new Q.UI.Text({x:10, y: -10 - button.p.h,
                                                      label: stage.options.label }));
     button.on("click",function() {
       Q.clearStages();
-      Q.stageScene('levelChema');
+      Q.stageScene('levelMokou');
       Q.stageScene('hud', 3, Q('Marisa').first().p);
       //Q.stageScene('hudboss', 4, Q('Reimu').first().p);
     });
@@ -177,6 +178,8 @@ Q.scene("levelMokou",function(stage) {
     var boss = stage.insert(new Q.Mokou());
     var mar = stage.insert(new Q.Marisa());
     faseNivel = 2;
+    Q.audio.stop();
+    Q.audio.play("reach_for_the_moon.mp3",{ loop: true });
     stage.add("viewport").centerOn(2200,2000);
 });
 
@@ -187,6 +190,8 @@ Q.scene("levelFinal",function(stage) {
     stage.insert(new Q.SpawnerChema({i: 0,cambioFase:true,x:2500, y:LIMITEUP, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:100, comp: "2d, orbePatron"}));
     stage.insert(new Q.SpawnerChema({i: 0,cambioFase:false,x:2500, y:LIMITEDOWN, time:0, timelimit:2, delay:2, numEnemy:15,velx:0,vely:-100, comp: "2d, orbePatron"}));
     faseNivel = 2;
+    Q.audio.stop();
+    Q.audio.play("Necrofantasia.mp3",{ loop: true });
     stage.add("viewport").centerOn(2200,2000);
 });
 
@@ -241,7 +246,8 @@ Q.Sprite.extend("SpawnerChema",{
     var boss = stage.insert(new Q.Futo());
     var player = stage.insert(new Q.Marisa());
     player.add("antiSpellFuto");
-
+    Q.audio.stop();
+    Q.audio.play("Song_of_storms.mp3",{loop:true});
     stage.add("viewport").centerOn(2200,2000);
   });
 

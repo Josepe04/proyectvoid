@@ -115,7 +115,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
     Q.component("disparoPrincipal",{
       added: function() {
           this.tAcomulada = 0;
-          this.reloadTime = 0.1;
+          this.reloadTime = 0;
           this.entity.on("step",this,"step");
       },
       step: function(dt){
@@ -256,6 +256,7 @@ var Q = window.Q = Quintus({audioSupported: [ 'mp3','ogg' ]})
                this.p.vidas--;
                this.p.sheet = "dañoMar";
                this.play("daño");
+               Q.audio.play("death.mp3");
              }
 
              Q.stageScene('hud', 3, this.p);
