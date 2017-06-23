@@ -50,7 +50,8 @@ window.addEventListener("load",function(){
    "futo-grande.png, hijiri-grande.png, mamizou-grande.png, reimu-grande.png, mokou-grande.png,"+
    "futo.png,futo.json,hijiri.png,hijiri.json,ichirin.png,ichirin.json,koishi.png,koishi.json, kokoro.png,kokoro.json, Mamizou.png,Mamizou.json, moukou.png,moukou.json,"+
    "reimu.png,reimu.json,marisa.png,marisa.json,"+
-   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3", function() {
+   "coin.mp3,death.mp3,levelup.mp3,Necrofantasia.mp3,reach_for_the_moon.mp3,staffroll.mp3,Song_of_storms.mp3,"+
+   "balaPower1.png, balaPower2.png, balaPower3.png", function() {
     Q.compileSheets("forest.png","forest.json"); //Añade la Sheet del bosque.
     Q.compileSheets("river.png","river.json");
     Q.compileSheets("fall.png","fall.json");
@@ -366,6 +367,7 @@ Q.scene("levelFuto",function(stage) {
  var fondo = stage.insert(new Q.FondoFall());
  Q.stage().insert(new Q.FutoAdvise());
  Q.stage().insert(new Q.CartelAdvise({asset:"Advise-futo.png"}));
+ Q.stage().insert(new Q.PowerDisplayFinal({x:2400,y:2000,vx:-40}));
  Q.audio.stop();
  Q.audio.play("Song_of_storms.mp3",{loop:true});
  stage.add("viewport").centerOn(2200,2000);
