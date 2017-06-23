@@ -96,3 +96,5 @@ La organización del proyecto es la siguiente:
 - La música del escenario de Futo es una versión de 8 bits de "Song of storms" de Zelda (Nintendo).
 - La música del escenario de Hijiri es una versión en 8 bits de "Byob" sacada del canal de youtube "8 bit universe" (youtube.com/user/8BitUniverseMusic).
 - La música del escenario de Mamizou e Ichirin es de la banda sonora original (8 bits) de Fire Emblem Echoes (Nintendo).
+- La música del escenario de Koishi es una versión de 8 bits de la canción principal de Hearthstone (Blizzard) sacada del canal de youtube "8 bit universe" (youtube.com/user/8BitUniverseMusic).
+- La La música del escenario de Kokoro es una versión de 8 bits de la canción principal de los "Power Ranges" llamada "Go Go Power Rangers" sacada del canal de youtube "8 bit universe" (youtube.com/user/8BitUniverseMusic).
